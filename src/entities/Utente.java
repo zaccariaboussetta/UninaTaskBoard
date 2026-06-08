@@ -6,9 +6,18 @@ public class Utente {
 	private String matricola;
 	private String emailIstituzionale;
 	private String password;
-	
-	public Utente(){}
 
+	
+	public Utente(String nome, String cognome, String matricola, String emailIstituzionale, String password) {
+		super();
+		this.nome = nome;
+		this.cognome = cognome;
+		this.matricola = matricola;
+		this.emailIstituzionale = emailIstituzionale;
+		this.password = password;
+	}
+
+	
 	public String getNome() {
 		return nome;
 	}
