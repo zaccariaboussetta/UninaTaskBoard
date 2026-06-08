@@ -9,12 +9,20 @@ public class Attivita {
 	private LocalDate scadenza;
 	private String statoAvanzamento;
 	
-	public Attivita(String descrizione, LocalDate dataCreazione, LocalDate scadenza, String statoAvanzamento) {
-		super();
+	//Costruttore per reperimento dati dal DB;
+	public Attivita(int idAttivita, String descrizione, LocalDate dataCreazione, LocalDate scadenza,
+			String statoAvanzamento) {
+		this.idAttivita = idAttivita;
 		this.descrizione = descrizione;
 		this.dataCreazione = dataCreazione;
 		this.scadenza = scadenza;
-		this.statoAvanzamento = "Todo";
+		this.statoAvanzamento = statoAvanzamento;
+	}
+
+	//Costruttore per inserimento dati nel DB;
+	public Attivita(String descrizione, LocalDate scadenza) {
+		this.descrizione = descrizione;
+		this.scadenza = scadenza;
 	}
 
 	
@@ -23,13 +31,9 @@ public class Attivita {
 		return idAttivita;
 	}
 
-
-
 	public void setIdAttivita(int idAttivita) {
 		this.idAttivita = idAttivita;
 	}
-
-
 
 	public String getDescrizione() {
 		return descrizione;

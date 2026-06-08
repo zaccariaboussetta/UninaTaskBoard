@@ -9,16 +9,31 @@ public class AttivitaDocumentazione extends Attivita{
 	private String linkRisorsa;
 	private Progetto progetto;
 	
-	public AttivitaDocumentazione(String descrizione, LocalDate dataCreazione, LocalDate scadenza,
+	
+	//Costruttore per reperimento dati dal DB;
+	public AttivitaDocumentazione(int idAttivita, String descrizione, LocalDate dataCreazione, LocalDate scadenza,
 			String statoAvanzamento, String titoloDocu, String formato, String sezione, String linkRisorsa,
 			Progetto progetto) {
-		super(descrizione, dataCreazione, scadenza, statoAvanzamento);
+		super(idAttivita, descrizione, dataCreazione, scadenza, statoAvanzamento);
 		this.titoloDocu = titoloDocu;
 		this.formato = formato;
 		this.sezione = sezione;
 		this.linkRisorsa = linkRisorsa;
 		this.progetto = progetto;
 	}
+
+	//Costruttore per inserimento dati nel DB;
+	public AttivitaDocumentazione(String descrizione, LocalDate scadenza, String titoloDocu, String formato,
+			String sezione, String linkRisorsa, Progetto progetto) {
+		super(descrizione, scadenza);
+		this.titoloDocu = titoloDocu;
+		this.formato = formato;
+		this.sezione = sezione;
+		this.linkRisorsa = linkRisorsa;
+		this.progetto = progetto;
+	}
+
+
 
 	public String getTitoloDocu() {
 		return titoloDocu;

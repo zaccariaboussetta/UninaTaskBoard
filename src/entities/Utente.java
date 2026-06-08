@@ -7,9 +7,8 @@ public class Utente {
 	private String emailIstituzionale;
 	private String password;
 
-	
+	//Costruttore per inserimento e reperimento dati dal DB;
 	public Utente(String nome, String cognome, String matricola, String emailIstituzionale, String password) {
-		super();
 		this.nome = nome;
 		this.cognome = cognome;
 		this.matricola = matricola;

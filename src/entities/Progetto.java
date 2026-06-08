@@ -8,18 +8,28 @@ public class Progetto {
 	private LocalDate dataCreazione;
 	private LocalDate dataConsegna;
 	private boolean isProgettoGruppo;
-	private Utente userAdmin;
+	private Utente userCreator;
 	
-	
-	public Progetto(String nome, String descrizione, LocalDate dataCreazione, LocalDate dataConsegna,
-			boolean isProgettoGruppo, Utente userAdmin) {
-		super();
+	//Costruttore per riperimento dati dal DB;
+	public Progetto(int idProgetto,String nome, String descrizione, LocalDate dataCreazione, LocalDate dataConsegna,
+			boolean isProgettoGruppo, Utente userCreator) {
+		this.idProgetto = idProgetto;
 		this.nome = nome;
 		this.descrizione = descrizione;
-		this.dataCreazione = dataCreazione; //FIXME: Ricorda che il DB inserirà autoamticamente la data di crazione con CURRENT_DATE;
+		this.dataCreazione = dataCreazione; 
 		this.dataConsegna = dataConsegna;
 		this.isProgettoGruppo = isProgettoGruppo;
-		this.userAdmin = userAdmin;
+		this.userCreator = userCreator;
+	}
+	
+	//Costruttore per inserimento dati nel DB;
+	public Progetto(String nome, String descrizione, LocalDate dataConsegna,
+			boolean isProgettoGruppo, Utente userCreator) {
+		this.nome = nome;
+		this.descrizione = descrizione;
+		this.dataConsegna = dataConsegna;
+		this.isProgettoGruppo = isProgettoGruppo;
+		this.userCreator = userCreator;
 	}
 	
 	
@@ -60,9 +70,9 @@ public class Progetto {
 		this.isProgettoGruppo = isProgettoGruppo;
 	}
 	public Utente getUserAdmin() {
-		return userAdmin;
+		return userCreator;
 	}
 	public void setUserAdmin(Utente userAdmin) {
-		this.userAdmin = userAdmin;
+		this.userCreator = userAdmin;
 	}
 }

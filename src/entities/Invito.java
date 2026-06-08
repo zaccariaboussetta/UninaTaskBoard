@@ -1,23 +1,23 @@
 package entities;
 
 public class Invito {
-	private Utente utenteADmin;
+	private Utente utenteAdmin;
 	private Utente utenteInvitato;
 	private Progetto progetto;
 	
-	public Invito(Utente utenteADmin, Utente utenteInvitato, Progetto progetto) {
+	public Invito(Utente utenteAdmin, Utente utenteInvitato, Progetto progetto) {
 		super();
-		this.utenteADmin = utenteADmin;
+		this.utenteAdmin = utenteAdmin;
 		this.utenteInvitato = utenteInvitato;
 		this.progetto = progetto;
 	}
 
 	public Utente getUtenteADmin() {
-		return utenteADmin;
+		return utenteAdmin;
 	}
 
-	public void setUtenteADmin(Utente utenteADmin) {
-		this.utenteADmin = utenteADmin;
+	public void setUtenteADmin(Utente utenteAdmin) {
+		this.utenteAdmin = utenteAdmin;
 	}
 
 	public Utente getUtenteInvitato() {

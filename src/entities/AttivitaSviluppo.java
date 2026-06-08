@@ -7,10 +7,22 @@ public class AttivitaSviluppo extends Attivita{
 	private String linguaggioProgrammazione;
 	private String nomeBranch;
 	private Progetto progetto;
+
+	//Reperimento dati dal DB;
+	public AttivitaSviluppo(int idAttivita, String descrizione, LocalDate dataCreazione, LocalDate scadenza,
+			String statoAvanzamento, String tipologiaSviluppo, String linguaggioProgrammazione, String nomeBranch,
+			Progetto progetto) {
+		super(idAttivita, descrizione, dataCreazione, scadenza, statoAvanzamento);
+		this.tipologiaSviluppo = tipologiaSviluppo;
+		this.linguaggioProgrammazione = linguaggioProgrammazione;
+		this.nomeBranch = nomeBranch;
+		this.progetto = progetto;
+	}
 	
-	public AttivitaSviluppo(String descrizione, LocalDate dataCreazione, LocalDate scadenza, String statoAvanzamento,
-			String tipologiaSviluppo, String linguaggioProgrammazione, String nomeBranch, Progetto progetto) {
-		super(descrizione, dataCreazione, scadenza, statoAvanzamento);
+	//Inserimento dati nel DB; 
+	public AttivitaSviluppo(String descrizione, LocalDate scadenza, String tipologiaSviluppo,
+			String linguaggioProgrammazione, String nomeBranch, Progetto progetto) {
+		super(descrizione, scadenza);
 		this.tipologiaSviluppo = tipologiaSviluppo;
 		this.linguaggioProgrammazione = linguaggioProgrammazione;
 		this.nomeBranch = nomeBranch;

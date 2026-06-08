@@ -9,11 +9,20 @@ public class Membro {
 	private Progetto progetto;
 	private Utente utente;
 	
-	public Membro(String ruolo, LocalDate dataAdesione, String statoPartecipazione, Progetto progetto, Utente utente) {
-		super();
+	//Costruttore per reperimento dati dal DB;
+	public Membro(String ruolo, LocalDate dataAdesione, String statoPartecipazione, float oreLavoro, Progetto progetto, Utente utente) {
 		this.ruolo = ruolo;
 		this.dataAdesione = dataAdesione;
 		this.statoPartecipazione = statoPartecipazione;
+		this.oreLavoro = oreLavoro;
+		this.progetto = progetto;
+		this.utente = utente;
+	}
+	
+	//Costruttore per inserimento dati nel DB;
+	public Membro(String ruolo, LocalDate dataAdesione, Progetto progetto, Utente utente) {
+		this.ruolo = ruolo;
+		this.statoPartecipazione = "Attivo";
 		this.progetto = progetto;
 		this.utente = utente;
 	}
