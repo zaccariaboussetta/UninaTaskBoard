@@ -33,11 +33,11 @@ public class WindowApp extends JFrame{
 		LoginPanel loginPanel = new LoginPanel(this);
 		allPanels.add(loginPanel, "LOGIN");
 		
-		CreateAccountPanel createAccountPanel = new CreateAccountPanel();
+		CreateAccountPanel createAccountPanel = new CreateAccountPanel(this);
 		allPanels.add(createAccountPanel, "CREATE");
 		
-		DashboardPanel dashboardPanel = new DashboardPanel();
-		allPanels.add(dashboardPanel,"DASHBOARD");
+		WelcomePanel dashboardPanel = new WelcomePanel(this);
+		allPanels.add(dashboardPanel,"WELCOME");
 	
 		
 		this.add(allPanels);

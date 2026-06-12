@@ -3,7 +3,6 @@ package gui;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.URL;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -17,32 +16,30 @@ public class LoginPanel extends JPanel implements ActionListener{
     private JLabel emailLabel;
     private JLabel passwordLabel;
     private JLabel logoUniLabel;
+    private JLabel titoloLabel;
 	
     public LoginPanel(WindowApp windowApp) {
         this.windowApplication = windowApp;
 		
         
-        this.setBackground(new Color(240, 240, 240)); 
+        this.setBackground(new Color(0xBDCAF2)); 
         this.setLayout(new GridBagLayout()); 
 		
         
         JPanel innerLoginPanel = new JPanel();
         innerLoginPanel.setBackground(Color.WHITE);
-        
-        innerLoginPanel.setPreferredSize(new Dimension(600, 500));
-        innerLoginPanel.setMinimumSize(new Dimension(450, 350));
-        innerLoginPanel.setMaximumSize(new Dimension(800, 700));
-        
-        innerLoginPanel.setBorder(new EmptyBorder(30, 40, 30, 40)); 
-        
+        innerLoginPanel.setPreferredSize(new Dimension(600, 800));
+        //innerLoginPanel.setBorder(new EmptyBorder(30, 40, 30, 40)); 
+        innerLoginPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1)); 
         innerLoginPanel.setLayout(new BoxLayout(innerLoginPanel, BoxLayout.Y_AXIS));
 		
         
-        logoUniLabel = new JLabel();
-        ImageIcon logoUniIcon = new ImageIcon("src/uniLogo.png");
-        Image scaledLogo = logoUniIcon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
-        logoUniLabel.setIcon(new ImageIcon (scaledLogo));
+        logoUniLabel = new LogoImageLabel();
         logoUniLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        titoloLabel = new JLabel("Welcome to Unina Task Board");
+        titoloLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
+        titoloLabel.setAlignmentX(CENTER_ALIGNMENT);
 		
         emailLabel = new JLabel("E-mail istituzionale");
         emailLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -58,13 +55,21 @@ public class LoginPanel extends JPanel implements ActionListener{
         
         loginButton = new StyledButton("Accedi");
         loginButton.addActionListener(this);
+        loginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         
-        createAccountButton = new StyledButton("Crea Account");
+		createAccountButton = new StyledButton("Crea Account");
         createAccountButton.addActionListener(this);
-		
-       
+        createAccountButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        JLabel orLabel = new JLabel("o");
+        orLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        innerLoginPanel.add(Box.createRigidArea(new Dimension(0, 50)));
         innerLoginPanel.add(logoUniLabel);
-        innerLoginPanel.add(Box.createRigidArea(new Dimension(0, 100))); 
+        innerLoginPanel.add(Box.createRigidArea(new Dimension(0, 50))); 
+        
+        innerLoginPanel.add(titoloLabel);
+        innerLoginPanel.add(Box.createRigidArea(new Dimension(0, 50)));
         
         innerLoginPanel.add(emailLabel);
         innerLoginPanel.add(Box.createRigidArea(new Dimension(0, 5)));
@@ -76,10 +81,12 @@ public class LoginPanel extends JPanel implements ActionListener{
         innerLoginPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         innerLoginPanel.add(passwordTextField);
         
-        innerLoginPanel.add(Box.createRigidArea(new Dimension(0, 25))); 
+        innerLoginPanel.add(Box.createRigidArea(new Dimension(0, 50))); 
         
         innerLoginPanel.add(loginButton);
         innerLoginPanel.add(Box.createRigidArea(new Dimension(0, 10))); 
+        innerLoginPanel.add(orLabel);
+        innerLoginPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         innerLoginPanel.add(createAccountButton);
 		
         
@@ -90,7 +97,7 @@ public class LoginPanel extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == loginButton) {
 			//TODO: Qui va chiamato il controller di autenticazione : se esiste un utente, restituisce true e passa alla dashboard
-			windowApplication.showPanel("DASHBOARD");
+			windowApplication.showPanel("WELCOME");
 		}
 		if(e.getSource() == createAccountButton) {
 			windowApplication.showPanel("CREATE");
