@@ -17,7 +17,8 @@ public class LoginPanel extends JPanel implements ActionListener{
     private JLabel passwordLabel;
     private JLabel logoUniLabel;
     private JLabel titoloLabel;
-	
+	private Image backgroundImage;
+    
     public LoginPanel(WindowApp windowApp) {
         this.windowApplication = windowApp;
 		
@@ -25,9 +26,10 @@ public class LoginPanel extends JPanel implements ActionListener{
         this.setBackground(new Color(0xBDCAF2)); 
         this.setLayout(new GridBagLayout()); 
 		
+        backgroundImage = new ImageIcon("src/background.jpg").getImage();
         
         JPanel innerLoginPanel = new JPanel();
-        innerLoginPanel.setBackground(Color.WHITE);
+        innerLoginPanel.setBackground(new Color(255, 255, 255));
         innerLoginPanel.setPreferredSize(new Dimension(600, 800));
         //innerLoginPanel.setBorder(new EmptyBorder(30, 40, 30, 40)); 
         innerLoginPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1)); 
@@ -103,5 +105,12 @@ public class LoginPanel extends JPanel implements ActionListener{
 			windowApplication.showPanel("CREATE");
 		}
 		
+	}
+	
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		
+		g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
 	}
 }

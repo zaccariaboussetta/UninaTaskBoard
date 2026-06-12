@@ -22,7 +22,7 @@ public class WindowApp extends JFrame{
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		this.setSize(WIDTH, LENGTH);
-		this.setMinimumSize(new Dimension(WIDTH * 3/4, LENGTH * 3/4));
+		this.setMinimumSize(new Dimension(WIDTH/2, LENGTH));
 		this.setResizable(true);
 		this.setLocationRelativeTo(null);
 		
