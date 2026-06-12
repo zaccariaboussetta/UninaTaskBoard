@@ -1,11 +1,13 @@
 package gui;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.URL;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-public class LoginPanel extends JPanel {
+public class LoginPanel extends JPanel implements ActionListener{
 	
     private WindowApp windowApplication;
     private JTextField emailTextField;
@@ -40,7 +42,6 @@ public class LoginPanel extends JPanel {
         ImageIcon logoUniIcon = new ImageIcon("src/uniLogo.png");
         Image scaledLogo = logoUniIcon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
         logoUniLabel.setIcon(new ImageIcon (scaledLogo));
-        
         logoUniLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
         emailLabel = new JLabel("E-mail istituzionale");
@@ -55,33 +56,11 @@ public class LoginPanel extends JPanel {
         passwordTextField = new JPasswordField(20);
         passwordTextField.setMaximumSize(new Dimension(250, 30));
         
-        loginButton = new JButton("Accedi");
-     
-        loginButton.setBackground(new Color(0, 122, 255)); 
-        loginButton.setForeground(Color.WHITE); 
-        loginButton.setFont(new Font("Arial", Font.BOLD, 14));
-
-        loginButton.setFocusPainted(false);  
-        loginButton.setBorderPainted(false); 
-        loginButton.setOpaque(true);         
+        loginButton = new StyledButton("Accedi");
+        loginButton.addActionListener(this);
         
-        loginButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-        loginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
-        createAccountButton = new JButton("Crea Account");
-        
-        createAccountButton.setBackground(new Color(0, 122, 255));
-        createAccountButton.setForeground(Color.WHITE);
-        createAccountButton.setFont(new Font("Arial", Font.BOLD, 14));
-        
-        createAccountButton.setFocusPainted(false);
-        createAccountButton.setBorderPainted(false);
-        createAccountButton.setOpaque(true);
-        
-        createAccountButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        
-        createAccountButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        createAccountButton = new StyledButton("Crea Account");
+        createAccountButton.addActionListener(this);
 		
        
         innerLoginPanel.add(logoUniLabel);
@@ -106,4 +85,16 @@ public class LoginPanel extends JPanel {
         
         this.add(innerLoginPanel);
     }
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == loginButton) {
+			//TODO: Qui va chiamato il controller di autenticazione : se esiste un utente, restituisce true e passa alla dashboard
+			windowApplication.showPanel("DASHBOARD");
+		}
+		if(e.getSource() == createAccountButton) {
+			windowApplication.showPanel("CREATE");
+		}
+		
+	}
 }

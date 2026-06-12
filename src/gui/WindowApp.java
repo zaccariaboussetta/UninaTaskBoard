@@ -32,6 +32,12 @@ public class WindowApp extends JFrame{
 		//Instances of all the possible panels in the applications
 		LoginPanel loginPanel = new LoginPanel(this);
 		allPanels.add(loginPanel, "LOGIN");
+		
+		CreateAccountPanel createAccountPanel = new CreateAccountPanel();
+		allPanels.add(createAccountPanel, "CREATE");
+		
+		DashboardPanel dashboardPanel = new DashboardPanel();
+		allPanels.add(dashboardPanel,"DASHBOARD");
 	
 		
 		this.add(allPanels);
