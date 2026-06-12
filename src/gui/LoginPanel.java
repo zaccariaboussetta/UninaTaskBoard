@@ -1,7 +1,6 @@
 package gui;
 
-import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.*;
 import javax.swing.*;
 
 public class LoginPanel extends JPanel{
@@ -13,12 +12,22 @@ public class LoginPanel extends JPanel{
 	private JTextField passwordTextField;
 	private JLabel emailLabel;
 	private JLabel passwordLabel;
+	private JLabel logoUniLabel;
 	
 	public LoginPanel(WindowApp windowApp) {
 		this.windowApplication = windowApp;
+		ImageIcon logoUni = new ImageIcon("src/logoUni.png");
 		
-		this.setBackground(Color.BLUE);
+		this.setBackground(Color.WHITE);
+		this.setLayout(new GridBagLayout());
 		
+		JPanel innerLoginPanel = new JPanel();
+		innerLoginPanel.setBackground(Color.black);
+		
+		
+		
+		logoUniLabel = new JLabel();
+		logoUniLabel.setIcon(logoUni);
 		emailLabel = new JLabel("e-mail istituzionale");
 		emailTextField = new JTextField();
 		passwordLabel = new JLabel("password");
@@ -26,11 +35,14 @@ public class LoginPanel extends JPanel{
 		loginButton = new JButton();
 		createAccountButton = new JButton();
 		
-		this.add(emailLabel);
-		this.add(emailTextField);
-		this.add(passwordLabel);
-		this.add(passwordTextField);
-		this.add(loginButton);
-		this.add(createAccountButton);
+		innerLoginPanel.add(logoUniLabel);
+		innerLoginPanel.add(emailLabel);
+		innerLoginPanel.add(emailTextField);
+		innerLoginPanel.add(passwordLabel);
+		innerLoginPanel.add(passwordTextField);
+		innerLoginPanel.add(loginButton);
+		innerLoginPanel.add(createAccountButton);
+		
+		this.add(innerLoginPanel);
 	}
 }
