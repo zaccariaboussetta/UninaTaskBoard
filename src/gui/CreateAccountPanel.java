@@ -28,6 +28,7 @@ public class CreateAccountPanel extends JPanel implements ActionListener {
     private JLabel cancellaLabel;
     private JButton cancellaButton;
     private JLabel logoUniLabel;
+    private Image backgroundImage;
 
     public CreateAccountPanel(WindowApp windowApp) {
         this.windowApplication = windowApp;
@@ -35,7 +36,7 @@ public class CreateAccountPanel extends JPanel implements ActionListener {
        
         this.setBackground(new Color(0xBDCAF2));
         this.setLayout(new GridBagLayout()); 
-
+        backgroundImage = new ImageIcon("src/background2.jpg").getImage();
         
         JPanel innerCreatePanel = new JPanel();
         innerCreatePanel.setBackground(Color.WHITE);
@@ -52,32 +53,32 @@ public class CreateAccountPanel extends JPanel implements ActionListener {
 
         nomeLabel = new JLabel("Nome");
         nomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        nomeTextField = new JTextField(20);
+        nomeTextField = new StyledTextField(20);
         nomeTextField.setMaximumSize(new Dimension(250, 30));
 
         cognomeLabel = new JLabel("Cognome");
         cognomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        cognomeTextField = new JTextField(20);
+        cognomeTextField = new StyledTextField(20);
         cognomeTextField.setMaximumSize(new Dimension(250, 30));
 
         emailLabel = new JLabel("E-mail istituzionale");
         emailLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        emailTextField = new JTextField(20);
+        emailTextField = new StyledTextField(20);
         emailTextField.setMaximumSize(new Dimension(250, 30));
 
         matricolaLabel = new JLabel("Matricola studente");
         matricolaLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        matricolaTextField = new JTextField(20);
+        matricolaTextField = new StyledTextField(20);
         matricolaTextField.setMaximumSize(new Dimension(250, 30));
 
         passwordLabel = new JLabel("Password");
         passwordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        passwordTextField = new JPasswordField(20);
+        passwordTextField = new StyledPasswordField(20);
         passwordTextField.setMaximumSize(new Dimension(250, 30));
 
         confermaPasswordLabel = new JLabel("Conferma Password");
         confermaPasswordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        confermaPasswordTextField = new JPasswordField(20);
+        confermaPasswordTextField = new StyledPasswordField(20);
         confermaPasswordTextField.setMaximumSize(new Dimension(250, 30));
 
         
@@ -148,5 +149,12 @@ public class CreateAccountPanel extends JPanel implements ActionListener {
 			windowApplication.showPanel("LOGIN");
 		}
 		
+	}
+	
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		
+		g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
 	}
 }
