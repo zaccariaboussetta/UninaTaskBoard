@@ -18,6 +18,7 @@ public class LoginPanel extends JPanel implements ActionListener{
     private JLabel logoUniLabel;
     private JLabel titoloLabel;
 	private Image backgroundImage;
+	private JTextArea descrizioneTextArea;
     
     public LoginPanel(WindowApp windowApp) {
         this.windowApplication = windowApp;
@@ -39,20 +40,35 @@ public class LoginPanel extends JPanel implements ActionListener{
         logoUniLabel = new LogoImageLabel();
         logoUniLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         
-        titoloLabel = new JLabel("Welcome to Unina Task Board");
-        titoloLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
+        titoloLabel = new JLabel("Benvenuta o benvenuto ad Unina Task Board.");
+        titoloLabel.setFont(new Font("Arial", Font.BOLD, 18));
         titoloLabel.setAlignmentX(CENTER_ALIGNMENT);
+        
+        descrizioneTextArea = new JTextArea(
+        		"Unina Task Board è l'applicativo nato da un'esigenza semplice: sopravvivere ai progetti di gruppo. "
+        				+ "Creato da studenti per studenti, ti permette di organizzare il lavoro, monitorare le scadenze e aggiungere "
+        				+ "collaboratori (aka i colleghi con cui dovrai dividere l'ansia e il codice). "
+        				+ "Include insight, gestione dei task e tutto quel jazz che ti aspetteresti "
+        				+ "dall'ennesimo clone di un software di management, ma fatto su misura per noi.");
+        descrizioneTextArea.setLineWrap(true);      
+        descrizioneTextArea.setWrapStyleWord(true);
+        descrizioneTextArea.setEditable(false);     
+        descrizioneTextArea.setOpaque(false);        
+        descrizioneTextArea.setFocusable(false);     
+        descrizioneTextArea.setFont(new Font("Arial", Font.PLAIN, 14));
+        descrizioneTextArea.setAlignmentX(Component.CENTER_ALIGNMENT);
+        descrizioneTextArea.setMaximumSize(new Dimension(450, 150));
 		
         emailLabel = new JLabel("E-mail istituzionale");
         emailLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         
-        emailTextField = new JTextField(20); 
+        emailTextField = new StyledTextField(20); 
         emailTextField.setMaximumSize(new Dimension(250, 30)); 
         
         passwordLabel = new JLabel("Password");
         passwordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         
-        passwordTextField = new JPasswordField(20);
+        passwordTextField = new StyledPasswordField(20);
         passwordTextField.setMaximumSize(new Dimension(250, 30));
         
         loginButton = new StyledButton("Accedi");
@@ -71,7 +87,10 @@ public class LoginPanel extends JPanel implements ActionListener{
         innerLoginPanel.add(Box.createRigidArea(new Dimension(0, 50))); 
         
         innerLoginPanel.add(titoloLabel);
-        innerLoginPanel.add(Box.createRigidArea(new Dimension(0, 50)));
+        innerLoginPanel.add(Box.createRigidArea(new Dimension(0, 25)));
+        
+        innerLoginPanel.add(descrizioneTextArea);
+        //innerLoginPanel.add(Box.createRigidArea(new Dimension(0,50)));
         
         innerLoginPanel.add(emailLabel);
         innerLoginPanel.add(Box.createRigidArea(new Dimension(0, 5)));
