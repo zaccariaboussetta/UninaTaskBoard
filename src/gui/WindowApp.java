@@ -20,6 +20,7 @@ public class WindowApp extends JFrame{
 	private final int LENGTH = 1080;
 	
 	private AuthController authController;
+	private RegistrazioneUtenteController registrazioneUtenteController;
 	
 	public WindowApp() {
 		this.icon = new ImageIcon("src/duck.png");
@@ -42,7 +43,7 @@ public class WindowApp extends JFrame{
 		LoginPanel loginPanel = new LoginPanel(this, authController);
 		allPanels.add(loginPanel, "LOGIN");
 		
-		CreateAccountPanel createAccountPanel = new CreateAccountPanel(this);
+		CreateAccountPanel createAccountPanel = new CreateAccountPanel(this, registrazioneUtenteController);
 		allPanels.add(createAccountPanel, "CREATE");
 		
 		WelcomePanel dashboardPanel = new WelcomePanel(this);
@@ -58,6 +59,7 @@ public class WindowApp extends JFrame{
 		
 		UtenteDAO utenteDAO = new UtenteDAOPostgres();
 		authController = new AuthController(utenteDAO);
+		registrazioneUtenteController = new RegistrazioneUtenteController(utenteDAO);
 		
 	}
 
