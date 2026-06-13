@@ -21,7 +21,7 @@ public class LoginPanel extends JPanel implements ActionListener{
     private JLabel titoloLabel;
 	private Image backgroundImage;
 	private JTextArea descrizioneTextArea;
-	private JLabel errorNullText;
+	private JLabel errorLabel;
 	private AuthController authController;
     
     public LoginPanel(WindowApp windowApp, AuthController auth) {
@@ -75,9 +75,8 @@ public class LoginPanel extends JPanel implements ActionListener{
         passwordTextField = new StyledPasswordField(20);
         passwordTextField.setMaximumSize(new Dimension(250, 30));
         
-        errorNullText = new JLabel("");
-        errorNullText.setForeground(Color.RED);
-        errorNullText.setAlignmentX(CENTER_ALIGNMENT);
+        errorLabel = new ErrorLabel();
+        errorLabel.setAlignmentX(CENTER_ALIGNMENT);
         
         loginButton = new StyledButton("Accedi");
         loginButton.addActionListener(this);
@@ -112,7 +111,7 @@ public class LoginPanel extends JPanel implements ActionListener{
         
         innerLoginPanel.add(Box.createRigidArea(new Dimension(0, 20))); 
         
-        innerLoginPanel.add(errorNullText);
+        innerLoginPanel.add(errorLabel);
         
         innerLoginPanel.add(Box.createRigidArea(new Dimension(0, 20))); 
         
@@ -129,32 +128,30 @@ public class LoginPanel extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == loginButton) {
-			//TODO: Qui va chiamato il controller di autenticazione : se esiste un utente, restituisce true e passa alla dashboard
-			
-			String email = emailTextField.getText();
-			
-			char[] passwordArray = passwordTextField.getPassword();
-			String password = String.valueOf(passwordArray);
-			
-			if(password.isEmpty() || email.isEmpty()) {
-				
-				errorNullText.setText("Riempire tutti i campi!");
-				
-			}
-			
-			else {
-				
-				if(authController.authenticationLogin(email, password)) {
-					windowApplication.showPanel("WELCOME");
-				}
-				else {
-					errorNullText.setText("E-mail o password errata.");
-				}
-				
-				
-			}
-			
-			
+			//TODO: Riabilitare questo pezzo di codice a progetto finito.
+			/*
+			 * String email = emailTextField.getText();
+			 * 
+			 * char[] passwordArray = passwordTextField.getPassword(); String password =
+			 * String.valueOf(passwordArray);
+			 * 
+			 * if(password.isEmpty() || email.isEmpty()) {
+			 * 
+			 * errorNullText.setText("Riempire tutti i campi!");
+			 * 
+			 * }
+			 * 
+			 * else {
+			 * 
+			 * if(authController.authenticationLogin(email, password)) {
+			 * windowApplication.showPanel("WELCOME"); } else {
+			 * errorNullText.setText("E-mail o password errata."); }
+			 * 
+			 * 
+			 * }
+			 * 
+			 */
+			windowApplication.showPanel("WELCOME");
 		}
 		if(e.getSource() == createAccountButton) {
 			windowApplication.showPanel("CREATE");
