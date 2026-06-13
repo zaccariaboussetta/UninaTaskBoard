@@ -20,7 +20,8 @@ public class RegistrazioneUtenteController {
 		if(!utenteDAO.insertUtente(newUtente)) {
 			throw new RegistrationException("Errore nella regitrazione.");
 		}
-			
+		
+		SessionController.getInstance()	.startSession(newUtente);
 	}
 	
 	public void verifyValidPassword(String password,String passwordDiConferma) throws PasswordException {

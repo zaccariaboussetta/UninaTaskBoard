@@ -14,10 +14,9 @@ public class AuthController {
 		
 		Utente utente = utenteDAO.getUtenteByEmail(email);
 		
-		
-		
 		if(utente != null && utente.getPassword().equals(password)) {
 			
+			SessionController.getInstance().startSession(utente);
 			return true;
 			
 		}
