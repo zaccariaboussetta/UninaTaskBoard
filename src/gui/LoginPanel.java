@@ -19,6 +19,7 @@ public class LoginPanel extends JPanel implements ActionListener{
     private JLabel titoloLabel;
 	private Image backgroundImage;
 	private JTextArea descrizioneTextArea;
+	private JLabel errorNullText;
     
     public LoginPanel(WindowApp windowApp) {
         this.windowApplication = windowApp;
@@ -71,6 +72,10 @@ public class LoginPanel extends JPanel implements ActionListener{
         passwordTextField = new StyledPasswordField(20);
         passwordTextField.setMaximumSize(new Dimension(250, 30));
         
+        errorNullText = new JLabel("");
+        errorNullText.setForeground(Color.RED);
+        errorNullText.setAlignmentX(CENTER_ALIGNMENT);
+        
         loginButton = new StyledButton("Accedi");
         loginButton.addActionListener(this);
         loginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -102,7 +107,11 @@ public class LoginPanel extends JPanel implements ActionListener{
         innerLoginPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         innerLoginPanel.add(passwordTextField);
         
-        innerLoginPanel.add(Box.createRigidArea(new Dimension(0, 50))); 
+        innerLoginPanel.add(Box.createRigidArea(new Dimension(0, 20))); 
+        
+        innerLoginPanel.add(errorNullText);
+        
+        innerLoginPanel.add(Box.createRigidArea(new Dimension(0, 20))); 
         
         innerLoginPanel.add(loginButton);
         innerLoginPanel.add(Box.createRigidArea(new Dimension(0, 10))); 
@@ -118,7 +127,25 @@ public class LoginPanel extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == loginButton) {
 			//TODO: Qui va chiamato il controller di autenticazione : se esiste un utente, restituisce true e passa alla dashboard
-			windowApplication.showPanel("WELCOME");
+			
+			String email = emailTextField.getText();
+			
+			char[] passwordArray = passwordTextField.getPassword();
+			String password = String.valueOf(passwordArray);
+			
+			if(password.isEmpty() || email.isEmpty()) {
+				
+				errorNullText.setText("Riempire tutti i campi!");
+				
+			}
+			
+			else {
+				
+				windowApplication.showPanel("WELCOME");
+				
+			}
+			
+			
 		}
 		if(e.getSource() == createAccountButton) {
 			windowApplication.showPanel("CREATE");

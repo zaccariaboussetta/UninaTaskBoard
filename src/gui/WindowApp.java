@@ -6,6 +6,11 @@ import java.awt.CardLayout;
 import javax.swing.*;
 import java.awt.Dimension;
 
+import dao.*;
+import dao.postgres.UtenteDAOPostgres;
+import controllers.*;
+import entities.*;
+
 public class WindowApp extends JFrame{
 	
 	private ImageIcon icon;
@@ -13,6 +18,8 @@ public class WindowApp extends JFrame{
 	private JPanel allPanels;
 	private final int WIDTH = 1920;
 	private final int LENGTH = 1080;
+	
+	private AuthController authController;
 	
 	public WindowApp() {
 		this.icon = new ImageIcon("src/duck.png");
@@ -28,6 +35,8 @@ public class WindowApp extends JFrame{
 		
 		this.cardLayout = new CardLayout();
 		this.allPanels = new JPanel(cardLayout);
+		
+		this.createControllers(); //Istanzia tutti i controllers e i dao necessari agli altri pannelli
 
 		//Instances of all the possible panels in the applications
 		LoginPanel loginPanel = new LoginPanel(this);
@@ -45,6 +54,13 @@ public class WindowApp extends JFrame{
 		this.setVisible(true);
 	}
 	
+	private void createControllers() {
+		
+		UtenteDAO utenteDAO = new UtenteDAOPostgres();
+		authController = new AuthController(utenteDAO);
+		
+	}
+
 	public void showPanel(String panelNameToShow) {
 		cardLayout.show(allPanels, panelNameToShow);
 	}
