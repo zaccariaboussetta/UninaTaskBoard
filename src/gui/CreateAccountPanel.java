@@ -7,6 +7,12 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+import controllers.RegistrazioneUtenteController;
+import exceptions.EmailException;
+import exceptions.MatricolaException;
+import exceptions.PasswordException;
+import exceptions.RegistrationException;
+
 public class CreateAccountPanel extends JPanel implements ActionListener {
 
     private WindowApp windowApplication;
@@ -29,10 +35,12 @@ public class CreateAccountPanel extends JPanel implements ActionListener {
     private JButton cancellaButton;
     private JLabel logoUniLabel;
     private Image backgroundImage;
+    private JLabel errorLabel;
+    private RegistrazioneUtenteController regUtenteController;
 
-    public CreateAccountPanel(WindowApp windowApp) {
+    public CreateAccountPanel(WindowApp windowApp, RegistrazioneUtenteController registrazioneUtenteControl) {
         this.windowApplication = windowApp;
-
+        this.regUtenteController = registrazioneUtenteControl;
        
         this.setBackground(new Color(0xBDCAF2));
         this.setLayout(new GridBagLayout()); 
@@ -80,7 +88,9 @@ public class CreateAccountPanel extends JPanel implements ActionListener {
         confermaPasswordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         confermaPasswordTextField = new StyledPasswordField(20);
         confermaPasswordTextField.setMaximumSize(new Dimension(250, 30));
-
+        
+        errorLabel = new ErrorLabel();
+        errorLabel.setAlignmentX(CENTER_ALIGNMENT);
         
         confermaButton = new StyledButton("Conferma");
         confermaButton.addActionListener(this);
@@ -131,7 +141,10 @@ public class CreateAccountPanel extends JPanel implements ActionListener {
         innerCreatePanel.add(confermaPasswordLabel);
         innerCreatePanel.add(Box.createRigidArea(new Dimension(0, 5)));
         innerCreatePanel.add(confermaPasswordTextField);
-        innerCreatePanel.add(Box.createRigidArea(new Dimension(0, 30))); 
+        innerCreatePanel.add(Box.createRigidArea(new Dimension(0, 10))); 
+        
+        innerCreatePanel.add(errorLabel);
+        innerCreatePanel.add(Box.createRigidArea(new Dimension(0,10)));
 
         innerCreatePanel.add(buttonsPanel);
 
@@ -143,6 +156,51 @@ public class CreateAccountPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == confermaButton) {
 			//TODO: Va chiamato il controller che verificherà che i campi siano corretti, creerà l'user  nel db e restituirà TRUE;
+			
+			String nome = nomeTextField.getText();
+			String cognome = cognomeTextField.getText();
+			String email = emailTextField.getText();
+			String matricola = matricolaTextField.getText();
+			char[] passwordArray = passwordTextField.getPassword();
+			String password = String.valueOf(passwordArray);
+			char[] passwordDiConfermaArray = confermaPasswordTextField.getPassword();
+			String passwordDiConferma = String.valueOf(passwordDiConfermaArray);
+			
+			
+			if(
+				nome == null || 
+				cognome == null|| 
+				email == null|| 
+				matricola == null|| 
+				password == null || 
+				passwordDiConferma == null) 
+			{
+				
+				errorLabel.setText("Compilare tutti i campi.");
+				
+			}
+			else {
+				try {
+					regUtenteController.verifyValidPassword(password, passwordDiConferma);
+					regUtenteController.verifyValidEMail(email);
+					regUtenteController.verifyValidMatricola(matricola);
+					regUtenteController.registraUtente(nome, cognome, email, matricola, password);
+				}
+				catch(PasswordException pex) {
+					errorLabel.setText(pex.getMessage());
+				}
+				catch(EmailException eex) {
+					errorLabel.setText(eex.getMessage());
+				}
+				catch(MatricolaException mex) {
+					errorLabel.setText(mex.getMessage());
+				} catch (RegistrationException rex) {
+					errorLabel.setText(rex.getMessage());
+				}
+				
+			}
+			
+			
 			windowApplication.showPanel("WELCOME");
 		}
 		if(e.getSource() == cancellaButton) {
