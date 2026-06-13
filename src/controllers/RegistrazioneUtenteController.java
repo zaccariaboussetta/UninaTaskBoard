@@ -36,7 +36,7 @@ public class RegistrazioneUtenteController {
 	}
 	
 	public void verifyValidMatricola(String matricola) throws MatricolaException {
-		if(!matricola.startsWith("N8600")) {
+		if(!matricola.startsWith("N8600") || matricola.length()!= 9) {
 			throw new MatricolaException("Matricola non conforme.");
 		}
 	}
