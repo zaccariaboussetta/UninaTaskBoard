@@ -8,7 +8,32 @@ public class UtenteDAOPostgres implements UtenteDAO{
 
 	@Override
 	public boolean insertUtente(Utente newUtente) {
-		// TODO Auto-generated method stub
+
+		Connection connectionToDatabase = DatabaseConnection.getInstance();
+		
+		String query = "INSERT INTO utente (matricola, nome, cognome, email_istituzionale, password) VALUES (?, ?, ?, ?, ?)";
+		
+		try {
+			PreparedStatement pstmt = connectionToDatabase.prepareStatement(query);
+			
+			pstmt.setString(1, newUtente.getMatricola());
+			pstmt.setString(2, newUtente.getNome());
+			pstmt.setString(3, newUtente.getCognome());
+			pstmt.setString(4, newUtente.getEmailIstituzionale());
+			pstmt.setString(5, newUtente.getPassword());
+			
+			int numeroRigheInserite = pstmt.executeUpdate();
+			
+			if(numeroRigheInserite > 0) {
+				return true;
+			}
+			
+			
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		
 		return false;
 	}
 
