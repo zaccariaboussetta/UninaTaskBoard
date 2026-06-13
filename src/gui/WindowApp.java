@@ -39,7 +39,7 @@ public class WindowApp extends JFrame{
 		this.createControllers(); //Istanzia tutti i controllers e i dao necessari agli altri pannelli
 
 		//Instances of all the possible panels in the applications
-		LoginPanel loginPanel = new LoginPanel(this);
+		LoginPanel loginPanel = new LoginPanel(this, authController);
 		allPanels.add(loginPanel, "LOGIN");
 		
 		CreateAccountPanel createAccountPanel = new CreateAccountPanel(this);

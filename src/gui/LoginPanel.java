@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+import controllers.AuthController;
+
 public class LoginPanel extends JPanel implements ActionListener{
 	
     private WindowApp windowApplication;
@@ -20,10 +22,11 @@ public class LoginPanel extends JPanel implements ActionListener{
 	private Image backgroundImage;
 	private JTextArea descrizioneTextArea;
 	private JLabel errorNullText;
+	private AuthController authController;
     
-    public LoginPanel(WindowApp windowApp) {
+    public LoginPanel(WindowApp windowApp, AuthController auth) {
         this.windowApplication = windowApp;
-		
+		this.authController = auth;
         
         this.setBackground(new Color(0xBDCAF2)); 
         this.setLayout(new GridBagLayout()); 
@@ -141,7 +144,13 @@ public class LoginPanel extends JPanel implements ActionListener{
 			
 			else {
 				
-				windowApplication.showPanel("WELCOME");
+				if(authController.authenticationLogin(email, password)) {
+					windowApplication.showPanel("WELCOME");
+				}
+				else {
+					errorNullText.setText("E-mail o password errata.");
+				}
+				
 				
 			}
 			
