@@ -36,6 +36,7 @@ public class LoginPanel extends JPanel implements ActionListener{
         JPanel innerLoginPanel = new JPanel();
         innerLoginPanel.setBackground(new Color(255, 255, 255));
         innerLoginPanel.setPreferredSize(new Dimension(600, 800));
+        innerLoginPanel.setMinimumSize(new Dimension(600, 800));
         //innerLoginPanel.setBorder(new EmptyBorder(30, 40, 30, 40)); 
         innerLoginPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1)); 
         innerLoginPanel.setLayout(new BoxLayout(innerLoginPanel, BoxLayout.Y_AXIS));

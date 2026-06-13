@@ -5,6 +5,7 @@ import java.awt.CardLayout;
 
 import javax.swing.*;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 
 import dao.*;
 import dao.postgres.UtenteDAOPostgres;
@@ -16,8 +17,8 @@ public class WindowApp extends JFrame{
 	private ImageIcon icon;
 	private CardLayout cardLayout;
 	private JPanel allPanels;
-	private final int WIDTH = 1920;
-	private final int LENGTH = 1080;
+	private final int WIDTH_SCREEN;
+	private final int HEIGHT_SCREEN;
 	
 	private AuthController authController;
 	private RegistrazioneUtenteController registrazioneUtenteController;
@@ -29,8 +30,12 @@ public class WindowApp extends JFrame{
 
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
-		this.setSize(WIDTH, LENGTH);
-		this.setMinimumSize(new Dimension(WIDTH/2, LENGTH));
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		this.WIDTH_SCREEN = screenSize.width;
+		this.HEIGHT_SCREEN = screenSize.height;
+		
+		this.setSize((int)(WIDTH_SCREEN * 0.50), (int)(HEIGHT_SCREEN * 0.70));
+		this.setMinimumSize(new Dimension((int)(WIDTH_SCREEN * 0.40), (int)(HEIGHT_SCREEN * 0.60)));
 		this.setResizable(true);
 		this.setLocationRelativeTo(null);
 		
