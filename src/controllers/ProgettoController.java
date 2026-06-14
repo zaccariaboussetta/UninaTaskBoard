@@ -2,14 +2,14 @@ package controllers;
 
 import java.util.ArrayList;
 
-import dao.postgres.ProgettoDAOPostgres;
+import dao.ProgettoDAO;
 import entities.Progetto;
 
 public class ProgettoController {
 	
-	private ProgettoDAOPostgres projectDAO;
+	private ProgettoDAO projectDAO;
 	
-	public ProgettoController(ProgettoDAOPostgres projectDAO) {
+	public ProgettoController(ProgettoDAO projectDAO) {
 		
 		this.projectDAO = projectDAO;
 		
@@ -17,7 +17,15 @@ public class ProgettoController {
 	
 	public ArrayList<Progetto> getProgettiUtente(){
 		
-		projectDAO.getProjectsByUtente(SessionController.getInstance().getUtenteLoggato());
+		ArrayList<Progetto> listProgetti = new ArrayList();
+		listProgetti = projectDAO.getProjectsByUtente(SessionController.getInstance().getUtenteLoggato());
+		
+		
+		if(!listProgetti.isEmpty()) {
+			
+			return listProgetti;
+			
+		}
 		
 		return null;
 	}
