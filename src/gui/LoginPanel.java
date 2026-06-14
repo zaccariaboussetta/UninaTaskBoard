@@ -129,32 +129,36 @@ public class LoginPanel extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == loginButton) {
-			//TODO: Riabilitare questo pezzo di codice a progetto finito.
-			/*
-			 * String email = emailTextField.getText();
-			 * 
-			 * char[] passwordArray = passwordTextField.getPassword(); String password =
-			 * String.valueOf(passwordArray);
-			 * 
-			 * if(password.isEmpty() || email.isEmpty()) {
-			 * 
-			 * errorNullText.setText("Riempire tutti i campi!");
-			 * 
-			 * }
-			 * 
-			 * else {
-			 * 
-			 * if(authController.authenticationLogin(email, password)) {
-			 * windowApplication.showPanel("WELCOME"); } else {
-			 * errorNullText.setText("E-mail o password errata."); }
-			 * 
-			 * 
-			 * }
-			 * 
-			 */
-			windowApplication.showPanel("WELCOME");
+			
+			errorLabel.setText("");
+		 	String email = emailTextField.getText();
+			  
+		 	char[] passwordArray = passwordTextField.getPassword(); String password =
+ 			String.valueOf(passwordArray);
+			  
+		 	if(password.isBlank() || email.isBlank()) {
+			  
+		 		errorLabel.setText("Riempire tutti i campi!");
+			  
+		  	}
+			  
+		 	else {
+			  
+	 		if(authController.authenticationLogin(email, password)) {
+	 			
+	 			windowApplication.showPanel("WELCOME"); 
+			
+	 		} 
+	 		else {
+				  
+	 			errorLabel.setText("E-mail o password errata."); }
+			  
+	  		}
+			  
 		}
+		
 		if(e.getSource() == createAccountButton) {
+			errorLabel.setText("");
 			windowApplication.showPanel("CREATE");
 		}
 		
