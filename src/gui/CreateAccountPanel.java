@@ -155,8 +155,7 @@ public class CreateAccountPanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == confermaButton) {
-			//TODO: Va chiamato il controller che verificherà che i campi siano corretti, creerà l'user  nel db e restituirà TRUE;
-			
+	
 			String nome = nomeTextField.getText();
 			String cognome = cognomeTextField.getText();
 			String email = emailTextField.getText();
@@ -168,12 +167,12 @@ public class CreateAccountPanel extends JPanel implements ActionListener {
 			
 			
 			if(
-				nome == null || 
-				cognome == null|| 
-				email == null|| 
-				matricola == null|| 
-				password == null || 
-				passwordDiConferma == null) 
+				nome.isBlank() || 
+			    cognome.isBlank() || 
+			    email.isBlank() || 
+			    matricola.isBlank() || 
+			    password.isBlank() || 
+			    passwordDiConferma.isBlank()) 
 			{
 				
 				errorLabel.setText("Compilare tutti i campi.");
@@ -195,7 +194,8 @@ public class CreateAccountPanel extends JPanel implements ActionListener {
 				}
 				catch(MatricolaException mex) {
 					errorLabel.setText(mex.getMessage());
-				} catch (RegistrationException rex) {
+				} 
+				catch (RegistrationException rex) {
 					errorLabel.setText(rex.getMessage());
 				}
 				
