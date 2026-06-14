@@ -146,6 +146,8 @@ public class LoginPanel extends JPanel implements ActionListener{
 			  
 	 		if(authController.authenticationLogin(email, password)) {
 	 			
+	 			WelcomePanel welcomePanel = new WelcomePanel(windowApplication);
+	 			windowApplication.addPanel(welcomePanel, "WELCOME");
 	 			windowApplication.showPanel("WELCOME"); 
 			
 	 		} 
