@@ -155,7 +155,7 @@ public class CreateAccountPanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == confermaButton) {
-	
+			errorLabel.setText("");
 			String nome = nomeTextField.getText();
 			String cognome = cognomeTextField.getText();
 			String email = emailTextField.getText();
@@ -204,6 +204,7 @@ public class CreateAccountPanel extends JPanel implements ActionListener {
 			
 		}
 		if(e.getSource() == cancellaButton) {
+			errorLabel.setText("");
 			windowApplication.showPanel("LOGIN");
 		}
 		
