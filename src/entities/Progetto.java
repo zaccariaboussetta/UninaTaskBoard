@@ -13,6 +13,7 @@ public class Progetto {
 	//Costruttore per riperimento dati dal DB;
 	public Progetto(int idProgetto,String nome, String descrizione, LocalDate dataCreazione, LocalDate dataConsegna,
 			boolean isProgettoGruppo, Utente userCreator) {
+		
 		this.idProgetto = idProgetto;
 		this.nome = nome;
 		this.descrizione = descrizione;
@@ -20,16 +21,28 @@ public class Progetto {
 		this.dataConsegna = dataConsegna;
 		this.isProgettoGruppo = isProgettoGruppo;
 		this.userCreator = userCreator;
+		
+	}
+	
+	public Progetto(String nome, String descrizione, LocalDate dataCreazione, LocalDate dataConsegna) {
+		
+		this.nome = nome;
+		this.descrizione = descrizione;
+		this.dataCreazione = dataCreazione; 
+		this.dataConsegna = dataConsegna;
+		
 	}
 	
 	//Costruttore per inserimento dati nel DB;
 	public Progetto(String nome, String descrizione, LocalDate dataConsegna,
 			boolean isProgettoGruppo, Utente userCreator) {
+		
 		this.nome = nome;
 		this.descrizione = descrizione;
 		this.dataConsegna = dataConsegna;
 		this.isProgettoGruppo = isProgettoGruppo;
 		this.userCreator = userCreator;
+		
 	}
 	
 	
