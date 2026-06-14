@@ -17,7 +17,6 @@ import javax.swing.border.EmptyBorder;
 
 import controllers.SessionController;
 import entities.Utente;
-//TODO: Settare action listener per i bottoni
 
 public class WelcomePanel extends JPanel implements ActionListener{
 	
@@ -37,8 +36,9 @@ public class WelcomePanel extends JPanel implements ActionListener{
 		innerWelcomePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 		innerWelcomePanel.setLayout(new BoxLayout(innerWelcomePanel, BoxLayout.Y_AXIS));
 		
+		String nomeUtente = SessionController.getInstance().getUtenteLoggato().getNome(); 
 		
-		JLabel welcomeLabel = new JLabel("Welcome to Unina Task Board !");
+		JLabel welcomeLabel = new JLabel("Welcome to Unina Task Board " + nomeUtente);
 		welcomeLabel.setFont(new Font("SansSerif", Font.BOLD, 24));
 		welcomeLabel.setAlignmentX(CENTER_ALIGNMENT);
 		
