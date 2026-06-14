@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -13,9 +15,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import controllers.SessionController;
+import entities.Utente;
 //TODO: Settare action listener per i bottoni
 
-public class WelcomePanel extends JPanel{
+public class WelcomePanel extends JPanel implements ActionListener{
 	
 	private WindowApp windowApplication;
 	private JButton showButton;
@@ -33,8 +37,8 @@ public class WelcomePanel extends JPanel{
 		innerWelcomePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 		innerWelcomePanel.setLayout(new BoxLayout(innerWelcomePanel, BoxLayout.Y_AXIS));
 		
-		//TODO: Modificare questa label, è usata come prototipo
-		JLabel welcomeLabel = new JLabel("Welcome to Unina Task Board, Zack !");
+		
+		JLabel welcomeLabel = new JLabel("Welcome to Unina Task Board !");
 		welcomeLabel.setFont(new Font("SansSerif", Font.BOLD, 24));
 		welcomeLabel.setAlignmentX(CENTER_ALIGNMENT);
 		
@@ -58,5 +62,17 @@ public class WelcomePanel extends JPanel{
 		innerWelcomePanel.add(buttonsPanel);
 		
 		this.add(innerWelcomePanel);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == showButton) {
+			
+		}
+		
+		if(e.getSource() == createProjectButton) {
+			
+		}
+		
 	}
 }
