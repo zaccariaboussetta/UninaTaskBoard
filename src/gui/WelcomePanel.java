@@ -32,7 +32,7 @@ public class WelcomePanel extends JPanel implements ActionListener{
 	private WindowApp windowApplication;
 	private JButton openButton;
 	private JButton createButton;
-	DefaultTableModel modelloTabellaProgetti;
+	private DefaultTableModel modelloTabellaProgetti;
 	
 	public WelcomePanel(WindowApp windowApp) {
 		this.windowApplication = windowApp;
