@@ -50,9 +50,6 @@ public class WindowApp extends JFrame{
 		
 		CreateAccountPanel createAccountPanel = new CreateAccountPanel(this, registrazioneUtenteController);
 		allPanels.add(createAccountPanel, "CREATE");
-		
-		WelcomePanel dashboardPanel = new WelcomePanel(this);
-		allPanels.add(dashboardPanel,"WELCOME");
 	
 		
 		this.add(allPanels);
@@ -69,7 +66,16 @@ public class WindowApp extends JFrame{
 	}
 
 	public void showPanel(String panelNameToShow) {
+		
 		cardLayout.show(allPanels, panelNameToShow);
+		
+	}
+	
+	public void addPanel(JPanel newPanel, String nomePanel) {
+		
+		allPanels.add(newPanel, nomePanel);
+		this.add(allPanels);
+		
 	}
 	
 }
