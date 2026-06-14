@@ -184,7 +184,9 @@ public class CreateAccountPanel extends JPanel implements ActionListener {
 					regUtenteController.verifyValidEMail(email);
 					regUtenteController.verifyValidMatricola(matricola);
 					regUtenteController.registraUtente(nome, cognome, email, matricola, password);
-					windowApplication.showPanel("WELCOME");
+					WelcomePanel welcomePanel = new WelcomePanel(windowApplication);
+		 			windowApplication.addPanel(welcomePanel, "WELCOME");
+		 			windowApplication.showPanel("WELCOME");
 				}
 				catch(PasswordException pex) {
 					errorLabel.setText(pex.getMessage());
