@@ -1,6 +1,6 @@
 # UninaTaskBoard
 
-**UninaTaskBoard** è una piattaforma di collaborazione progettata per gli studenti universitari per organizzare e gestire attività all'interno di progetti (progetti di gruppo, preparazione esami, sviluppo software).
+**UninaTaskBoard** è una piattaforma di collaborazione progettata per gli studenti universitari per organizzare e gestire attività all'interno di progetti come: progetti di gruppo, preparazione esami, sviluppo software.
 
 ## 👥 Il Gruppo
 Il progetto è realizzato da un gruppo di due persone per l'insegnamento di **Programmazione Object-Oriented** (A.A. 2025/2026) presso l'**Università degli Studi di Napoli Federico II (UNINA)**.
