@@ -133,8 +133,8 @@ public class LoginPanel extends JPanel implements ActionListener{
 			errorLabel.setText("");
 		 	String email = emailTextField.getText();
 			  
-		 	char[] passwordArray = passwordTextField.getPassword(); String password =
- 			String.valueOf(passwordArray);
+		 	char[] passwordArray = passwordTextField.getPassword();
+		 	String password = String.valueOf(passwordArray);
 			  
 		 	if(password.isBlank() || email.isBlank()) {
 			  
@@ -143,8 +143,8 @@ public class LoginPanel extends JPanel implements ActionListener{
 		  	}
 			  
 		 	else {
-			  
-	 		if(authController.authenticationLogin(email, password)) {
+			 
+	 		if(authController.authenticationLogin("z.boussetta@studenti.unina.it", "helloworld")) { //TODO: Cambiare parametri dopo il testing.
 	 			
 	 			WelcomePanel welcomePanel = new WelcomePanel(windowApplication);
 	 			windowApplication.addPanel(welcomePanel, "WELCOME");

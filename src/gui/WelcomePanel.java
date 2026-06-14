@@ -12,6 +12,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -66,7 +67,10 @@ public class WelcomePanel extends JPanel implements ActionListener{
 		
 		
 		openButton = new StyledButton("Apri");
+		openButton.addActionListener(this);
 		createButton = new StyledButton("Crea");;
+		createButton.addActionListener(this);
+		
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
 		buttonsPanel.add(openButton);
@@ -93,6 +97,7 @@ public class WelcomePanel extends JPanel implements ActionListener{
 		
 		if(e.getSource() == createButton) {
 			
+			JFrame createProjectFrame = new CreateProjectFrame();
 		}
 		
 	}
@@ -102,18 +107,23 @@ public class WelcomePanel extends JPanel implements ActionListener{
 		ProgettoDAO progettoDAO = new ProgettoDAOPostgres();
 		ProgettoController progettoController = new ProgettoController(progettoDAO);
 		
-		ArrayList<Progetto> listProgetto = progettoController.getProgettiUtente();
-		
-		for(Progetto prog : listProgetto) {
+		try {
+			ArrayList<Progetto> listProgetto = progettoController.getProgettiUtente();
 			
-			String[] row = {
-					prog.getNome(),
-					prog.getDescrizione(),
-					prog.getDataCreazione().toString(),
-					prog.getDataConsegna().toString()
-			};
-			
-			modelloTabellaProgetti.addRow(row);
+			for(Progetto prog : listProgetto) {
+				
+				String[] row = {
+						prog.getNome(),
+						prog.getDescrizione(),
+						prog.getDataCreazione().toString(),
+						prog.getDataConsegna().toString()
+				};
+				
+				modelloTabellaProgetti.addRow(row);
+			}
+		} catch (Exception e) {
+			//TODO: Handle this exception.
+			e.printStackTrace();
 		}
 		
 	}
