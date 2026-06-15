@@ -99,7 +99,7 @@ public void actionPerformed(ActionEvent e) {
 				
 			}
 			else {
-				//TODO: Gestire mancata selezione.
+				//TODO:
 			}
 			
 		}
