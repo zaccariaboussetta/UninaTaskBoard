@@ -3,14 +3,21 @@ package gui;
 import java.awt.Color;
 import java.awt.Dimension;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class ProgettoPrepEsamePanel extends JPanel {
+	
+	private CreateProjectFrame parentFrame;
 
-	public ProgettoPrepEsamePanel(Dimension dimension) {
+	public ProgettoPrepEsamePanel(Dimension dimension, CreateProjectFrame parentFrame) {
 		
+		this.parentFrame = parentFrame;
 		this.setPreferredSize(dimension);
 		this.setBackground(Color.cyan);
 		
+		JLabel test = new JLabel("Progetto esame");
+		
+		this.add(test);
 	}
 }
