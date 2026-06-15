@@ -26,6 +26,7 @@ public class CreateProjectFrame extends JFrame implements ActionListener{
 	private JButton avantiButton;
 	private JButton indietroButton;
 	private JButton fineButton;
+	private JButton annullaButton;
 	private JCheckBox checkGenerico;
 	private JCheckBox checkSviluppo;
 	private JCheckBox checkEsame;
@@ -41,72 +42,39 @@ public class CreateProjectFrame extends JFrame implements ActionListener{
 		cardLayout = new CardLayout();
 		outerPanel = new JPanel(cardLayout);
 		
-		//Primo pannello - Scelta tipologia progetto.
-		JPanel cardPanel1 = new JPanel();
-		cardPanel1.setPreferredSize(frameDimension);
-		cardPanel1.setLayout(new BoxLayout(cardPanel1, BoxLayout.X_AXIS));
+		JPanel cardPanel1 = new SelezioneTipologiaProgettoPanel(frameDimension);
 		
-		JPanel leftPanel1 = new JPanel();
-		leftPanel1.setPreferredSize(new Dimension(350, HEIGHT));
-		leftPanel1.setBackground(new Color(0x2B1055));
+		JPanel cardPanel2 = new ProgettoGenericoPanel(frameDimension);
 		
-		JPanel rightPanel1 = new JPanel();
-		rightPanel1.setPreferredSize(new Dimension(450, HEIGHT));
-		rightPanel1.setBackground(new Color(0x4040E0));
-		rightPanel1.setLayout(new BoxLayout(rightPanel1, BoxLayout.Y_AXIS));
+		JPanel cardPanel3 = new ProgettoSviluppoPanel(frameDimension);
 		
-		JLabel titoloLabel = new JLabel("Selezionare tipologia di progetto");
-		titoloLabel.setAlignmentX(LEFT_ALIGNMENT);
+		JPanel cardPanel4 = new ProgettoPrepEsamePanel(frameDimension);
 		
-		checkGenerico = new JCheckBox("Progetto - generico");
-		checkGenerico.setAlignmentX(LEFT_ALIGNMENT);
-		
-		checkSviluppo = new JCheckBox("Progetto - sviluppo applicativo");
-		checkSviluppo.setAlignmentX(LEFT_ALIGNMENT);
-		
-		checkEsame = new JCheckBox("Progetto - preparazione esame");
-		checkEsame.setAlignmentX(LEFT_ALIGNMENT);
-		
-		
-		
-		rightPanel1.add(titoloLabel);
-		rightPanel1.add(checkGenerico);
-		rightPanel1.add(checkSviluppo);
-		rightPanel1.add(checkEsame);
-		
-		cardPanel1.add(leftPanel1);
-		cardPanel1.add(rightPanel1);
-	
-		//Pannello - Progetto Generico
-		JPanel cardPanel2 = new JPanel();
-		cardPanel2.setPreferredSize(frameDimension);
-		
-		
-		//Pannello - Progetto Sviluppo App
-		JPanel cardPanel3 = new JPanel();
-		cardPanel3.setPreferredSize(frameDimension);
-		
-		
-		//Pannello - Progetto Prep Esame
-		JPanel cardPanel4 = new JPanel();
-		cardPanel4.setPreferredSize(frameDimension);
-		
-		
-		//Pannello - Progetto Svilupp App e Prep Esame
-		JPanel cardPanel5 = new JPanel();
-		cardPanel5.setPreferredSize(frameDimension);
+		JPanel cardPanel5 = new ProgettoSviluppoPrepEsamePanel(frameDimension);
 		
 		
 		//Pannello dei bottoni
 		JPanel buttonsPanel = new JPanel();
-		avantiButton = new JButton("Avanti >");
-		indietroButton = new JButton("< Indietro");
-		fineButton = new JButton("Fine");
 		
-
-		buttonsPanel.add(fineButton);
+		avantiButton = new JButton("Avanti >");
+		avantiButton.addActionListener(this);
+		
+		indietroButton = new JButton("< Indietro");
+		indietroButton.setEnabled(false);
+		indietroButton.addActionListener(this);
+		
+		fineButton = new JButton("Fine");
+		fineButton.setEnabled(false);
+		fineButton.addActionListener(this);
+		
+		annullaButton = new JButton("Annulla");
+		annullaButton.addActionListener(this);
+	
+		buttonsPanel.add(annullaButton);
 		buttonsPanel.add(indietroButton);
 		buttonsPanel.add(avantiButton);
+		buttonsPanel.add(fineButton);
+		
 		
 		outerPanel.add(cardPanel1, "SELEZIONE");
 		outerPanel.add(cardPanel2, "GENERICO");
@@ -120,6 +88,7 @@ public class CreateProjectFrame extends JFrame implements ActionListener{
 		this.setVisible(true);
 	}
 
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
@@ -127,27 +96,58 @@ public class CreateProjectFrame extends JFrame implements ActionListener{
 			
 			if(checkSviluppo.isSelected() && checkEsame.isSelected()) {
 				
+				fineButton.setEnabled(true);
+				indietroButton.setEnabled(true);
+				avantiButton.setEnabled(false);
 				cardLayout.show(outerPanel,"SVILUPPO ESAME");
 				
 			}
 			else if(checkSviluppo.isSelected()) {
 				
+				fineButton.setEnabled(true);
+				indietroButton.setEnabled(true);
+				avantiButton.setEnabled(false);
 				cardLayout.show(outerPanel,"SVILUPPO");
 				
 			}
 			else if(checkEsame.isSelected()) {
 				
+				fineButton.setEnabled(true);
+				indietroButton.setEnabled(true);
+				avantiButton.setEnabled(false);
 				cardLayout.show(outerPanel,"ESAME");
 				
 			}
 			else if(checkGenerico.isSelected()) {
 				
+				fineButton.setEnabled(true);
+				indietroButton.setEnabled(true);
+				avantiButton.setEnabled(false);
 				cardLayout.show(outerPanel,"GENERICO");
 				
 			}
 			else {
 				//TODO: Gestire mancata selezione.
 			}
+			
+		}
+		
+		if(e.getSource() == indietroButton) {
+			
+			avantiButton.setEnabled(true);
+			indietroButton.setEnabled(false);
+			
+		}
+		
+		
+		if(e.getSource() == fineButton) {
+			
+			//TODO: Logica di reperimento dati dai textfield e chiamata al controller di progetto.
+			
+		}
+		if(e.getSource() == annullaButton) {
+			
+			this.dispose();
 			
 		}
 		

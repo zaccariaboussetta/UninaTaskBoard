@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -11,10 +12,13 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
@@ -32,7 +36,7 @@ public class WelcomePanel extends JPanel implements ActionListener{
 	private WindowApp windowApplication;
 	private JButton openButton;
 	private JButton createButton;
-	private DefaultTableModel modelloTabellaProgetti;
+	private JPanel progettiUtentePanel;
 	
 	public WelcomePanel(WindowApp windowApp) {
 		this.windowApplication = windowApp;
@@ -54,14 +58,14 @@ public class WelcomePanel extends JPanel implements ActionListener{
 		
 		
 		
-		String[] colonne = {"nome", "descrizione", "data creazione", "data consegna"};
-		modelloTabellaProgetti = new DefaultTableModel(colonne, 0);
-		JTable tabellaProgetti = new JTable(modelloTabellaProgetti);
+		progettiUtentePanel = new JPanel();
+		progettiUtentePanel.setBackground(Color.WHITE);
+		 
 		
 		this.loadProjects();
 
 		
-		JScrollPane scrollProjectsPanel = new JScrollPane(tabellaProgetti);
+		JScrollPane scrollProjectsPanel = new JScrollPane(progettiUtentePanel);
 		scrollProjectsPanel.setPreferredSize(new Dimension(500, 400));
 		scrollProjectsPanel.setBorder(BorderFactory.createEmptyBorder());
 		
@@ -104,23 +108,41 @@ public class WelcomePanel extends JPanel implements ActionListener{
 	
 	public void loadProjects() {
 		
-		ProgettoDAO progettoDAO = new ProgettoDAOPostgres();
-		ProgettoController progettoController = new ProgettoController(progettoDAO);
-		
 		try {
+			
+			ImageIcon folderStatica = new ImageIcon("src/folderStatica.png");
+			Image scaledFolderIcon = folderStatica.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+			folderStatica = new ImageIcon(scaledFolderIcon);
+			
+			ImageIcon folderHover = new ImageIcon("src/folderHover.png");
+			Image scaledFolderHHoverIcon = folderHover.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+			folderHover = new ImageIcon(scaledFolderHHoverIcon);
+			
+			ImageIcon folderSelezionata = new ImageIcon("src/folderSelezionata.png");
+			Image scaledFolderSelezioanaIcon = folderSelezionata.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+			folderSelezionata = new ImageIcon(scaledFolderSelezioanaIcon);
+			
+			ProgettoDAO progettoDAO = new ProgettoDAOPostgres();
+			ProgettoController progettoController = new ProgettoController(progettoDAO);
 			ArrayList<Progetto> listProgetto = progettoController.getProgettiUtente();
+			
+			ButtonGroup gruppoRadioButton = new ButtonGroup();
 			
 			for(Progetto prog : listProgetto) {
 				
-				String[] row = {
-						prog.getNome(),
-						prog.getDescrizione(),
-						prog.getDataCreazione().toString(),
-						prog.getDataConsegna().toString()
-				};
+				JRadioButton radioButton = new ProgettoRadioButton(prog.getNome(), folderStatica);
+				radioButton.setRolloverIcon(folderHover);
+				radioButton.setSelectedIcon(folderSelezionata);
 				
-				modelloTabellaProgetti.addRow(row);
+				radioButton.addActionListener(this);
+				
+				
+				gruppoRadioButton.add(radioButton);
+				
+				progettiUtentePanel.add(radioButton);
 			}
+	
+			
 		} catch (Exception e) {
 			//TODO: Handle this exception.
 			e.printStackTrace();

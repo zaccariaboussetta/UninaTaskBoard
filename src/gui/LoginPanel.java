@@ -144,7 +144,7 @@ public class LoginPanel extends JPanel implements ActionListener{
 			  
 		 	else {
 			 
-	 		if(authController.authenticationLogin("z.boussetta@studenti.unina.it", "helloworld")) { //TODO: Cambiare parametri dopo il testing.
+	 		if(authController.authenticationLogin("s.connor@studenti.unina.it", "Skynet1997!!")) { //TODO: Cambiare parametri dopo il testing.
 	 			
 	 			WelcomePanel welcomePanel = new WelcomePanel(windowApplication);
 	 			windowApplication.addPanel(welcomePanel, "WELCOME");
