@@ -16,20 +16,18 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class CreateProjectFrame extends JFrame implements ActionListener{
+public class CreateProjectFrame extends JFrame{
 	
 	private final int WEIGHT = 800;
 	private final int HEIGHT = 500;
 	private final Dimension frameDimension = new Dimension(WEIGHT, HEIGHT);
 	private CardLayout cardLayout;
 	private JPanel outerPanel;
-	private JButton avantiButton;
-	private JButton indietroButton;
-	private JButton fineButton;
-	private JButton annullaButton;
-	private JCheckBox checkGenerico;
-	private JCheckBox checkSviluppo;
-	private JCheckBox checkEsame;
+	private SelezioneTipologiaProgettoPanel cardPanel1;
+	private ProgettoGenericoPanel cardPanel2;
+	private ProgettoSviluppoPanel cardPanel3;
+	private ProgettoPrepEsamePanel cardPanel4;
+	private ProgettoSviluppoPrepEsamePanel cardPanel5;
 	
 	public CreateProjectFrame() {
 		
@@ -42,38 +40,15 @@ public class CreateProjectFrame extends JFrame implements ActionListener{
 		cardLayout = new CardLayout();
 		outerPanel = new JPanel(cardLayout);
 		
-		JPanel cardPanel1 = new SelezioneTipologiaProgettoPanel(frameDimension);
+		cardPanel1 = new SelezioneTipologiaProgettoPanel(frameDimension, this);
 		
-		JPanel cardPanel2 = new ProgettoGenericoPanel(frameDimension);
+		cardPanel2 = new ProgettoGenericoPanel(frameDimension,this);
 		
-		JPanel cardPanel3 = new ProgettoSviluppoPanel(frameDimension);
+		cardPanel3 = new ProgettoSviluppoPanel(frameDimension, this);
 		
-		JPanel cardPanel4 = new ProgettoPrepEsamePanel(frameDimension);
+		cardPanel4 = new ProgettoPrepEsamePanel(frameDimension, this);
 		
-		JPanel cardPanel5 = new ProgettoSviluppoPrepEsamePanel(frameDimension);
-		
-		
-		//Pannello dei bottoni
-		JPanel buttonsPanel = new JPanel();
-		
-		avantiButton = new JButton("Avanti >");
-		avantiButton.addActionListener(this);
-		
-		indietroButton = new JButton("< Indietro");
-		indietroButton.setEnabled(false);
-		indietroButton.addActionListener(this);
-		
-		fineButton = new JButton("Fine");
-		fineButton.setEnabled(false);
-		fineButton.addActionListener(this);
-		
-		annullaButton = new JButton("Annulla");
-		annullaButton.addActionListener(this);
-	
-		buttonsPanel.add(annullaButton);
-		buttonsPanel.add(indietroButton);
-		buttonsPanel.add(avantiButton);
-		buttonsPanel.add(fineButton);
+		cardPanel5 = new ProgettoSviluppoPrepEsamePanel(frameDimension, this);
 		
 		
 		outerPanel.add(cardPanel1, "SELEZIONE");
@@ -83,75 +58,17 @@ public class CreateProjectFrame extends JFrame implements ActionListener{
 		outerPanel.add(cardPanel5, "SVILUPPO ESAME");
 		
 		this.add(outerPanel, BorderLayout.CENTER);
-		this.add(buttonsPanel, BorderLayout.SOUTH);
 		cardLayout.show(outerPanel,"SELEZIONE");
 		this.setVisible(true);
 	}
 
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void showPanel(String panelNameToShow) {
 		
-		if(e.getSource() == avantiButton) {
-			
-			if(checkSviluppo.isSelected() && checkEsame.isSelected()) {
-				
-				fineButton.setEnabled(true);
-				indietroButton.setEnabled(true);
-				avantiButton.setEnabled(false);
-				cardLayout.show(outerPanel,"SVILUPPO ESAME");
-				
-			}
-			else if(checkSviluppo.isSelected()) {
-				
-				fineButton.setEnabled(true);
-				indietroButton.setEnabled(true);
-				avantiButton.setEnabled(false);
-				cardLayout.show(outerPanel,"SVILUPPO");
-				
-			}
-			else if(checkEsame.isSelected()) {
-				
-				fineButton.setEnabled(true);
-				indietroButton.setEnabled(true);
-				avantiButton.setEnabled(false);
-				cardLayout.show(outerPanel,"ESAME");
-				
-			}
-			else if(checkGenerico.isSelected()) {
-				
-				fineButton.setEnabled(true);
-				indietroButton.setEnabled(true);
-				avantiButton.setEnabled(false);
-				cardLayout.show(outerPanel,"GENERICO");
-				
-			}
-			else {
-				//TODO: Gestire mancata selezione.
-			}
-			
-		}
-		
-		if(e.getSource() == indietroButton) {
-			
-			avantiButton.setEnabled(true);
-			indietroButton.setEnabled(false);
-			
-		}
-		
-		
-		if(e.getSource() == fineButton) {
-			
-			//TODO: Logica di reperimento dati dai textfield e chiamata al controller di progetto.
-			
-		}
-		if(e.getSource() == annullaButton) {
-			
-			this.dispose();
-			
-		}
+		cardLayout.show(outerPanel, panelNameToShow);
 		
 	}
+	
+	
 	
 	
 }
