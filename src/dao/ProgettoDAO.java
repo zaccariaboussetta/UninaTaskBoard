@@ -9,6 +9,8 @@ public interface ProgettoDAO {
 	
 	public ArrayList<Progetto> getProjectsByUtente(Utente utente);
 	
-	public void insertProject(Progetto project);
-	
+	public boolean inserisiciNuovoProgettoGenerico(Progetto project);
+	public boolean inserisiciNuovoProgettoSviluppo(Progetto project);
+	public boolean inserisiciNuovoProgettoEsame(Progetto project);
+	public boolean inserisiciNuovoProgettoSviluppoEsame(Progetto project);
 }

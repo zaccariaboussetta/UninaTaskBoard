@@ -53,9 +53,53 @@ public class ProgettoDAOPostgres implements ProgettoDAO{
 	}
 
 	@Override
-	public void insertProject(Progetto project) {
-		// TODO Auto-generated method stub
+	public boolean inserisiciNuovoProgettoGenerico(Progetto project) {
 		
+		Connection connectionToDatabase = DatabaseConnection.getInstance();
+		
+		String query = "INSERT INTO progetto(nome, descrizione, data_consegna, is_progetto_gruppo, matricola)"
+				+ " VALUES (?, ?, ?, ?, ?)";
+		try {
+			PreparedStatement pstmt = connectionToDatabase.prepareStatement(query);
+			
+			pstmt.setString(1, project.getNome());
+			pstmt.setString(2, project.getDescrizione());
+			pstmt.setObject(3, project.getDataConsegna());
+			pstmt.setBoolean(4, project.isProgettoGruppo());
+			pstmt.setString(5, project.getUserAdmin().getMatricola());
+			
+			int numeroRigheInserite = pstmt.executeUpdate();
+			
+			if(numeroRigheInserite > 0) {
+				
+				return true;
+				
+			}
+			
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+
+	@Override
+	public boolean inserisiciNuovoProgettoSviluppo(Progetto project) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean inserisiciNuovoProgettoEsame(Progetto project) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean inserisiciNuovoProgettoSviluppoEsame(Progetto project) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
