@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -12,8 +13,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -22,24 +21,20 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
 
 import controllers.ProgettoController;
 import controllers.SessionController;
-import dao.ProgettoDAO;
-import dao.postgres.ProgettoDAOPostgres;
 import entities.Progetto;
-import entities.Utente;
 
-public class WelcomePanel extends JPanel implements ActionListener{
+public class WelcomePanel extends JPanel implements ActionListener {
 	
 	private WindowApp windowApplication;
 	private JButton openButton;
 	private JButton createButton;
 	private JPanel progettiUtentePanel;
+	private JTextArea descrizioneTextArea;
 	
 	public WelcomePanel(WindowApp windowApp) {
 		this.windowApplication = windowApp;
@@ -49,50 +44,70 @@ public class WelcomePanel extends JPanel implements ActionListener{
 		
 		JPanel innerWelcomePanel = new JPanel();
 		innerWelcomePanel.setBackground(Color.WHITE);
-		innerWelcomePanel.setPreferredSize(new Dimension(700, 500));
-		innerWelcomePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-		innerWelcomePanel.setLayout(new BoxLayout(innerWelcomePanel, BoxLayout.Y_AXIS));
+		innerWelcomePanel.setPreferredSize(new Dimension(850, 550));
+		
+		innerWelcomePanel.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createLineBorder(Color.BLACK, 1),
+				BorderFactory.createEmptyBorder(20, 20, 20, 20)
+		));
+		innerWelcomePanel.setLayout(new BorderLayout(20, 20));
 		
 		String nomeUtente = SessionController.getInstance().getUtenteLoggato().getNome(); 
 		
 		JLabel welcomeLabel = new JLabel("Welcome to Unina Task Board, " + nomeUtente + " !");
 		welcomeLabel.setFont(new Font("SansSerif", Font.BOLD, 24));
-		welcomeLabel.setAlignmentX(CENTER_ALIGNMENT);
+		welcomeLabel.setHorizontalAlignment(JLabel.CENTER);
 		
-		
+		JPanel centerPanel = new JPanel(new GridLayout(1, 2, 20, 0));
+		centerPanel.setBackground(Color.WHITE);
 		
 		progettiUtentePanel = new JPanel();
 		progettiUtentePanel.setBackground(Color.WHITE);
-		progettiUtentePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 		progettiUtentePanel.setLayout(new GridLayout(0, 1, 2, 2)); 
 		
-		this.loadProjects();
-
-		
 		JScrollPane scrollProjectsPanel = new JScrollPane(progettiUtentePanel);
-		scrollProjectsPanel.setPreferredSize(new Dimension(500, 400));
-		scrollProjectsPanel.setBorder(BorderFactory.createEmptyBorder());
+		scrollProjectsPanel.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1), "I tuoi progetti"
+		));
 		scrollProjectsPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
-		openButton = new StyledButton("Apri");
+		JPanel descriptionPanel = new JPanel(new BorderLayout());
+		descriptionPanel.setBackground(Color.WHITE);
+		descriptionPanel.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1), "Descrizione Progetto"
+		));
+		
+		descrizioneTextArea = new JTextArea();
+		descrizioneTextArea.setEditable(false);
+		descrizioneTextArea.setLineWrap(true);
+		descrizioneTextArea.setWrapStyleWord(true);
+		descrizioneTextArea.setFont(new Font("SansSerif", Font.PLAIN, 14));
+		descrizioneTextArea.setMargin(new java.awt.Insets(10, 10, 10, 10));
+		
+		JScrollPane scrollDescPanel = new JScrollPane(descrizioneTextArea);
+		scrollDescPanel.setBorder(BorderFactory.createEmptyBorder());
+		
+		descriptionPanel.add(scrollDescPanel, BorderLayout.CENTER);
+		
+		centerPanel.add(scrollProjectsPanel);
+		centerPanel.add(descriptionPanel);
+		
+		this.loadProjects();
+		
+		JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		buttonsPanel.setBackground(Color.WHITE);
+		
+		openButton = new JButton("Apri");
 		openButton.addActionListener(this);
-		createButton = new StyledButton("Crea");;
+		createButton = new JButton("Crea");
 		createButton.addActionListener(this);
 		
-		JPanel buttonsPanel = new JPanel();
-		buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
 		buttonsPanel.add(openButton);
-		buttonsPanel.add(Box.createRigidArea(new Dimension(15, 0)));
 		buttonsPanel.add(createButton);
 		
-		
-		innerWelcomePanel.add(Box.createRigidArea(new Dimension(0, 25)));
-		innerWelcomePanel.add(welcomeLabel);
-		innerWelcomePanel.add(Box.createRigidArea(new Dimension(0, 25)));
-		innerWelcomePanel.add(scrollProjectsPanel);
-		innerWelcomePanel.add(Box.createRigidArea(new Dimension(0, 10)));
-		innerWelcomePanel.add(buttonsPanel);
-		innerWelcomePanel.add(Box.createRigidArea(new Dimension(0, 10)));
+		innerWelcomePanel.add(welcomeLabel, BorderLayout.NORTH);
+		innerWelcomePanel.add(centerPanel, BorderLayout.CENTER);
+		innerWelcomePanel.add(buttonsPanel, BorderLayout.SOUTH);
 		
 		this.add(innerWelcomePanel);
 	}
@@ -104,16 +119,12 @@ public class WelcomePanel extends JPanel implements ActionListener{
 		}
 		
 		if(e.getSource() == createButton) {
-			
 			JFrame createProjectFrame = new CreateProjectFrame(this);
 		}
-		
 	}
 	
 	public void loadProjects() {
-		
 		try {
-			
 			ImageIcon folderStatica = new ImageIcon("src/folderStatica.png");
 			Image scaledFolderIcon = folderStatica.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
 			folderStatica = new ImageIcon(scaledFolderIcon);
@@ -132,6 +143,10 @@ public class WelcomePanel extends JPanel implements ActionListener{
 			ButtonGroup gruppoRadioButton = new ButtonGroup();
 			progettiUtentePanel.removeAll();
 			
+			if (descrizioneTextArea != null) {
+				descrizioneTextArea.setText("");
+			}
+			
 			for(Progetto prog : listProgetto) {
 				
 				JRadioButton radioButton = new ProgettoRadioButton(prog.getNome(), folderStatica);
@@ -140,9 +155,12 @@ public class WelcomePanel extends JPanel implements ActionListener{
 				
 				radioButton.addActionListener(this);
 				
+				radioButton.addActionListener(e -> {
+					String desc = prog.getDescrizione();
+					descrizioneTextArea.setText((desc != null && !desc.isBlank()) ? desc : "Nessuna descrizione disponibile per questo progetto.");
+				});
 				
 				gruppoRadioButton.add(radioButton);
-				
 				progettiUtentePanel.add(radioButton);
 			}
 			
@@ -150,9 +168,7 @@ public class WelcomePanel extends JPanel implements ActionListener{
 			progettiUtentePanel.repaint();
 			
 		} catch (Exception e) {
-			//TODO: Handle this exception.
 			e.printStackTrace();
 		}
-		
 	}
 }
