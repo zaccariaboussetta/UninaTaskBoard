@@ -21,7 +21,7 @@ import javax.swing.text.MaskFormatter;
 
 import controllers.ProgettoController;
 
-public class ProgettoPrepEsamePanel extends JPanel implements ActionListener{
+public class ProgettoSviluppoPrepEsamePanel extends JPanel implements ActionListener{
 	
 	private CreateProjectFrame parentFrame;
 	private JButton indietroButton;
@@ -38,7 +38,7 @@ public class ProgettoPrepEsamePanel extends JPanel implements ActionListener{
 	private JTextField docenteTextField;
 	private JFormattedTextField dataAppelloTextField;
 	
-	public ProgettoPrepEsamePanel(Dimension dimension, CreateProjectFrame parentFrame) {
+	public ProgettoSviluppoPrepEsamePanel(Dimension dimension, CreateProjectFrame parentFrame) {
 
 		this.parentFrame = parentFrame;
 		this.setPreferredSize(dimension);
