@@ -2,8 +2,10 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
@@ -60,7 +63,8 @@ public class WelcomePanel extends JPanel implements ActionListener{
 		
 		progettiUtentePanel = new JPanel();
 		progettiUtentePanel.setBackground(Color.WHITE);
-		 
+		progettiUtentePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+		progettiUtentePanel.setLayout(new GridLayout(0, 1, 2, 2)); 
 		
 		this.loadProjects();
 
@@ -68,7 +72,7 @@ public class WelcomePanel extends JPanel implements ActionListener{
 		JScrollPane scrollProjectsPanel = new JScrollPane(progettiUtentePanel);
 		scrollProjectsPanel.setPreferredSize(new Dimension(500, 400));
 		scrollProjectsPanel.setBorder(BorderFactory.createEmptyBorder());
-		
+		scrollProjectsPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		openButton = new StyledButton("Apri");
 		openButton.addActionListener(this);
@@ -101,7 +105,7 @@ public class WelcomePanel extends JPanel implements ActionListener{
 		
 		if(e.getSource() == createButton) {
 			
-			JFrame createProjectFrame = new CreateProjectFrame();
+			JFrame createProjectFrame = new CreateProjectFrame(this);
 		}
 		
 	}
@@ -122,11 +126,11 @@ public class WelcomePanel extends JPanel implements ActionListener{
 			Image scaledFolderSelezioanaIcon = folderSelezionata.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
 			folderSelezionata = new ImageIcon(scaledFolderSelezioanaIcon);
 			
-			ProgettoDAO progettoDAO = new ProgettoDAOPostgres();
-			ProgettoController progettoController = new ProgettoController(progettoDAO);
+			ProgettoController progettoController = new ProgettoController();
 			ArrayList<Progetto> listProgetto = progettoController.getProgettiUtente();
 			
 			ButtonGroup gruppoRadioButton = new ButtonGroup();
+			progettiUtentePanel.removeAll();
 			
 			for(Progetto prog : listProgetto) {
 				
@@ -141,7 +145,9 @@ public class WelcomePanel extends JPanel implements ActionListener{
 				
 				progettiUtentePanel.add(radioButton);
 			}
-	
+			
+			progettiUtentePanel.revalidate();
+			progettiUtentePanel.repaint();
 			
 		} catch (Exception e) {
 			//TODO: Handle this exception.

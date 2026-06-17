@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 
 public class CreateProjectFrame extends JFrame{
 	
+	private WelcomePanel wp;  
 	private final int WEIGHT = 800;
 	private final int HEIGHT = 500;
 	private final Dimension frameDimension = new Dimension(WEIGHT, HEIGHT);
@@ -29,8 +30,9 @@ public class CreateProjectFrame extends JFrame{
 	private ProgettoPrepEsamePanel cardPanel4;
 	private ProgettoSviluppoPrepEsamePanel cardPanel5;
 	
-	public CreateProjectFrame() {
+	public CreateProjectFrame(WelcomePanel wp) {
 		
+		this.wp = wp;
 		this.setTitle("Wizard - Creazione progetto - Unina Task Board");
 		this.setSize(WEIGHT, HEIGHT);
 		this.setResizable(false);
@@ -67,6 +69,13 @@ public class CreateProjectFrame extends JFrame{
 		cardLayout.show(outerPanel, panelNameToShow);
 		
 	}
+	
+	public void updateProjects() {
+		
+		wp.loadProjects();
+		
+	}
+	
 	
 	
 	

@@ -21,7 +21,6 @@ public class SelezioneTipologiaProgettoPanel extends JPanel implements ActionLis
 	
 	private CreateProjectFrame parentFrame;
 	private JButton avantiButton;
-	private JButton indietroButton;
 	private JButton annullaButton;
 	private JCheckBox checkSviluppo;
 	private JCheckBox checkGenerico;
@@ -90,7 +89,7 @@ public class SelezioneTipologiaProgettoPanel extends JPanel implements ActionLis
 	}
 
 	@Override
-public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {
 		
 		if(e.getSource() == avantiButton) {
 			
@@ -119,14 +118,6 @@ public void actionPerformed(ActionEvent e) {
 			}
 			
 		}
-		
-		if(e.getSource() == indietroButton) {
-			
-			avantiButton.setEnabled(true);
-			indietroButton.setEnabled(false);
-			
-		}
-		
 		
 		if(e.getSource() == annullaButton) {
 			
