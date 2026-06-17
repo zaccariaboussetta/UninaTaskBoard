@@ -198,7 +198,7 @@ public class ProgettoPrepEsamePanel extends JPanel implements ActionListener{
 		        LocalDate dataAppello = LocalDate.parse(dataAppelloTextField.getText(), dtf);
 		        
 		        ProgettoController progettoController = new ProgettoController();
-		        if(progettoController.aggiungiNuovoProgettoEsameString(nome, descrizione, dataConsegna, isProgettoGruppo, codiceEsame, nomeEsame, cfu, docente, dataAppello)) {
+		        if(progettoController.aggiungiNuovoProgettoEsame(nome, descrizione, dataConsegna, isProgettoGruppo, codiceEsame, nomeEsame, cfu, docente, dataAppello)) {
 		            
 		            parentFrame.updateProjects();
 		            parentFrame.dispose();
