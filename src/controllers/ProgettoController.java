@@ -48,18 +48,37 @@ public class ProgettoController {
 		Utente creatoreProgetto = SessionController.getInstance().getUtenteLoggato();
 		Progetto newProgetto = new Progetto(nome, descrizione, dataConsegna, isProgettoGruppo, creatoreProgetto);
 		
-		return progettoDAO.inserisiciNuovoProgettoGenerico(newProgetto);
+		return progettoDAO.inserisiciNuovoProgetto(newProgetto);
 		
 	}
 	
 	
-	public boolean aggiungiNuovoProgettoSviluppo() {
+	public boolean aggiungiNuovoProgettoSviluppo(String nome, String descrizione, LocalDate dataConsegna, boolean isProgettoGruppo, String repoURL, String techStack, String versione) throws Exception {
 		
-		return true;
+	    if(nome.isBlank() || descrizione.isBlank()) {
+	        throw new Exception("Campi vuoti: Nome e Descrizione.");
+	    }
+	    
+	    if(dataConsegna.isBefore(LocalDate.now())) {
+	        throw new Exception("Data di consegna non valida.");
+	    }
+	    
+	    String repoClean = repoURL.isBlank() ? null : repoURL.trim();
+	    String techClean = techStack.isBlank() ? null : techStack.trim();
+	    String versClean = versione.isBlank() ? null : versione.trim();
+	    
+	    Utente creatoreProgetto = SessionController.getInstance().getUtenteLoggato();
+	    
+	    SviluppoApplicativi newProgetto = new SviluppoApplicativi(
+	        nome, descrizione, dataConsegna, isProgettoGruppo, 
+	        creatoreProgetto, repoClean, techClean, versClean
+	    );
+	    
+	    return progettoDAO.inserisiciNuovoProgetto(newProgetto);
 	}
 
 	
-	public boolean aggiungiNuovoProgettoEsameString (String nome, String descrizione, LocalDate dataConsegna, boolean isProgettoGruppo, String codiceEsame, String nomeEsame, String cfu, String docente, LocalDate dataAppello) throws Exception {
+	public boolean aggiungiNuovoProgettoEsame (String nome, String descrizione, LocalDate dataConsegna, boolean isProgettoGruppo, String codiceEsame, String nomeEsame, String cfu, String docente, LocalDate dataAppello) throws Exception {
 
 		if(nome.isBlank() || descrizione.isBlank() || codiceEsame.isBlank() || docente.isBlank() || cfu.isBlank() || nomeEsame.isBlank()) {
 			throw new Exception("Compilare tutti i campi.");
@@ -77,34 +96,35 @@ public class ProgettoController {
 		Utente creatoreProgetto = SessionController.getInstance().getUtenteLoggato();
 		PreparazioneEsami newProgetto = new PreparazioneEsami(nome, descrizione, dataConsegna, isProgettoGruppo, creatoreProgetto, codiceEsame, nomeEsame, Integer.parseInt(cfu), docente, dataAppello);
 		
-		return progettoDAO.inserisiciNuovoProgettoEsame(newProgetto);
+		return progettoDAO.inserisiciNuovoProgetto(newProgetto);
 	}
 	
 	
-	public boolean aggiungiNuovoProgettoEsameSviluppo(String nome, String descrizione, LocalDate dataConsegna, boolean isProgettoGruppo, String repoURL, String techStack, String versione) throws Exception {
+	public boolean aggiungiNuovoProgettoEsameSviluppo(String nome, String descrizione, LocalDate dataConsegna, boolean isProgettoGruppo, String codiceEsame, String nomeEsame, String cfu, String docente, LocalDate dataAppello, String repoURL, String techStack, String versione) throws Exception {
 
-		// Validazione dei soli campi obbligatori del padre
-	    if(nome.isBlank() || descrizione.isBlank()) {
-	        throw new Exception("Campi vuoti: Nome e Descrizione.");
-	    }
-	    
-	    if(dataConsegna.isBefore(LocalDate.now())) {
-	        throw new Exception("Data di consegna non valida.");
-	    }
-	    
-	    // Trasformazione in null se i campi opzionali sono vuoti
-	    String repoClean = repoURL.isBlank() ? null : repoURL.trim();
-	    String techClean = techStack.isBlank() ? null : techStack.trim();
-	    String versClean = versione.isBlank() ? null : versione.trim();
-	    
-	    Utente creatoreProgetto = SessionController.getInstance().getUtenteLoggato();
-	    
-	    SviluppoApplicativi newProgetto = new SviluppoApplicativi(
-	        nome, descrizione, dataConsegna, isProgettoGruppo, 
-	        creatoreProgetto, repoClean, techClean, versClean
-	    );
-	    
-	    return progettoDAO.inserisiciNuovoProgettoSviluppo(newProgetto);
+		if(nome.isBlank() || descrizione.isBlank() || codiceEsame.isBlank() || docente.isBlank() || cfu.isBlank() || nomeEsame.isBlank()) {
+			throw new Exception("Compilare tutti i campi.");
+		}
+		
+		if(dataConsegna.isBefore(LocalDate.now())) {
+			throw new Exception("Data di consegna non valida.");
+		}
+		
+		if(dataAppello != null && dataAppello.isBefore(LocalDate.now())) {
+			throw new Exception("Data appello non valida.");
+		}
+		
+		String repoClean = repoURL.isBlank() ? null : repoURL.trim();
+		String techClean = techStack.isBlank() ? null : techStack.trim();
+		String versClean = versione.isBlank() ? null : versione.trim();
+		
+		Utente creatoreProgetto = SessionController.getInstance().getUtenteLoggato();
+		
+		PreparazioneEsami progettoEsame = new PreparazioneEsami(nome, descrizione, dataConsegna, isProgettoGruppo, creatoreProgetto, codiceEsame, nomeEsame, Integer.parseInt(cfu), docente, dataAppello);
+		
+		SviluppoApplicativi progettoSviluppo = new SviluppoApplicativi(nome, descrizione, dataConsegna, isProgettoGruppo, creatoreProgetto, repoClean, techClean, versClean);
+		
+		return progettoDAO.inserisiciNuovoProgetto(progettoEsame, progettoSviluppo);
 	}
 	
 	
