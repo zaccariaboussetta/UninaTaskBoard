@@ -56,7 +56,7 @@ public class ProgettoDAOPostgres implements ProgettoDAO{
 	}
 
 	@Override
-	public boolean inserisiciNuovoProgettoGenerico(Progetto project) {
+	public boolean inserisiciNuovoProgetto(Progetto project) {
 		
 		Connection connectionToDatabase = DatabaseConnection.getInstance();
 		
@@ -89,17 +89,15 @@ public class ProgettoDAOPostgres implements ProgettoDAO{
 
 	
 	@Override
-	public boolean inserisiciNuovoProgettoSviluppo(SviluppoApplicativi project) {
+	public boolean inserisiciNuovoProgetto(SviluppoApplicativi project) {
 	    
 	    Connection connectionToDatabase = DatabaseConnection.getInstance();
 	    
 	    String queryPadre = "INSERT INTO progetto(nome, descrizione, data_consegna, is_progetto_gruppo, matricola) VALUES (?, ?, ?, ?, ?)";
 	    
-	    // Supponendo che la tua tabella si chiami 'sviluppo_applicativi' con chiavi coerenti
 	    String queryFiglia = "INSERT INTO sviluppo_applicativi(repository_url, tech_stack, versione, id_progetto) VALUES (?, ?, ?, ?)";
 	    
 	    try {
-	        // 1. Avvio della Transazione atomica
 	        connectionToDatabase.setAutoCommit(false);
 	        
 	        try (PreparedStatement pstmtPadre = connectionToDatabase.prepareStatement(queryPadre, Statement.RETURN_GENERATED_KEYS)) {
@@ -119,7 +117,6 @@ public class ProgettoDAOPostgres implements ProgettoDAO{
 	                        
 	                        try (PreparedStatement pstmtFiglio = connectionToDatabase.prepareStatement(queryFiglia)) {
 	                            
-	                            // Se le stringhe sono null, il driver JDBC imposta automaticamente il valore NULL SQL
 	                            pstmtFiglio.setString(1, project.getRepositoryURL());
 	                            pstmtFiglio.setString(2, project.getTechStack());
 	                            pstmtFiglio.setString(3, project.getVersione());
@@ -132,12 +129,10 @@ public class ProgettoDAOPostgres implements ProgettoDAO{
 	            }
 	        }
 	        
-	        // 2. Commit se entrambe le tabelle sono state scritte correttamente
 	        connectionToDatabase.commit();
 	        return true;
 	        
 	    } catch (SQLException e) {
-	        // Rollback completo in caso di problemi tecnici
 	        try {
 	            if (connectionToDatabase != null) {
 	                connectionToDatabase.rollback();
@@ -148,7 +143,6 @@ public class ProgettoDAOPostgres implements ProgettoDAO{
 	        e.printStackTrace();
 	        return false;
 	    } finally {
-	        // Ripristino dell'autocommit di sicurezza
 	        try {
 	            connectionToDatabase.setAutoCommit(true);
 	        } catch (SQLException e) {
@@ -159,7 +153,7 @@ public class ProgettoDAOPostgres implements ProgettoDAO{
 
 	
 	@Override
-	public boolean inserisiciNuovoProgettoEsame(PreparazioneEsami project) {
+	public boolean inserisiciNuovoProgetto(PreparazioneEsami project) {
 	    
 	    Connection connectionToDatabase = DatabaseConnection.getInstance();
 	    
@@ -232,9 +226,72 @@ public class ProgettoDAOPostgres implements ProgettoDAO{
 
 	
 	@Override
-	public boolean inserisiciNuovoProgettoSviluppoEsame(Progetto project) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean inserisiciNuovoProgetto(PreparazioneEsami progettoEsame, SviluppoApplicativi progettoSviluppo) {
+		Connection connectionToDatabase = DatabaseConnection.getInstance();
+		String queryPadre = "INSERT INTO progetto(nome, descrizione, data_consegna, is_progetto_gruppo, matricola) VALUES (?, ?, ?, ?, ?)";
+		String queryEsame = "INSERT INTO preparazione_esame(codice_esame, nome_esame, cfu, docente, data_appello, id_progetto) VALUES (?, ?, ?, ?, ?, ?)";
+		String querySviluppo = "INSERT INTO sviluppo_applicativi(repository_url, tech_stack, versione, id_progetto) VALUES (?, ?, ?, ?)";
+		
+		try {
+			connectionToDatabase.setAutoCommit(false);
+			
+			try (PreparedStatement pstmtPadre = connectionToDatabase.prepareStatement(queryPadre, Statement.RETURN_GENERATED_KEYS)) {
+				pstmtPadre.setString(1, progettoEsame.getNome());
+				pstmtPadre.setString(2, progettoEsame.getDescrizione());
+				pstmtPadre.setObject(3, progettoEsame.getDataConsegna());
+				pstmtPadre.setBoolean(4, progettoEsame.isProgettoGruppo());
+				pstmtPadre.setString(5, progettoEsame.getUserAdmin().getMatricola());
+				
+				if (pstmtPadre.executeUpdate() > 0) {
+					try (ResultSet generatedKeys = pstmtPadre.getGeneratedKeys()) {
+						if (generatedKeys.next()) {
+							int idProgettoGenerato = generatedKeys.getInt(1); 
+							
+							try (PreparedStatement pstmtEsame = connectionToDatabase.prepareStatement(queryEsame)) {
+								pstmtEsame.setString(1, progettoEsame.getCodiceEsame());
+								pstmtEsame.setString(2, progettoEsame.getNomeEsame()); 
+								pstmtEsame.setInt(3, progettoEsame.getCfu());
+								pstmtEsame.setString(4, progettoEsame.getDocente());
+								pstmtEsame.setObject(5, progettoEsame.getDataAppello()); 
+								pstmtEsame.setInt(6, idProgettoGenerato); 
+								
+								pstmtEsame.executeUpdate();
+							}
+							
+							try (PreparedStatement pstmtSviluppo = connectionToDatabase.prepareStatement(querySviluppo)) {
+								pstmtSviluppo.setString(1, progettoSviluppo.getRepositoryURL());
+								pstmtSviluppo.setString(2, progettoSviluppo.getTechStack());
+								pstmtSviluppo.setString(3, progettoSviluppo.getVersione());
+								pstmtSviluppo.setInt(4, idProgettoGenerato); 
+								
+								pstmtSviluppo.executeUpdate();
+							}
+						}
+					}
+				}
+			}
+			
+			connectionToDatabase.commit();
+			return true;
+			
+		} catch (SQLException e) {
+			try {
+				if (connectionToDatabase != null) {
+					connectionToDatabase.rollback();
+				}
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+			e.printStackTrace();
+			return false;
+			
+		} finally {
+			try {
+				connectionToDatabase.setAutoCommit(true);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }
