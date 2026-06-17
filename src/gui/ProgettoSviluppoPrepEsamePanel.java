@@ -21,7 +21,7 @@ import javax.swing.text.MaskFormatter;
 
 import controllers.ProgettoController;
 
-public class ProgettoSviluppoPrepEsamePanel extends JPanel implements ActionListener{
+public class ProgettoSviluppoPrepEsamePanel extends JPanel implements ActionListener {
 	
 	private CreateProjectFrame parentFrame;
 	private JButton indietroButton;
@@ -37,6 +37,9 @@ public class ProgettoSviluppoPrepEsamePanel extends JPanel implements ActionList
 	private JTextField cfuTextField;
 	private JTextField docenteTextField;
 	private JFormattedTextField dataAppelloTextField;
+	private JTextField repositoryTextField;
+	private JTextField techStackTextField;
+	private JTextField versioneTextField;
 	
 	public ProgettoSviluppoPrepEsamePanel(Dimension dimension, CreateProjectFrame parentFrame) {
 
@@ -45,19 +48,15 @@ public class ProgettoSviluppoPrepEsamePanel extends JPanel implements ActionList
 		this.setBackground(Color.white);
 		this.setLayout(new BorderLayout());
 		
-		//Pannello centrale
 		JPanel textFieldsPanel = new JPanel(new java.awt.GridBagLayout());
 		textFieldsPanel.setBackground(Color.WHITE);
-
 		
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
-		gbc.insets = new java.awt.Insets(10, 15, 10, 15); 
+		gbc.insets = new java.awt.Insets(5, 15, 5, 15); 
 		gbc.anchor = java.awt.GridBagConstraints.WEST;    
-
 		
 		nomeTextField = new JTextField(25);
 		descrizioneTextField = new JTextField(25);
-
 		
 		try {
 		    MaskFormatter maschera = new MaskFormatter("##/##/####");
@@ -67,7 +66,6 @@ public class ProgettoSviluppoPrepEsamePanel extends JPanel implements ActionList
 		} catch (ParseException e) {
 		    e.printStackTrace();
 		}
-
 		
 		isProgettoGruppoButton = new JRadioButton("Sì, è un progetto di gruppo");
 		isProgettoGruppoButton.setBackground(Color.WHITE);
@@ -86,63 +84,70 @@ public class ProgettoSviluppoPrepEsamePanel extends JPanel implements ActionList
 		    e.printStackTrace();
 		}
 
+		repositoryTextField = new JTextField(25);
+		techStackTextField = new JTextField(25);
+		versioneTextField = new JTextField(25);
 		
 		gbc.gridx = 0; gbc.gridy = 0;
 		textFieldsPanel.add(new JLabel("Nome Progetto:"), gbc);
-
 		gbc.gridx = 1; 
 		textFieldsPanel.add(nomeTextField, gbc);
 
 		gbc.gridx = 0; gbc.gridy = 1;
 		textFieldsPanel.add(new JLabel("Descrizione:"), gbc);
-
 		gbc.gridx = 1;
 		textFieldsPanel.add(descrizioneTextField, gbc);
 		
 		gbc.gridx = 0; gbc.gridy = 2;
 		textFieldsPanel.add(new JLabel("Data Scadenza:"), gbc);
-
 		gbc.gridx = 1;
 		textFieldsPanel.add(dataConsegnaTextField, gbc);
 
 		gbc.gridx = 0; gbc.gridy = 3;
 		textFieldsPanel.add(new JLabel("Progetto di gruppo?"), gbc);
-
 		gbc.gridx = 1;
 		textFieldsPanel.add(isProgettoGruppoButton, gbc);
 		
 		gbc.gridx = 0; gbc.gridy = 4;
 		textFieldsPanel.add(new JLabel("Codice Esame:"), gbc);
-
 		gbc.gridx = 1;
 		textFieldsPanel.add(codiceEsameTextField, gbc);
 
 		gbc.gridx = 0; gbc.gridy = 5;
 		textFieldsPanel.add(new JLabel("Nome Esame:"), gbc);
-
 		gbc.gridx = 1;
 		textFieldsPanel.add(nomeEsameTextField, gbc);
 
 		gbc.gridx = 0; gbc.gridy = 6;
 		textFieldsPanel.add(new JLabel("CFU esame:"), gbc);
-
 		gbc.gridx = 1;
 		textFieldsPanel.add(cfuTextField, gbc);
 
 		gbc.gridx = 0; gbc.gridy = 7;
 		textFieldsPanel.add(new JLabel("Docente:"), gbc);
-
 		gbc.gridx = 1;
 		textFieldsPanel.add(docenteTextField, gbc);
 
 		gbc.gridx = 0; gbc.gridy = 8;
 		textFieldsPanel.add(new JLabel("Data Appello:"), gbc);
-
 		gbc.gridx = 1;
 		textFieldsPanel.add(dataAppelloTextField, gbc);
+
+		gbc.gridx = 0; gbc.gridy = 9;
+		textFieldsPanel.add(new JLabel("Repository URL (Opzionale):"), gbc);
+		gbc.gridx = 1;
+		textFieldsPanel.add(repositoryTextField, gbc);
+
+		gbc.gridx = 0; gbc.gridy = 10;
+		textFieldsPanel.add(new JLabel("Tech Stack (Opzionale):"), gbc);
+		gbc.gridx = 1;
+		textFieldsPanel.add(techStackTextField, gbc);
+
+		gbc.gridx = 0; gbc.gridy = 11;
+		textFieldsPanel.add(new JLabel("Versione (Opzionale):"), gbc);
+		gbc.gridx = 1;
+		textFieldsPanel.add(versioneTextField, gbc);
 		
-		
-		//Pannello sud dei bottoni
 		JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		
 		indietroButton = new JButton("< Indietro");
@@ -161,25 +166,19 @@ public class ProgettoSviluppoPrepEsamePanel extends JPanel implements ActionList
 		buttonsPanel.add(indietroButton);
 		buttonsPanel.add(fineButton);
 		
-		JLabel test = new JLabel("Progetto generico");
-		
 		this.add(textFieldsPanel, BorderLayout.CENTER);
 		this.add(buttonsPanel, BorderLayout.SOUTH);
-		}
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
 		if(e.getSource() == indietroButton) {
-			
 			parentFrame.showPanel("SELEZIONE");
-			
 		}
 		
 		if(e.getSource() == annullaButton) {
-			
 			parentFrame.dispose();
-			
 		}
 		
 		if(e.getSource() == fineButton) {
@@ -197,25 +196,21 @@ public class ProgettoSviluppoPrepEsamePanel extends JPanel implements ActionList
 		        String docente = docenteTextField.getText();
 		        LocalDate dataAppello = LocalDate.parse(dataAppelloTextField.getText(), dtf);
 		        
+		        String repo = repositoryTextField.getText();
+		        String tech = techStackTextField.getText();
+		        String versione = versioneTextField.getText();
+		        
 		        ProgettoController progettoController = new ProgettoController();
-		        if(progettoController.aggiungiNuovoProgettoEsameString(nome, descrizione, dataConsegna, isProgettoGruppo, codiceEsame, nomeEsame, cfu, docente, dataAppello)) {
-		            
+		        if(progettoController.aggiungiNuovoProgettoEsameSviluppo(nome, descrizione, dataConsegna, isProgettoGruppo, codiceEsame, nomeEsame, cfu, docente, dataAppello, repo, tech, versione)) {
 		            parentFrame.updateProjects();
 		            parentFrame.dispose();
-		            
 		        }
 		        
 		    } catch (DateTimeParseException dtex) {
-		        
 		        errorLabel.setText("Formato date non valido (GG/MM/AAAA).");
-		        
 		    } catch(Exception exc) {
-		        
 		        errorLabel.setText(exc.getMessage());
-		        
 		    }
 		}
-		
 	}
-	
 }
