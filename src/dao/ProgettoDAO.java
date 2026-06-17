@@ -11,8 +11,8 @@ public interface ProgettoDAO {
 	
 	public ArrayList<Progetto> getProjectsByUtente(Utente utente);
 	
-	public boolean inserisiciNuovoProgettoGenerico(Progetto project);
-	public boolean inserisiciNuovoProgettoSviluppo(SviluppoApplicativi project);
-	public boolean inserisiciNuovoProgettoEsame(PreparazioneEsami project);
-	public boolean inserisiciNuovoProgettoSviluppoEsame(Progetto project);
+	public boolean inserisiciNuovoProgetto(Progetto project);
+	public boolean inserisiciNuovoProgetto(SviluppoApplicativi project);
+	public boolean inserisiciNuovoProgetto(PreparazioneEsami project);
+	public boolean inserisiciNuovoProgetto(PreparazioneEsami progettoEsame, SviluppoApplicativi progettoSviluppo);
 }
