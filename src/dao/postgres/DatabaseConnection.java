@@ -13,18 +13,24 @@ public class DatabaseConnection {
 	private DatabaseConnection() {}
 	
 	public static Connection getInstance() {
+		
 		try {
+			
 			if (connection == null || connection.isClosed()) {
 				
 				connection = DriverManager.getConnection(URL, USER, PASSWORD);
 				System.out.println("Connessione database andata a buon fine.");
+				
 			}
 		}
 		catch(SQLException e) {
+			
 			System.out.println("Connessione database fallita.");
 			e.printStackTrace();
 		}
 		
 		return connection;
+		
 	}
 }
+
