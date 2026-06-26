@@ -15,7 +15,7 @@ import exceptions.RegistrationException;
 
 public class CreateAccountPanel extends JPanel implements ActionListener {
 
-    private WindowApp windowApplication;
+    private MainWindow windowApplication;
     private JLabel titoloLabel;
     private JLabel nomeLabel;
     private JTextField nomeTextField;
@@ -38,7 +38,7 @@ public class CreateAccountPanel extends JPanel implements ActionListener {
     private JLabel errorLabel;
     private RegistrazioneUtenteController regUtenteController;
 
-    public CreateAccountPanel(WindowApp windowApp, RegistrazioneUtenteController registrazioneUtenteControl) {
+    public CreateAccountPanel(MainWindow windowApp, RegistrazioneUtenteController registrazioneUtenteControl) {
         this.windowApplication = windowApp;
         this.regUtenteController = registrazioneUtenteControl;
        
