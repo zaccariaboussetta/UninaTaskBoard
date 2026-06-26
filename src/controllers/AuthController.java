@@ -1,7 +1,6 @@
 package controllers;
 
 import dao.UtenteDAO;
-import dao.postgres.UtenteDAOPostgres;
 import entities.Utente;
 
 public class AuthController {
@@ -10,18 +9,17 @@ public class AuthController {
 	
 	public AuthController(UtenteDAO utente) {this.utenteDAO = utente;}
 	
-	public boolean authenticationLogin(String email, String password) {
+	public void authenticationLogin (String email, String password) throws Exception{
+		
+		if (email.isBlank() || password.isBlank()) throw new Exception("Compilare tutti i campi");
 		
 		Utente utente = utenteDAO.getUtenteByEmail(email);
 		
-		if(utente != null && utente.getPassword().equals(password)) {
-			
-			SessionController.getInstance().startSession(utente);
-			return true;
-			
-		}
+		if(utente == null) throw new Exception("Utente non registrato");
+		if(!utente.getPassword().equals(password)) throw new Exception("Password sbagliata");
 		
-		return false;
+		SessionController.getInstance().startSession(utente);
 		
 	}
 }
+
