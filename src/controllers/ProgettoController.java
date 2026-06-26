@@ -14,11 +14,7 @@ public class ProgettoController {
 	
 	private ProgettoDAO progettoDAO;
 	
-	public ProgettoController() {
-		
-		this.progettoDAO = new ProgettoDAOPostgres();
-		
-		}
+	public ProgettoController(ProgettoDAO progettoDAO) { this.progettoDAO = progettoDAO; }
 	
 	public ArrayList<Progetto> getProgettiUtente(){
 		
@@ -129,3 +125,4 @@ public class ProgettoController {
 	
 	
 }
+
