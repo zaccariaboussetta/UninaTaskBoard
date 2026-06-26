@@ -10,166 +10,139 @@ import controllers.AuthController;
 
 public class LoginPanel extends JPanel implements ActionListener{
 	
-    private WindowApp windowApplication;
+    private MainWindow mainWindow;
     private JTextField emailTextField;
     private JPasswordField passwordTextField; 
     private JButton loginButton;
     private JButton createAccountButton;
-    private JLabel emailLabel;
-    private JLabel passwordLabel;
     private JLabel logoUniLabel;
-    private JLabel titoloLabel;
 	private Image backgroundImage;
-	private JTextArea descrizioneTextArea;
 	private JLabel errorLabel;
 	private AuthController authController;
     
-    public LoginPanel(WindowApp windowApp, AuthController auth) {
-        this.windowApplication = windowApp;
+    public LoginPanel(MainWindow mainWindow, AuthController auth) {
+    	
+        this.mainWindow = mainWindow;
 		this.authController = auth;
-        
-        this.setBackground(new Color(0xBDCAF2)); 
-        this.setLayout(new GridBagLayout()); 
 		
-        backgroundImage = new ImageIcon("src/background.jpg").getImage();
-        
-        JPanel innerLoginPanel = new JPanel();
-        innerLoginPanel.setBackground(new Color(255, 255, 255));
-        innerLoginPanel.setPreferredSize(new Dimension(600, 800));
-        innerLoginPanel.setMinimumSize(new Dimension(600, 800));
-        //innerLoginPanel.setBorder(new EmptyBorder(30, 40, 30, 40)); 
-        innerLoginPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1)); 
-        innerLoginPanel.setLayout(new BoxLayout(innerLoginPanel, BoxLayout.Y_AXIS));
+        this.setLayout(new GridLayout(1, 2)); 
 		
+        Dimension dimension = new Dimension(450,600);
+        mainWindow.setResizable(false);
         
+        //Costruzione del pannello di destra
+        JPanel rightPanel = new JPanel();
+        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+		
+        //Costruzione del pannello dei textfield per il login
+        JPanel areaLoginPanel = new JPanel();
+        areaLoginPanel.setBackground(new Color(255, 255, 255));
+        areaLoginPanel.setPreferredSize(dimension);
+        areaLoginPanel.setMinimumSize(dimension);
+        areaLoginPanel.setMaximumSize(dimension);
+        areaLoginPanel.setLayout(new BoxLayout(areaLoginPanel, BoxLayout.Y_AXIS));
         logoUniLabel = new LogoImageLabel();
         logoUniLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         
-        titoloLabel = new JLabel("Benvenuta o benvenuto ad Unina Task Board.");
+        JLabel titoloLabel = new JLabel("Benvenuta/o ad Unina Task Board");
         titoloLabel.setFont(new Font("Arial", Font.BOLD, 18));
         titoloLabel.setAlignmentX(CENTER_ALIGNMENT);
-        
-        descrizioneTextArea = new JTextArea(
-        		"Unina Task Board è l'applicativo nato da un'esigenza semplice: sopravvivere ai progetti di gruppo. "
-        				+ "Creato da studenti per studenti, ti permette di organizzare il lavoro, monitorare le scadenze e aggiungere "
-        				+ "collaboratori (aka i colleghi con cui dovrai dividere l'ansia e il codice). "
-        				+ "Include insight, gestione dei task e tutto quel jazz che ti aspetteresti "
-        				+ "dall'ennesimo clone di un software di management, ma fatto su misura per noi.");
-        descrizioneTextArea.setLineWrap(true);      
-        descrizioneTextArea.setWrapStyleWord(true);
-        descrizioneTextArea.setEditable(false);     
-        descrizioneTextArea.setOpaque(false);        
-        descrizioneTextArea.setFocusable(false);     
-        descrizioneTextArea.setFont(new Font("Arial", Font.PLAIN, 14));
-        descrizioneTextArea.setAlignmentX(Component.CENTER_ALIGNMENT);
-        descrizioneTextArea.setMaximumSize(new Dimension(450, 150));
 		
-        emailLabel = new JLabel("E-mail istituzionale");
+        JLabel emailLabel = new JLabel("E-mail istituzionale");
         emailLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
         emailTextField = new StyledTextField(20); 
         emailTextField.setMaximumSize(new Dimension(250, 30)); 
         
-        passwordLabel = new JLabel("Password");
+        JLabel passwordLabel = new JLabel("Password");
         passwordLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
         passwordTextField = new StyledPasswordField(20);
         passwordTextField.setMaximumSize(new Dimension(250, 30));
         
         errorLabel = new ErrorLabel();
         errorLabel.setAlignmentX(CENTER_ALIGNMENT);
+         
+        //Pannello dei bottoni
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        buttonsPanel.setAlignmentX(CENTER_ALIGNMENT);
+        buttonsPanel.setBackground(Color.white);
         
-        loginButton = new StyledButton("Accedi");
+        loginButton = new JButton("Accedi");
         loginButton.addActionListener(this);
-        loginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         
-		createAccountButton = new StyledButton("Crea Account");
+		createAccountButton = new JButton("Crea Account");
         createAccountButton.addActionListener(this);
-        createAccountButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         
-        JLabel orLabel = new JLabel("o");
-        orLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        buttonsPanel.add(createAccountButton);
+        buttonsPanel.add(loginButton);
         
-        innerLoginPanel.add(Box.createRigidArea(new Dimension(0, 50)));
-        innerLoginPanel.add(logoUniLabel);
-        innerLoginPanel.add(Box.createRigidArea(new Dimension(0, 50))); 
+        //Costruzione pannello interno di sinistra
+        JPanel leftPanel = new JPanel();
+        leftPanel.setPreferredSize(dimension);
+        leftPanel.setMaximumSize(dimension);
+        leftPanel.setMinimumSize(dimension);
+        leftPanel.setBackground(Color.black);
         
-        innerLoginPanel.add(titoloLabel);
-        innerLoginPanel.add(Box.createRigidArea(new Dimension(0, 25)));
         
-        innerLoginPanel.add(descrizioneTextArea);
-        //innerLoginPanel.add(Box.createRigidArea(new Dimension(0,50)));
+       //Costruzione della GUI 
         
-        innerLoginPanel.add(emailLabel);
-        innerLoginPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-        innerLoginPanel.add(emailTextField);
+        areaLoginPanel.add(Box.createRigidArea(new Dimension(0, 50)));
+        areaLoginPanel.add(logoUniLabel);
+        areaLoginPanel.add(Box.createRigidArea(new Dimension(0, 50))); 
         
-        innerLoginPanel.add(Box.createRigidArea(new Dimension(0, 15))); 
+        areaLoginPanel.add(titoloLabel);
+        areaLoginPanel.add(Box.createRigidArea(new Dimension(0, 25)));
+   
         
-        innerLoginPanel.add(passwordLabel);
-        innerLoginPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-        innerLoginPanel.add(passwordTextField);
+        areaLoginPanel.add(emailLabel);
+        areaLoginPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        areaLoginPanel.add(emailTextField);
         
-        innerLoginPanel.add(Box.createRigidArea(new Dimension(0, 20))); 
+        areaLoginPanel.add(Box.createRigidArea(new Dimension(0, 15))); 
         
-        innerLoginPanel.add(errorLabel);
+        areaLoginPanel.add(passwordLabel);
+        areaLoginPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+        areaLoginPanel.add(passwordTextField);
         
-        innerLoginPanel.add(Box.createRigidArea(new Dimension(0, 20))); 
+        areaLoginPanel.add(Box.createRigidArea(new Dimension(0, 20))); 
         
-        innerLoginPanel.add(loginButton);
-        innerLoginPanel.add(Box.createRigidArea(new Dimension(0, 10))); 
-        innerLoginPanel.add(orLabel);
-        innerLoginPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-        innerLoginPanel.add(createAccountButton);
+        areaLoginPanel.add(errorLabel);
+        
+        rightPanel.add(areaLoginPanel, BorderLayout.CENTER);
+        rightPanel.add(buttonsPanel, BorderLayout.SOUTH);
 		
-        
-        this.add(innerLoginPanel);
+        this.add(leftPanel);
+        this.add(rightPanel);
     }
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == loginButton) {
-			
-			errorLabel.setText("");
-		 	String email = emailTextField.getText();
-			  
-		 	char[] passwordArray = passwordTextField.getPassword();
-		 	String password = String.valueOf(passwordArray);
-			  
-		 	if(password.isBlank() || email.isBlank()) {
-			  
-		 		errorLabel.setText("Riempire tutti i campi!");
-			  
-		  	}
-			  
-		 	else {
-			 
-	 		if(authController.authenticationLogin("s.connor@studenti.unina.it", "Skynet1997!!")) { //TODO: Cambiare parametri dopo il testing.
-	 			
-	 			WelcomePanel welcomePanel = new WelcomePanel(windowApplication);
-	 			windowApplication.addPanel(welcomePanel, "WELCOME");
-	 			windowApplication.showPanel("WELCOME"); 
-			
-	 		} 
-	 		else {
-				  
-	 			errorLabel.setText("E-mail o password errata."); }
-			  
-	  		}
-			  
+			try {
+				errorLabel.setText("");
+				String email = emailTextField.getText();
+				char[] passwordArray = passwordTextField.getPassword();
+				String password = String.valueOf(passwordArray);
+				email = "s.connor@studenti.unina.it";
+				password = "Skynet1997!!";
+				authController.authenticationLogin(email, password);
+				
+				((ProgettiPanel)mainWindow.getPanelByName("PROGETTI")).updateOnLogin();
+				
+				mainWindow.showPanel("PROGETTI");
+	
+			} 
+			catch (Exception e1) { errorLabel.setText(e1.getMessage()); }
+		 			
 		}
 		
 		if(e.getSource() == createAccountButton) {
+			
 			errorLabel.setText("");
-			windowApplication.showPanel("CREATE");
+			mainWindow.showPanel("CREATE");
+			
 		}
 		
 	}
 	
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		
-		g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-	}
 }
