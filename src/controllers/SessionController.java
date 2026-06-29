@@ -1,10 +1,12 @@
 package controllers;
 
+import entities.Progetto;
 import entities.Utente;
 
 public class SessionController {
 
 	private Utente utenteLoggato = null;
+	private Progetto progettoUtente = null;
 	private static SessionController instance = null;
 	
 	private SessionController() {};
@@ -23,6 +25,9 @@ public class SessionController {
 		this.utenteLoggato = utente;
 	}
 	
+	public void setCorrenteProgetto(Progetto progetto) {
+		this.progettoUtente = progetto;
+	}
 	
 	public Utente getUtenteLoggato() {
 		return this.utenteLoggato;
@@ -36,3 +41,4 @@ public class SessionController {
 		return utenteLoggato != null;
 	}
 }
+

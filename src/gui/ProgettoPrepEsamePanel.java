@@ -184,26 +184,28 @@ public class ProgettoPrepEsamePanel extends JPanel implements ActionListener{
 		
 		if(e.getSource() == fineButton) {
 		    try {
+		     
+		        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		        
 		        String nome = nomeTextField.getText();
 		        String descrizione = descrizioneTextField.getText();
 		        Boolean isProgettoGruppo = isProgettoGruppoButton.isSelected();
-		        
-		        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		        LocalDate dataConsegna = LocalDate.parse(dataConsegnaTextField.getText(), dtf);
-		        
 		        String codiceEsame = codiceEsameTextField.getText();
 		        String nomeEsame = nomeEsameTextField.getText();
 		        String cfu = cfuTextField.getText();
 		        String docente = docenteTextField.getText();
 		        LocalDate dataAppello = LocalDate.parse(dataAppelloTextField.getText(), dtf);
 		        
-		        ProgettoController progettoController = new ProgettoController();
-		        if(progettoController.aggiungiNuovoProgettoEsame(nome, descrizione, dataConsegna, isProgettoGruppo, codiceEsame, nomeEsame, cfu, docente, dataAppello)) {
-		            
-		            parentFrame.updateProjects();
-		            parentFrame.dispose();
-		            
-		        }
+		    
+		        if (parentFrame.getProgettoController().aggiungiNuovoProgettoEsame(
+		        		nome, descrizione, dataConsegna,isProgettoGruppo, 
+		        		codiceEsame, nomeEsame, cfu, docente, dataAppello)) {
+					
+					parentFrame.updateProjects();
+					parentFrame.dispose();
+				}  
+		        
 		        
 		    } catch (DateTimeParseException dtex) {
 		        
@@ -219,3 +221,4 @@ public class ProgettoPrepEsamePanel extends JPanel implements ActionListener{
 	}
 	
 }
+

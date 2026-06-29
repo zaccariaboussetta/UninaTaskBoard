@@ -16,9 +16,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import controllers.ProgettoController;
+
 public class CreateProjectFrame extends JFrame{
 	
-	private WelcomePanel wp;  
+	private ProgettiPanel parentPanel;  
+	private ProgettoController progettoController;
 	private final int WEIGHT = 800;
 	private final int HEIGHT = 500;
 	private final Dimension frameDimension = new Dimension(WEIGHT, HEIGHT);
@@ -30,9 +33,11 @@ public class CreateProjectFrame extends JFrame{
 	private ProgettoPrepEsamePanel cardPanel4;
 	private ProgettoSviluppoPrepEsamePanel cardPanel5;
 	
-	public CreateProjectFrame(WelcomePanel wp) {
+	public CreateProjectFrame(ProgettiPanel pp, ProgettoController pc) {
 		
-		this.wp = wp;
+		this.parentPanel = pp;
+		this.progettoController = pc;
+		
 		this.setTitle("Wizard - Creazione progetto - Unina Task Board");
 		this.setSize(WEIGHT, HEIGHT);
 		this.setResizable(false);
@@ -72,12 +77,18 @@ public class CreateProjectFrame extends JFrame{
 	
 	public void updateProjects() {
 		
-		wp.loadProjects();
+		parentPanel.loadProjects();
+		parentPanel.setCreateButtonTo(true);
+		
+	}
+	
+	public ProgettoController getProgettoController() {
+		
+		return this.progettoController;
 		
 	}
 	
 	
 	
-	
-	
 }
+

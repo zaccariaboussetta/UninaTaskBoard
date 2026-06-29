@@ -15,7 +15,7 @@ import exceptions.RegistrationException;
 
 public class CreateAccountPanel extends JPanel implements ActionListener {
 
-    private MainWindow windowApplication;
+    private MainWindow mainWindow;
     private JLabel titoloLabel;
     private JLabel nomeLabel;
     private JTextField nomeTextField;
@@ -34,22 +34,19 @@ public class CreateAccountPanel extends JPanel implements ActionListener {
     private JLabel cancellaLabel;
     private JButton cancellaButton;
     private JLabel logoUniLabel;
-    private Image backgroundImage;
     private JLabel errorLabel;
     private RegistrazioneUtenteController regUtenteController;
 
     public CreateAccountPanel(MainWindow windowApp, RegistrazioneUtenteController registrazioneUtenteControl) {
-        this.windowApplication = windowApp;
+        this.mainWindow = windowApp;
         this.regUtenteController = registrazioneUtenteControl;
        
         this.setBackground(new Color(0xBDCAF2));
         this.setLayout(new GridBagLayout()); 
-        backgroundImage = new ImageIcon("src/background2.jpg").getImage();
         
         JPanel innerCreatePanel = new JPanel();
         innerCreatePanel.setBackground(Color.WHITE);
         innerCreatePanel.setPreferredSize(new Dimension(600, 800));
-        innerCreatePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         innerCreatePanel.setLayout(new BoxLayout(innerCreatePanel, BoxLayout.Y_AXIS));
 
         logoUniLabel = new LogoImageLabel();
@@ -92,10 +89,10 @@ public class CreateAccountPanel extends JPanel implements ActionListener {
         errorLabel = new ErrorLabel();
         errorLabel.setAlignmentX(CENTER_ALIGNMENT);
         
-        confermaButton = new StyledButton("Conferma");
+        confermaButton = new JButton("Conferma");
         confermaButton.addActionListener(this);
         
-        cancellaButton = new StyledButton("Cancella");
+        cancellaButton = new JButton("Cancella");
         cancellaButton.addActionListener(this);
         
         
@@ -155,67 +152,33 @@ public class CreateAccountPanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == confermaButton) {
-			errorLabel.setText("");
-			String nome = nomeTextField.getText();
-			String cognome = cognomeTextField.getText();
-			String email = emailTextField.getText();
-			String matricola = matricolaTextField.getText();
-			char[] passwordArray = passwordTextField.getPassword();
-			String password = String.valueOf(passwordArray);
-			char[] passwordDiConfermaArray = confermaPasswordTextField.getPassword();
-			String passwordDiConferma = String.valueOf(passwordDiConfermaArray);
-			
-			
-			if(
-				nome.isBlank() || 
-			    cognome.isBlank() || 
-			    email.isBlank() || 
-			    matricola.isBlank() || 
-			    password.isBlank() || 
-			    passwordDiConferma.isBlank()) 
-			{
+			try {
 				
-				errorLabel.setText("Compilare tutti i campi.");
-				
-			}
-			else {
-				try {
-					regUtenteController.verifyValidPassword(password, passwordDiConferma);
-					regUtenteController.verifyValidEMail(email);
-					regUtenteController.verifyValidMatricola(matricola);
-					regUtenteController.registraUtente(nome, cognome, email, matricola, password);
-					WelcomePanel welcomePanel = new WelcomePanel(windowApplication);
-		 			windowApplication.addPanel(welcomePanel, "WELCOME");
-		 			windowApplication.showPanel("WELCOME");
-				}
-				catch(PasswordException pex) {
-					errorLabel.setText(pex.getMessage());
-				}
-				catch(EmailException eex) {
-					errorLabel.setText(eex.getMessage());
-				}
-				catch(MatricolaException mex) {
-					errorLabel.setText(mex.getMessage());
-				} 
-				catch (RegistrationException rex) {
-					errorLabel.setText(rex.getMessage());
-				}
-				
-			}
+				errorLabel.setText("");
+				String nome = nomeTextField.getText();
+				String cognome = cognomeTextField.getText();
+				String email = emailTextField.getText();
+				String matricola = matricolaTextField.getText();
+				char[] passwordArray = passwordTextField.getPassword();
+				String password = String.valueOf(passwordArray);
+				char[] passwordDiConfermaArray = confermaPasswordTextField.getPassword();
+				String passwordDiConferma = String.valueOf(passwordDiConfermaArray);
 			
-			
+				regUtenteController.registraUtente(nome, cognome, email, matricola, password, passwordDiConferma);
+					
+				}
+			catch(PasswordException pex) { errorLabel.setText(pex.getMessage()); }
+			catch(EmailException eex) { errorLabel.setText(eex.getMessage()); }
+			catch(MatricolaException mex) { errorLabel.setText(mex.getMessage()); } 
+			catch(RegistrationException rex) { errorLabel.setText(rex.getMessage()); }
+			catch(Exception exe) { errorLabel.setText(exe.getMessage()); }
+				
 		}
+			
 		if(e.getSource() == cancellaButton) {
 			errorLabel.setText("");
-			windowApplication.showPanel("LOGIN");
+			mainWindow.showPanel("LOGIN");
 		}
 		
-	}
-	
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		
-		g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
 	}
 }

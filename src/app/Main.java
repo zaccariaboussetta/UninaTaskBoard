@@ -24,7 +24,7 @@ public class Main {
 		ProgettoController progettoController = new ProgettoController(progettoDAO);
 		RegistrazioneUtenteController registrazioneUtenteController = new RegistrazioneUtenteController(utenteDAO);
 		TaskController taskController = new TaskController(taskDAO);
-		MembroController MembroController = new MembroController(membroDAO);
+		MembroController membroController = new MembroController(membroDAO);
 		SessionController.getInstance(); 
 		
 		//Inizializzazione della finestra principale dell'applicativo
@@ -34,10 +34,12 @@ public class Main {
 		JPanel loginPanel = new LoginPanel(mainWindow, authController);
 		JPanel createAccountPanel = new CreateAccountPanel(mainWindow, registrazioneUtenteController);
 		JPanel progettiPanel = new ProgettiPanel(mainWindow, progettoController);
+		JPanel dashboardPanel = new DashboardPanel(mainWindow, membroController, taskController, progettoController);
 		
 		mainWindow.addPanel(loginPanel, "LOGIN");
 		mainWindow.addPanel(createAccountPanel, "CREATE");
 		mainWindow.addPanel(progettiPanel, "PROGETTI");
+		mainWindow.addPanel(dashboardPanel, "DASHBOARD");
 		
 		if (SessionController.getInstance().isUtenteLoggato()) 
 			mainWindow.showPanel("PROGETTI");
@@ -49,3 +51,4 @@ public class Main {
 	}
 
 }
+

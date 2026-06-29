@@ -149,8 +149,8 @@ public class ProgettoGenericoPanel extends JPanel implements ActionListener{
 				LocalDate dataConsegna = LocalDate.parse(dataConsegnaTextField.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 				Boolean isProgettoGruppo = isProgettoGruppoButton.isSelected();
 				
-				ProgettoController progettoController = new ProgettoController();
-				if(progettoController.aggiungiNuovoProgettoGenerico(nome, descrizione, dataConsegna, isProgettoGruppo)) {
+				
+				if(parentFrame.getProgettoController().aggiungiNuovoProgettoGenerico(nome, descrizione, dataConsegna, isProgettoGruppo)) {
 					
 					parentFrame.updateProjects();
 					parentFrame.dispose();
@@ -173,3 +173,4 @@ public class ProgettoGenericoPanel extends JPanel implements ActionListener{
 	}
 	
 }
+

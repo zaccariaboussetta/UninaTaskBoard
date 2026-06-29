@@ -17,6 +17,15 @@ public class SviluppoApplicativi extends Progetto{
 		this.techStack = techStack;
 		this.versione = versione;
 	}
+	
+	public SviluppoApplicativi(int idProgetto, String nome, String descrizione, LocalDate dataCreazione,
+			LocalDate dataConsegna, boolean isProgettoGruppo, String userCreatorMatricola, String repositoryURL,
+			String techStack, String versione) {
+		super(idProgetto, nome, descrizione, dataCreazione, dataConsegna, isProgettoGruppo, userCreatorMatricola);
+		this.repositoryURL = repositoryURL;
+		this.techStack = techStack;
+		this.versione = versione;
+	}
 
 	
 	//Inserimento dati;
@@ -60,3 +69,4 @@ public class SviluppoApplicativi extends Progetto{
 	
 	
 }
+

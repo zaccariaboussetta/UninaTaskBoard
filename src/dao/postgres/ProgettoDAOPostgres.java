@@ -5,11 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import dao.ProgettoDAO;
 import entities.PreparazioneEsami;
 import entities.Progetto;
+import entities.ProgettoEsameSviluppo;
 import entities.SviluppoApplicativi;
 import entities.Utente;
 
@@ -53,6 +55,104 @@ public class ProgettoDAOPostgres implements ProgettoDAO{
 		
 		return null;
 		
+	}
+	
+	@Override
+	public Progetto getProjectById(int id) {
+	    
+	    Connection connectionToDatabase = DatabaseConnection.getInstance();
+	    Progetto progettoTrovato = null;
+	    
+	    String query = "SELECT p.nome, p.descrizione, p.data_creazione, p.data_consegna, p.is_progetto_gruppo, p.matricola, "
+	                 + "pe.codice_esame, pe.nome_esame, pe.cfu, pe.docente, pe.data_appello, "
+	                 + "sa.repository_url, sa.tech_stack, sa.versione "
+	                 + "FROM progetto p "
+	                 + "LEFT JOIN preparazione_esami pe ON p.id_progetto = pe.id_progetto "
+	                 + "LEFT JOIN sviluppo_applicativi sa ON p.id_progetto = sa.id_progetto "
+	                 + "WHERE p.id_progetto = ?";
+	                 
+	    try {
+	        PreparedStatement pstmt = connectionToDatabase.prepareStatement(query);
+	        pstmt.setInt(1, id);
+	        
+	        ResultSet rs = pstmt.executeQuery();
+	        
+	        if(rs.next()) {
+	            
+	            String nome = rs.getString("nome");
+	            String descrizione = rs.getString("descrizione");
+	            LocalDate dataCreazione = rs.getDate("data_creazione").toLocalDate();
+	            LocalDate dataConsegna = rs.getDate("data_consegna").toLocalDate();
+	            boolean isProgettoGruppo = rs.getBoolean("is_progetto_gruppo");
+	            
+	            String matricola = rs.getString("matricola");
+	            
+	            
+
+	            boolean isEsame = rs.getString("codice_esame") != null;
+	            boolean isSviluppo = rs.getString("repository_url") != null;
+	            
+	            if (isEsame && isSviluppo) {
+	                
+	                String codiceEsame = rs.getString("codice_esame");
+	                String nomeEsame = rs.getString("nome_esame");
+	                int cfu = rs.getInt("cfu");
+	                String docente = rs.getString("docente");
+	                LocalDate dataAppello = rs.getDate("data_appello") != null ? rs.getDate("data_appello").toLocalDate() : null;
+	                
+	                String repoUrl = rs.getString("repository_url");
+	                String techStack = rs.getString("tech_stack");
+	                String versione = rs.getString("versione");
+
+	                progettoTrovato = new ProgettoEsameSviluppo(
+		                    id, nome, descrizione, dataCreazione, dataConsegna, isProgettoGruppo, matricola,
+		                    codiceEsame, nomeEsame, cfu, docente, dataAppello,
+		                    repoUrl, techStack, versione
+		                );
+	                
+	            } else if (isEsame) {
+	                
+	                String codiceEsame = rs.getString("codice_esame");
+	                String nomeEsame = rs.getString("nome_esame");
+	                int cfu = rs.getInt("cfu");
+	                String docente = rs.getString("docente");
+	                LocalDate dataAppello = rs.getDate("data_appello") != null ? rs.getDate("data_appello").toLocalDate() : null;
+
+	                progettoTrovato = new PreparazioneEsami(
+	                    id, nome, descrizione, dataCreazione, dataConsegna, isProgettoGruppo,
+	                    matricola, codiceEsame, nomeEsame, cfu, docente, dataAppello
+	                );
+	                
+	            } else if (isSviluppo) {
+	                
+	                String repoUrl = rs.getString("repository_url");
+	                String techStack = rs.getString("tech_stack");
+	                String versione = rs.getString("versione");
+
+	                progettoTrovato = new SviluppoApplicativi(
+	                    id, nome, descrizione, dataCreazione, dataConsegna, isProgettoGruppo,
+	                    matricola, repoUrl, techStack, versione
+	                );
+	                
+	            } else {
+	                
+	                progettoTrovato = new Progetto(
+	                    id, nome, descrizione, dataCreazione, dataConsegna, isProgettoGruppo, matricola
+	                );
+	                
+	            }
+	            
+	            if (progettoTrovato != null) {
+	                progettoTrovato.setIdProgetto(id);
+	                progettoTrovato.setDataCreazione(dataCreazione);
+	            }
+	        }
+	        
+	    } catch(SQLException e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return progettoTrovato;
 	}
 
 	@Override
@@ -295,3 +395,4 @@ public class ProgettoDAOPostgres implements ProgettoDAO{
 	}
 
 }
+

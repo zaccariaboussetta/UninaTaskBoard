@@ -10,9 +10,10 @@ import entities.Utente;
 public interface ProgettoDAO {
 	
 	public ArrayList<Progetto> getProjectsByUtente(Utente utente);
-	
+	public Progetto getProjectById(int id);
 	public boolean inserisiciNuovoProgetto(Progetto project);
 	public boolean inserisiciNuovoProgetto(SviluppoApplicativi project);
 	public boolean inserisiciNuovoProgetto(PreparazioneEsami project);
 	public boolean inserisiciNuovoProgetto(PreparazioneEsami progettoEsame, SviluppoApplicativi progettoSviluppo);
 }
+

@@ -9,6 +9,7 @@ public class Progetto {
 	private LocalDate dataConsegna;
 	private boolean isProgettoGruppo;
 	private Utente userCreator;
+	private String userCreatorMatricola;
 	
 	//Costruttore per riperimento dati dal DB;
 	public Progetto(int idProgetto,String nome, String descrizione, LocalDate dataCreazione, LocalDate dataConsegna,
@@ -21,6 +22,19 @@ public class Progetto {
 		this.dataConsegna = dataConsegna;
 		this.isProgettoGruppo = isProgettoGruppo;
 		this.userCreator = userCreator;
+		
+	}
+	
+	public Progetto(int idProgetto,String nome, String descrizione, LocalDate dataCreazione, LocalDate dataConsegna,
+			boolean isProgettoGruppo, String userCreatorMatricola) {
+		
+		this.idProgetto = idProgetto;
+		this.nome = nome;
+		this.descrizione = descrizione;
+		this.dataCreazione = dataCreazione; 
+		this.dataConsegna = dataConsegna;
+		this.isProgettoGruppo = isProgettoGruppo;
+		this.userCreatorMatricola = userCreatorMatricola;
 		
 	}
 	
@@ -89,3 +103,4 @@ public class Progetto {
 		this.userCreator = userAdmin;
 	}
 }
+

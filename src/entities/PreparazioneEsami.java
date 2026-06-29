@@ -21,6 +21,17 @@ public class PreparazioneEsami extends Progetto{
 		this.docente = docente;
 		this.dataAppello = dataAppello;
 	}
+	
+	public PreparazioneEsami(int idProgetto, String nome, String descrizione, LocalDate dataCreazione,
+			LocalDate dataConsegna, boolean isProgettoGruppo, String userCreatorMatricola, String codiceEsame, String nomeEsame,
+			int cfu, String docente, LocalDate dataAppello) {
+		super(idProgetto, nome, descrizione, dataCreazione, dataConsegna, isProgettoGruppo, userCreatorMatricola);
+		this.codiceEsame = codiceEsame;
+		this.nomeEsame = nomeEsame;
+		this.cfu = cfu;
+		this.docente = docente;
+		this.dataAppello = dataAppello;
+	}
 
 
 	//Inserimento dati DB;
@@ -85,3 +96,4 @@ public class PreparazioneEsami extends Progetto{
 	}
 	
 }
+

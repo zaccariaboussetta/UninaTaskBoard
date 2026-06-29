@@ -17,8 +17,9 @@ public class ProgettoController {
 	public ProgettoController(ProgettoDAO progettoDAO) { this.progettoDAO = progettoDAO; }
 	
 	public ArrayList<Progetto> getProgettiUtente(){
+
 		
-		ArrayList<Progetto> listProgetti = new ArrayList();
+		ArrayList<Progetto> listProgetti = new ArrayList<>();
 		listProgetti = progettoDAO.getProjectsByUtente(SessionController.getInstance().getUtenteLoggato());
 		
 		
@@ -29,6 +30,12 @@ public class ProgettoController {
 		}
 		
 		return null;
+	}
+	
+	public void setProgettoById(int idProgetto) {
+		
+		Progetto p = progettoDAO.getProjectById(idProgetto);
+		SessionController.getInstance().setCorrenteProgetto(p);
 	}
 	
 	public boolean aggiungiNuovoProgettoGenerico(String nome, String descrizione, LocalDate dataConsegna, boolean isProgettoGruppo) throws Exception{
@@ -47,7 +54,6 @@ public class ProgettoController {
 		return progettoDAO.inserisiciNuovoProgetto(newProgetto);
 		
 	}
-	
 	
 	public boolean aggiungiNuovoProgettoSviluppo(String nome, String descrizione, LocalDate dataConsegna, boolean isProgettoGruppo, String repoURL, String techStack, String versione) throws Exception {
 		
@@ -73,7 +79,6 @@ public class ProgettoController {
 	    return progettoDAO.inserisiciNuovoProgetto(newProgetto);
 	}
 
-	
 	public boolean aggiungiNuovoProgettoEsame (String nome, String descrizione, LocalDate dataConsegna, boolean isProgettoGruppo, String codiceEsame, String nomeEsame, String cfu, String docente, LocalDate dataAppello) throws Exception {
 
 		if(nome.isBlank() || descrizione.isBlank() || codiceEsame.isBlank() || docente.isBlank() || cfu.isBlank() || nomeEsame.isBlank()) {
@@ -94,8 +99,7 @@ public class ProgettoController {
 		
 		return progettoDAO.inserisiciNuovoProgetto(newProgetto);
 	}
-	
-	
+
 	public boolean aggiungiNuovoProgettoEsameSviluppo(String nome, String descrizione, LocalDate dataConsegna, boolean isProgettoGruppo, String codiceEsame, String nomeEsame, String cfu, String docente, LocalDate dataAppello, String repoURL, String techStack, String versione) throws Exception {
 
 		if(nome.isBlank() || descrizione.isBlank() || codiceEsame.isBlank() || docente.isBlank() || cfu.isBlank() || nomeEsame.isBlank()) {
@@ -123,6 +127,7 @@ public class ProgettoController {
 		return progettoDAO.inserisiciNuovoProgetto(progettoEsame, progettoSviluppo);
 	}
 	
-	
+
 }
+
 

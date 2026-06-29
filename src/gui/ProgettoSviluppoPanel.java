@@ -150,8 +150,8 @@ public class ProgettoSviluppoPanel extends JPanel implements ActionListener {
 		        String tech = techStackTextField.getText();
 		        String versione = versioneTextField.getText();
 		        
-		        ProgettoController progettoController = new ProgettoController();
-		        if(progettoController.aggiungiNuovoProgettoSviluppo(nome, descrizione, dataConsegna, isProgettoGruppo, repo, tech, versione)) {
+		     
+		        if(parentFrame.getProgettoController().aggiungiNuovoProgettoSviluppo(nome, descrizione, dataConsegna, isProgettoGruppo, repo, tech, versione)) {
 		            parentFrame.updateProjects();
 		            parentFrame.dispose();
 		        }

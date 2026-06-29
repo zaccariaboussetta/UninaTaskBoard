@@ -200,8 +200,8 @@ public class ProgettoSviluppoPrepEsamePanel extends JPanel implements ActionList
 		        String tech = techStackTextField.getText();
 		        String versione = versioneTextField.getText();
 		        
-		        ProgettoController progettoController = new ProgettoController();
-		        if(progettoController.aggiungiNuovoProgettoEsameSviluppo(nome, descrizione, dataConsegna, isProgettoGruppo, codiceEsame, nomeEsame, cfu, docente, dataAppello, repo, tech, versione)) {
+		        
+		        if(parentFrame.getProgettoController().aggiungiNuovoProgettoEsameSviluppo(nome, descrizione, dataConsegna, isProgettoGruppo, codiceEsame, nomeEsame, cfu, docente, dataAppello, repo, tech, versione)) {
 		            parentFrame.updateProjects();
 		            parentFrame.dispose();
 		        }

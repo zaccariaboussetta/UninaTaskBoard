@@ -37,23 +37,39 @@ public class ProgettiPanel extends JPanel implements ActionListener {
 	private JPanel progettiUtentePanel;
 	private JTextArea descrizioneTextArea;
 	
+	private int idProgettoSelezionato;
+	
 	public ProgettiPanel(MainWindow mainWindow, ProgettoController progettoController) {
+		
 		this.mainWindow = mainWindow;
 		this.progettoController = progettoController;
-		
 		
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == openButton) {
+			try {
 			
+				progettoController.setProgettoById(idProgettoSelezionato);
+				
+				((DashboardPanel)mainWindow.getPanelByName("DASHBOARD")).updateOnSelectedProject();
+				mainWindow.showPanel("DASHBOARD");
+			}
+			catch(Exception ex) {
+				//TODO: 
+			}
 		}
 		
 		if(e.getSource() == createButton) {
-			JFrame createProjectFrame = new CreateProjectFrame(this);
+			
+			new CreateProjectFrame(this, progettoController);
+			this.setCreateButtonTo(false);
+			
 		}
 	}
+	
+	public void setCreateButtonTo(boolean state) { createButton.setEnabled(state); }
 	
 	public void loadProjects() {
 		try {
@@ -69,8 +85,6 @@ public class ProgettiPanel extends JPanel implements ActionListener {
 			Image scaledFolderSelezioanaIcon = folderSelezionata.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
 			folderSelezionata = new ImageIcon(scaledFolderSelezioanaIcon);
 			
-			ArrayList<Progetto> listProgetto = progettoController.getProgettiUtente();
-			
 			ButtonGroup gruppoRadioButton = new ButtonGroup();
 			progettiUtentePanel.removeAll();
 			
@@ -78,7 +92,7 @@ public class ProgettiPanel extends JPanel implements ActionListener {
 				descrizioneTextArea.setText("");
 			}
 			
-			for(Progetto prog : listProgetto) {
+			for(Progetto prog : progettoController.getProgettiUtente()) {
 				
 				JRadioButton radioButton = new ProgettoRadioButton(prog.getNome(), folderStatica);
 				radioButton.setRolloverIcon(folderHover);
@@ -89,6 +103,7 @@ public class ProgettiPanel extends JPanel implements ActionListener {
 				radioButton.addActionListener(e -> {
 					String desc = prog.getDescrizione();
 					descrizioneTextArea.setText((desc != null && !desc.isBlank()) ? desc : "Nessuna descrizione disponibile per questo progetto.");
+					idProgettoSelezionato = prog.getIdProgetto();
 				});
 				
 				gruppoRadioButton.add(radioButton);
