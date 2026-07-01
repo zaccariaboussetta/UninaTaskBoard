@@ -65,4 +65,14 @@ public class MainWindow extends JFrame{
 		return null;
 	}
 	
+	public int getWIDTH() {
+		return WIDTH_SCREEN;
+	}
+
+
+	public int getHEIGHT() {
+		return HEIGHT_SCREEN;
+	}
+	
 }
+

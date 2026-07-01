@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import controllers.*;
 import dao.postgres.*;
+import dao.test.*;
 import dao.*;
 
 public class Main {
@@ -18,13 +19,16 @@ public class Main {
 		MembroDAO membroDAO = new MembroDAOPostgres();
 		TaskDAO taskDAO = new TaskDAOPostgres();
 		
+		//Testing
+		TaskDAO taskDAO_test = new TaskDAOTest();
+		MembroDAO membroDAO_test = new MembroDAOTest();
 		
 		//Inizializzazione dei controller e passaggio dei relativi DAO
 		AuthController authController = new AuthController(utenteDAO);
 		ProgettoController progettoController = new ProgettoController(progettoDAO);
 		RegistrazioneUtenteController registrazioneUtenteController = new RegistrazioneUtenteController(utenteDAO);
-		TaskController taskController = new TaskController(taskDAO);
-		MembroController membroController = new MembroController(membroDAO);
+		TaskController taskController = new TaskController(taskDAO_test);
+		MembroController membroController = new MembroController(membroDAO_test);
 		SessionController.getInstance(); 
 		
 		//Inizializzazione della finestra principale dell'applicativo
@@ -51,4 +55,5 @@ public class Main {
 	}
 
 }
+
 

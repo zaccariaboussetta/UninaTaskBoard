@@ -50,8 +50,8 @@ public class ProgettiPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == openButton) {
 			try {
-			
-				progettoController.setProgettoById(idProgettoSelezionato);
+				//TODO: un-comment when tested
+				//progettoController.setProgettoById(idProgettoSelezionato);
 				
 				((DashboardPanel)mainWindow.getPanelByName("DASHBOARD")).updateOnSelectedProject();
 				mainWindow.showPanel("DASHBOARD");
@@ -199,3 +199,4 @@ public class ProgettiPanel extends JPanel implements ActionListener {
 		
 	}
 }
+
