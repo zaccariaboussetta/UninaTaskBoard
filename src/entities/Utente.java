@@ -7,13 +7,20 @@ public class Utente {
 	private String emailIstituzionale;
 	private String password;
 
-	//Costruttore per inserimento e reperimento dati dal DB;
+	//Costruttore per inserimento / reperimento dati da DB
 	public Utente(String nome, String cognome, String matricola, String emailIstituzionale, String password) {
 		this.nome = nome;
 		this.cognome = cognome;
 		this.matricola = matricola;
 		this.emailIstituzionale = emailIstituzionale;
 		this.password = password;
+	}
+	
+	//Costruttore per reperimento dati dal db, specifico per Membri
+	public Utente(String nome, String cognome, String matricola) {
+		this.nome = nome;
+		this.cognome = cognome;
+		this.matricola = matricola;
 	}
 
 	
