@@ -2,7 +2,7 @@ package entities;
 
 import java.time.LocalDate;
 
-public class Attivita {
+public abstract class Attivita {
 	private int idAttivita;
 	private String descrizione;
 	private LocalDate dataCreazione;
