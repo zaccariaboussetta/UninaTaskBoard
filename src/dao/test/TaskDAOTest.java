@@ -7,6 +7,7 @@ import dao.TaskDAO;
 import entities.Attivita;
 import entities.AttivitaDocumentazione;
 import entities.AttivitaSviluppo;
+import entities.Membro;
 import entities.Progetto;
 
 public class TaskDAOTest implements TaskDAO {
@@ -58,4 +59,29 @@ public class TaskDAOTest implements TaskDAO {
 		return tasks;
 	}
 
+	@Override
+	public ArrayList<Attivita> getTasksAssignedTo(Membro membro) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void updateTaskStatus(Progetto progetto, Attivita task, String status) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void assignTaskTo(Membro membro, Progetto progetto, Attivita task) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int inserisciNuovaAttivita(Attivita task, Progetto progetto) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }
+
