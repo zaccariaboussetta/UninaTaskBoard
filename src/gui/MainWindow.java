@@ -17,8 +17,6 @@ public class MainWindow extends JFrame{
 	
 	private CardLayout cardLayout;
 	private JPanel mainWindowPanels;
-	private final int WIDTH_SCREEN;
-	private final int HEIGHT_SCREEN;
 	private ArrayList<JPanel> listaRiferimentiPannelli;
 	
 	public MainWindow() {
@@ -27,10 +25,7 @@ public class MainWindow extends JFrame{
 		this.setIconImage(icon.getImage());
 		this.setTitle("Unina Task Board");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		this.WIDTH_SCREEN = screenSize.width;
-		this.HEIGHT_SCREEN = screenSize.height;
-		this.setResizable(true);
+		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		
 		this.listaRiferimentiPannelli = new ArrayList<>();
@@ -63,15 +58,6 @@ public class MainWindow extends JFrame{
 		}
 		
 		return null;
-	}
-	
-	public int getWIDTH() {
-		return WIDTH_SCREEN;
-	}
-
-
-	public int getHEIGHT() {
-		return HEIGHT_SCREEN;
 	}
 	
 }
