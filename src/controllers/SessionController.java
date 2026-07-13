@@ -29,6 +29,10 @@ public class SessionController {
 		this.progettoUtente = progetto;
 	}
 	
+	public Progetto getCorrenteProgetto() {
+		return this.progettoUtente;
+	}
+	
 	public Utente getUtenteLoggato() {
 		return this.utenteLoggato;
 	}
