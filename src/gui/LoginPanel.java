@@ -16,7 +16,6 @@ public class LoginPanel extends JPanel implements ActionListener{
     private JButton loginButton;
     private JButton createAccountButton;
     private JLabel logoUniLabel;
-	private Image backgroundImage;
 	private JLabel errorLabel;
 	private AuthController authController;
     
@@ -27,24 +26,19 @@ public class LoginPanel extends JPanel implements ActionListener{
 		
         this.setLayout(new GridLayout(1, 2)); 
 		
-        Dimension dimension = new Dimension(450,600);
-        mainWindow.setResizable(false);
-        
-        //Costruzione del pannello di destra
-        JPanel rightPanel = new JPanel();
-        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+        Dimension dimension = new Dimension(450,500);
 		
-        //Costruzione del pannello dei textfield per il login
         JPanel areaLoginPanel = new JPanel();
         areaLoginPanel.setBackground(new Color(255, 255, 255));
         areaLoginPanel.setPreferredSize(dimension);
         areaLoginPanel.setMinimumSize(dimension);
         areaLoginPanel.setMaximumSize(dimension);
         areaLoginPanel.setLayout(new BoxLayout(areaLoginPanel, BoxLayout.Y_AXIS));
+       
         logoUniLabel = new LogoImageLabel();
         logoUniLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         
-        JLabel titoloLabel = new JLabel("Benvenuta/o ad Unina Task Board");
+        JLabel titoloLabel = new JLabel("Unina Task Board");
         titoloLabel.setFont(new Font("Arial", Font.BOLD, 18));
         titoloLabel.setAlignmentX(CENTER_ALIGNMENT);
 		
@@ -61,7 +55,6 @@ public class LoginPanel extends JPanel implements ActionListener{
         errorLabel = new ErrorLabel();
         errorLabel.setAlignmentX(CENTER_ALIGNMENT);
          
-        //Pannello dei bottoni
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         buttonsPanel.setAlignmentX(CENTER_ALIGNMENT);
@@ -74,14 +67,9 @@ public class LoginPanel extends JPanel implements ActionListener{
         createAccountButton.addActionListener(this);
         
         buttonsPanel.add(createAccountButton);
+        buttonsPanel.add(Box.createRigidArea(new Dimension(10, 0)));
         buttonsPanel.add(loginButton);
         
-        //Costruzione pannello interno di sinistra
-        JPanel leftPanel = new JPanel();
-        leftPanel.setPreferredSize(dimension);
-        leftPanel.setMaximumSize(dimension);
-        leftPanel.setMinimumSize(dimension);
-        leftPanel.setBackground(Color.black);
         
         
        //Costruzione della GUI 
@@ -107,12 +95,10 @@ public class LoginPanel extends JPanel implements ActionListener{
         areaLoginPanel.add(Box.createRigidArea(new Dimension(0, 20))); 
         
         areaLoginPanel.add(errorLabel);
-        
-        rightPanel.add(areaLoginPanel, BorderLayout.CENTER);
-        rightPanel.add(buttonsPanel, BorderLayout.SOUTH);
+        areaLoginPanel.add(Box.createRigidArea(new Dimension(0, 50)));
+        areaLoginPanel.add(buttonsPanel);
 		
-        this.add(leftPanel);
-        this.add(rightPanel);
+        this.add(areaLoginPanel);
     }
 
 	@Override
@@ -127,7 +113,7 @@ public class LoginPanel extends JPanel implements ActionListener{
 				password = "Skynet1997!!";
 				authController.authenticationLogin(email, password);
 				
-				((ProgettiPanel)mainWindow.getPanelByName("PROGETTI")).updateOnLogin();
+				((ProgettiPanel)mainWindow.getPanelByName("PROGETTI")).update();
 				
 				mainWindow.showPanel("PROGETTI");
 	
@@ -146,3 +132,4 @@ public class LoginPanel extends JPanel implements ActionListener{
 	}
 	
 }
+
