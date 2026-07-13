@@ -12,19 +12,17 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import controllers.ProgettoController;
 
-public class CreateProjectFrame extends JFrame{
+public class CreateProjectFrame extends JDialog{
 	
 	private ProgettiPanel parentPanel;  
 	private ProgettoController progettoController;
-	private final int WEIGHT = 800;
-	private final int HEIGHT = 500;
-	private final Dimension frameDimension = new Dimension(WEIGHT, HEIGHT);
 	private CardLayout cardLayout;
 	private JPanel outerPanel;
 	private SelezioneTipologiaProgettoPanel cardPanel1;
@@ -33,16 +31,19 @@ public class CreateProjectFrame extends JFrame{
 	private ProgettoPrepEsamePanel cardPanel4;
 	private ProgettoSviluppoPrepEsamePanel cardPanel5;
 	
-	public CreateProjectFrame(ProgettiPanel pp, ProgettoController pc) {
+	public CreateProjectFrame(JFrame frame, ProgettiPanel parentPanel, String descrizione, boolean modale, ProgettoController progettoController) {
 		
-		this.parentPanel = pp;
-		this.progettoController = pc;
+		super(frame, descrizione, modale);
+		this.progettoController = progettoController;
+		this.parentPanel = parentPanel;
 		
 		this.setTitle("Wizard - Creazione progetto - Unina Task Board");
-		this.setSize(WEIGHT, HEIGHT);
-		this.setResizable(false);
-		this.setLocationRelativeTo(null);
+		this.setSize(800, 500);
+		this.setResizable(true);
+		this.setLocationRelativeTo(frame);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+		Dimension frameDimension = new Dimension(800, 500);
 
 		cardLayout = new CardLayout();
 		outerPanel = new JPanel(cardLayout);
@@ -65,30 +66,21 @@ public class CreateProjectFrame extends JFrame{
 		outerPanel.add(cardPanel5, "SVILUPPO ESAME");
 		
 		this.add(outerPanel, BorderLayout.CENTER);
+		
 		cardLayout.show(outerPanel,"SELEZIONE");
+		
 		this.setVisible(true);
 	}
 
-	public void showPanel(String panelNameToShow) {
-		
-		cardLayout.show(outerPanel, panelNameToShow);
-		
-	}
+	public void showPanel(String panelNameToShow) { cardLayout.show(outerPanel, panelNameToShow); }
 	
-	public void updateProjects() {
-		
-		parentPanel.loadProjects();
-		parentPanel.setCreateButtonTo(true);
-		
-	}
+	public void updateProjects() { parentPanel.loadProgetti(); }
 	
-	public ProgettoController getProgettoController() {
-		
-		return this.progettoController;
-		
-	}
+	public ProgettoController getProgettoController() { return this.progettoController;	}
 	
 	
 	
 }
+
+
 

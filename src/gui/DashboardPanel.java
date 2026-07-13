@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,12 +22,16 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 
 import controllers.*;
 import entities.Attivita;
 import entities.AttivitaDocumentazione;
 import entities.AttivitaSviluppo;
 import entities.Membro;
+import entities.Progetto;
 
 public class DashboardPanel extends JPanel {
 
@@ -50,25 +55,29 @@ public class DashboardPanel extends JPanel {
 	private ArrayList<Membro> taskAssignments = new ArrayList<>();
 	private ArrayList<ArrayList<String>> taskComments = new ArrayList<>();
 	
+	private final Color BG_APP = new Color(245, 247, 250);
+	private final Color BG_CARD = Color.WHITE;
+	private final Color BORDER_COLOR = new Color(210, 214, 220);
+	private final Color HEADER_COLOR = new Color(230, 235, 241);
+	private final Color TEXT_DARK = new Color(40, 45, 50);
+	
 	public DashboardPanel(MainWindow mainWindow, MembroController mc, TaskController tc, ProgettoController pc) {
 		this.mainWindow = mainWindow;
 		this.membroController = mc;
 		this.taskController = tc;
 		this.progettoController = pc;
-		
-		mainWindow.setResizable(true);
 	}
 	
 	public void updateOnSelectedProject() {	
-	    
 	    this.removeAll();
 	    this.setLayout(new BorderLayout());
+	    this.setBackground(BG_APP);
 	    
-	    if (allTasks == null && taskController != null) {
-	    	allTasks = taskController.getTasksByProgetto(null);
-	    }
-	    if (teamMembers == null && membroController != null) {
-	    	teamMembers = membroController.getMembriByProgetto(null);
+	    Progetto currentProject = SessionController.getInstance().getCorrenteProgetto();
+	    
+	    if (currentProject != null) {
+	    	allTasks = taskController.getTasksByProgetto(currentProject);
+	    	teamMembers = membroController.getMembriByProgetto(currentProject);
 	    }
 	    
 	    if (taskAssignments.isEmpty() && allTasks != null && teamMembers != null && !teamMembers.isEmpty()) {
@@ -76,64 +85,75 @@ public class DashboardPanel extends JPanel {
 	    	for (int i = 0; i < allTasks.size(); i++) {
 	    		taskAssignments.add(teamMembers.get(memberIndex % teamMembers.size()));
 	    		memberIndex++;
-	    		
 	    		taskComments.add(new ArrayList<String>());
 	    	}
 	    }
 	    
-	    JPanel northPanel = new JPanel();
-	    northPanel.setBackground(Color.BLUE);
-	    northPanel.setPreferredSize(new Dimension(0, 30));
-	    
-	    JPanel southPanel = new JPanel();
-	    southPanel.setBackground(Color.BLUE);
-	    southPanel.setPreferredSize(new Dimension(0, 30));
-
-	    eastPanel = new JPanel();
-	    eastPanel.setBackground(Color.WHITE);
-	    eastPanel.setPreferredSize(new Dimension(300, 0));
-	    eastPanel.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Color.LIGHT_GRAY));
+	    eastPanel = new JPanel(new BorderLayout());
+	    eastPanel.setBackground(BG_APP);
+	    eastPanel.setPreferredSize(new Dimension(320, 0));
+	    eastPanel.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, BORDER_COLOR));
 	    updateEastPanel(); 
 
-	    JPanel westPanel = new JPanel(new BorderLayout(0, 20));
-	    westPanel.setPreferredSize(new Dimension(250, 0));
-	    westPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+	    JPanel westPanel = new JPanel(new BorderLayout(0, 15));
+	    westPanel.setBackground(BG_APP);
+	    westPanel.setPreferredSize(new Dimension(260, 0));
+	    westPanel.setBorder(new EmptyBorder(20, 20, 20, 10));
 
-	    JPanel userInfoPanel = new JPanel(new BorderLayout(10, 0));
-	    JLabel userIconLabel = new JLabel("[Icona]");
-	    userIconLabel.setPreferredSize(new Dimension(50, 50));
-	    userIconLabel.setOpaque(true);
-	    userIconLabel.setBackground(Color.WHITE);
+	    JPanel userInfoPanel = new JPanel(new BorderLayout(15, 0));
+	    userInfoPanel.setBackground(BG_CARD);
+	    userInfoPanel.setBorder(new CompoundBorder(
+	    		BorderFactory.createLineBorder(BORDER_COLOR, 1),
+	    		new EmptyBorder(10, 15, 10, 15)
+	    ));
 	    
-	    JLabel userNameLabel = new JLabel("Nome Utente"); 
+	    JLabel userIconLabel = new JLabel("UT", SwingConstants.CENTER);
+	    userIconLabel.setPreferredSize(new Dimension(45, 45));
+	    userIconLabel.setOpaque(true);
+	    userIconLabel.setBackground(HEADER_COLOR);
+	    userIconLabel.setForeground(TEXT_DARK);
+	    userIconLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
+	    
+	    String nomeUtenteLoggato = SessionController.getInstance().isUtenteLoggato() ? 
+	    		SessionController.getInstance().getUtenteLoggato().getNome() : "Ospite";
+	    JLabel userNameLabel = new JLabel(nomeUtenteLoggato); 
+	    userNameLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
+	    userNameLabel.setForeground(TEXT_DARK);
+	    
 	    userInfoPanel.add(userIconLabel, BorderLayout.WEST);
 	    userInfoPanel.add(userNameLabel, BorderLayout.CENTER);
 
 	    JPanel projectsContainer = new JPanel(new BorderLayout());
+	    projectsContainer.setBackground(BG_APP);
+	    
 	    JPanel membersListPanel = new JPanel();
 	    membersListPanel.setLayout(new BoxLayout(membersListPanel, BoxLayout.Y_AXIS));
-	    membersListPanel.setBackground(Color.WHITE);
+	    membersListPanel.setBackground(BG_CARD);
 	    
 	    if (teamMembers != null) {
 	        for (int i = 0; i < teamMembers.size(); i++) {
 	        	Membro m = teamMembers.get(i);
 	            JPanel memberPanel = new JPanel(new BorderLayout());
-	            memberPanel.setBorder(BorderFactory.createCompoundBorder(
-	                    BorderFactory.createEmptyBorder(5, 5, 5, 5),
-	                    BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1)
+	            memberPanel.setBackground(BG_CARD);
+	            memberPanel.setBorder(new CompoundBorder(
+	                    BorderFactory.createMatteBorder(0, 0, 1, 0, BORDER_COLOR),
+	                    new EmptyBorder(10, 10, 10, 10)
 	            ));
-	            memberPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+	            memberPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
 	            
 	            String nomeCompleto = m.getUtente().getNome() + " " + m.getUtente().getCognome();
-	            JLabel nameLabel = new JLabel(" " + nomeCompleto);
-	            JLabel statusLabel = new JLabel("[" + m.getStatoPartecipazione() + "] ");
+	            JLabel nameLabel = new JLabel(nomeCompleto);
+	            nameLabel.setFont(new Font("SansSerif", Font.PLAIN, 13));
+	            
+	            JLabel statusLabel = new JLabel(m.getStatoPartecipazione());
+	            statusLabel.setFont(new Font("SansSerif", Font.BOLD, 11));
 	            
 	            if(m.getStatoPartecipazione().equalsIgnoreCase("Attivo")) {
-	                statusLabel.setForeground(new Color(0, 150, 0));
-	            } else if(m.getStatoPartecipazione().equalsIgnoreCase("In pausa")) {
-	                statusLabel.setForeground(Color.ORANGE);
+	                statusLabel.setForeground(new Color(40, 167, 69));
+	            } else if(m.getStatoPartecipazione().equalsIgnoreCase("Pausa")) {
+	                statusLabel.setForeground(new Color(255, 193, 7));
 	            } else {
-	                statusLabel.setForeground(Color.RED);
+	                statusLabel.setForeground(new Color(220, 53, 69));
 	            }
 
 	            memberPanel.add(nameLabel, BorderLayout.CENTER);
@@ -143,16 +163,22 @@ public class DashboardPanel extends JPanel {
 	    }
 	    
 	    JScrollPane membersScrollPane = new JScrollPane(membersListPanel);
-	    JLabel membersTitle = new JLabel("Membri del Progetto", SwingConstants.CENTER);
-	    membersTitle.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
+	    membersScrollPane.setBorder(BorderFactory.createLineBorder(BORDER_COLOR, 1));
+	    
+	    JLabel membersTitle = new JLabel("Membri del Progetto");
+	    membersTitle.setFont(new Font("SansSerif", Font.BOLD, 14));
+	    membersTitle.setForeground(TEXT_DARK);
+	    membersTitle.setBorder(new EmptyBorder(0, 0, 10, 0));
 	    
 	    JPanel membersContainerWithTitle = new JPanel(new BorderLayout());
+	    membersContainerWithTitle.setBackground(BG_APP);
 	    membersContainerWithTitle.add(membersTitle, BorderLayout.NORTH);
 	    membersContainerWithTitle.add(membersScrollPane, BorderLayout.CENTER);
 	    
-	    JPanel buttonsPanel = new JPanel();
-	    buttonsPanel.add(new JButton("Crea"));
-	    buttonsPanel.add(new JButton("Cambia"));
+	    JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+	    buttonsPanel.setBackground(BG_APP);
+	    buttonsPanel.add(createStyledButton("Invita Membro"));
+	    buttonsPanel.add(createStyledButton("Gestisci"));
 	    
 	    projectsContainer.add(membersContainerWithTitle, BorderLayout.CENTER);
 	    projectsContainer.add(buttonsPanel, BorderLayout.SOUTH);
@@ -161,13 +187,18 @@ public class DashboardPanel extends JPanel {
 	    westPanel.add(projectsContainer, BorderLayout.CENTER);
 
 	    JPanel centerPanel = new JPanel(new GridLayout(1, 2, 20, 0)); 
-	    centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); 
+	    centerPanel.setBackground(BG_APP);
+	    centerPanel.setBorder(new EmptyBorder(20, 10, 20, 20)); 
 
-	    JPanel infoPlaceholder = new JPanel(new BorderLayout());
-	    infoPlaceholder.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+	    JPanel infoPlaceholder = new JPanel(new BorderLayout(0, 15));
+	    infoPlaceholder.setBackground(BG_APP);
 	    
-	    JPanel filterPanel = new JPanel(new GridLayout(2, 4, 5, 5));
-	    filterPanel.setBorder(BorderFactory.createTitledBorder("Filtra Attività"));
+	    JPanel filterPanel = new JPanel(new GridLayout(2, 4, 10, 10));
+	    filterPanel.setBackground(BG_CARD);
+	    filterPanel.setBorder(new CompoundBorder(
+	    		BorderFactory.createLineBorder(BORDER_COLOR, 1),
+	    		new EmptyBorder(15, 15, 15, 15)
+	    ));
 	    
 	    statusFilter = new JComboBox<>(new String[]{"Tutti", "Todo", "In_Progress", "Done"});
 	    typeFilter = new JComboBox<>(new String[]{"Tutte", "Sviluppo", "Documentazione"});
@@ -183,77 +214,111 @@ public class DashboardPanel extends JPanel {
 	    }
 	    memberFilter = new JComboBox<>(nomiMembri.toArray(new String[0]));
 	    
-	    ActionListener filterListener = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				applyFilters();
-			}
-		};
+	    ActionListener filterListener = e -> applyFilters();
 	    
 	    statusFilter.addActionListener(filterListener);
 	    typeFilter.addActionListener(filterListener);
 	    dateFilter.addActionListener(filterListener);
 	    memberFilter.addActionListener(filterListener);
 	    
-	    filterPanel.add(new JLabel(" Stato:", SwingConstants.RIGHT));
+	    filterPanel.add(new JLabel("Stato:"));
 	    filterPanel.add(statusFilter);
-	    filterPanel.add(new JLabel(" Tipo:", SwingConstants.RIGHT));
+	    filterPanel.add(new JLabel("Tipo:"));
 	    filterPanel.add(typeFilter);
-	    filterPanel.add(new JLabel(" Scadenza:", SwingConstants.RIGHT));
+	    filterPanel.add(new JLabel("Scadenza:"));
 	    filterPanel.add(dateFilter);
-	    filterPanel.add(new JLabel(" Membro:", SwingConstants.RIGHT));
+	    filterPanel.add(new JLabel("Membro:"));
 	    filterPanel.add(memberFilter);
 	    
 	    infoPlaceholder.add(filterPanel, BorderLayout.NORTH);
 	    
 	    tasksListPanel = new JPanel();
 	    tasksListPanel.setLayout(new BoxLayout(tasksListPanel, BoxLayout.Y_AXIS));
-	    tasksListPanel.setBackground(Color.WHITE);
+	    tasksListPanel.setBackground(BG_APP);
 	    
 	    applyFilters();
 	    
 	    JScrollPane scrollPane = new JScrollPane(tasksListPanel);
+	    scrollPane.setBorder(null);
+	    scrollPane.getViewport().setBackground(BG_APP);
 	    infoPlaceholder.add(scrollPane, BorderLayout.CENTER);
 
-	    JPanel infoButtonsPanel = new JPanel();
-	    infoButtonsPanel.add(new JButton("Aggiungi task"));
+	    JPanel infoButtonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
+	    infoButtonsPanel.setBackground(BG_APP);
 	    
-	    JButton generaReportButton = new JButton("Genera Report");
-	    generaReportButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ReportDialog reportDialog = new ReportDialog(allTasks, taskAssignments);
-				reportDialog.setVisible(true);
-			}
-		});
+	    JButton addTaskBtn = createStyledButton("Nuova Attività");
+	    
+	    addTaskBtn.addActionListener(e -> {
+	    	Progetto p = SessionController.getInstance().getCorrenteProgetto();
+	    	AggiungiTaskDialog dialog = new AggiungiTaskDialog(mainWindow, p, teamMembers);
+	    	dialog.setVisible(true);
+	    	
+	    	if (dialog.isConfermato()) {
+	    		Attivita nuova = dialog.getNuovaAttivita();
+	    		Membro assegnatario = dialog.getMembroAssegnato();
+	    		
+	    		boolean successo = taskController.inserisciNuovaAttivita(nuova, p, assegnatario);
+	    		
+	    		if (successo) {
+	    			allTasks = taskController.getTasksByProgetto(p);
+	    			updateOnSelectedProject();
+	    		}
+	    	}
+	    });
+	    
+	    JButton generaReportButton = createStyledButton("Genera Report");
+	    
+	    generaReportButton.addActionListener(e -> {
+	    	ReportDialog reportDialog = new ReportDialog(allTasks, taskAssignments);
+	    	reportDialog.setVisible(true);
+	    });
+	    
+	    infoButtonsPanel.add(addTaskBtn);
 	    infoButtonsPanel.add(generaReportButton);
-	    
 	    infoPlaceholder.add(infoButtonsPanel, BorderLayout.SOUTH);
 
-	    JPanel kanbanPanel = new JPanel(new GridLayout(1, 3, 0, 0)); 
+	    JPanel kanbanPanel = new JPanel(new GridLayout(1, 3, 15, 0)); 
+	    kanbanPanel.setBackground(BG_APP);
 	    
 	    String[] columns = {"Todo", "In_Progress", "Done"};
 	    for (int i = 0; i < columns.length; i++) {
 	    	String colName = columns[i];
 	        JPanel columnPanel = new JPanel(new BorderLayout());
-	        columnPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK)); 
+	        columnPanel.setBackground(HEADER_COLOR);
+	        columnPanel.setBorder(new CompoundBorder(
+	        		BorderFactory.createLineBorder(BORDER_COLOR, 1),
+	        		new EmptyBorder(10, 10, 10, 10)
+	        ));
 	        
-	        JLabel titleLabel = new JLabel(colName, SwingConstants.CENTER);
+	        JLabel titleLabel = new JLabel(colName.replace("_", " "), SwingConstants.CENTER);
+	        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
+	        titleLabel.setForeground(TEXT_DARK);
+	        titleLabel.setBorder(new EmptyBorder(0, 0, 10, 0));
 	        
 	        JPanel columnTasksContainer = new JPanel();
 	        columnTasksContainer.setLayout(new BoxLayout(columnTasksContainer, BoxLayout.Y_AXIS));
-	        columnTasksContainer.setBackground(Color.LIGHT_GRAY);
+	        columnTasksContainer.setBackground(HEADER_COLOR);
 	        
 	        if(allTasks != null) {
 	            for(int j = 0; j < allTasks.size(); j++) {
 	            	Attivita t = allTasks.get(j);
 	                if(t.getStatoAvanzamento().equals(colName)) {
-	                    JPanel cardPanel = new JPanel(new BorderLayout());
-	                    cardPanel.setBorder(BorderFactory.createCompoundBorder(
-	                            BorderFactory.createEmptyBorder(5, 5, 5, 5),
-	                            BorderFactory.createLineBorder(Color.DARK_GRAY, 1)
+	                    JPanel cardPanel = new JPanel(new BorderLayout(5, 5));
+	                    cardPanel.setBackground(BG_CARD);
+	                    cardPanel.setBorder(new CompoundBorder(
+	                    		BorderFactory.createLineBorder(BORDER_COLOR, 1),
+	                            new EmptyBorder(10, 10, 10, 10)
 	                    ));
-	                    cardPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+	                    cardPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 80));
 	                    
-	                    JLabel descLabel = new JLabel(" " + t.getDescrizione());
+	                    JLabel descLabel = new JLabel("<html><body style='width: 120px'>" + t.getDescrizione() + "</body></html>");
+	                    descLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
+	                    
+	                    JLabel idLabel = new JLabel("#" + t.getIdAttivita());
+	                    idLabel.setFont(new Font("SansSerif", Font.BOLD, 10));
+	                    idLabel.setForeground(Color.GRAY);
+	                    
+	                    cardPanel.add(idLabel, BorderLayout.NORTH);
 	                    cardPanel.add(descLabel, BorderLayout.CENTER);
 	                    
 	                    cardPanel.addMouseListener(new MouseAdapter() {
@@ -261,14 +326,30 @@ public class DashboardPanel extends JPanel {
 	                    		selectedTask = t;
 	                    		updateEastPanel();
 	                    	}
+	                    	public void mouseEntered(MouseEvent e) {
+	                    		cardPanel.setBorder(new CompoundBorder(
+	                            		BorderFactory.createLineBorder(new Color(150, 150, 150), 1),
+	                                    new EmptyBorder(10, 10, 10, 10)
+	                            ));
+	                    	}
+	                    	public void mouseExited(MouseEvent e) {
+	                    		cardPanel.setBorder(new CompoundBorder(
+	                            		BorderFactory.createLineBorder(BORDER_COLOR, 1),
+	                                    new EmptyBorder(10, 10, 10, 10)
+	                            ));
+	                    	}
 						});
 	                    
 	                    columnTasksContainer.add(cardPanel);
+	                    columnTasksContainer.add(javax.swing.Box.createRigidArea(new Dimension(0, 10)));
 	                }
 	            }
 	        }
 	        
 	        JScrollPane kanbanScroll = new JScrollPane(columnTasksContainer);
+	        kanbanScroll.setBorder(null);
+	        kanbanScroll.getViewport().setBackground(HEADER_COLOR);
+	        kanbanScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	        
 	        columnPanel.add(titleLabel, BorderLayout.NORTH);
 	        columnPanel.add(kanbanScroll, BorderLayout.CENTER);
@@ -281,12 +362,23 @@ public class DashboardPanel extends JPanel {
 
 	    this.add(westPanel, BorderLayout.WEST);
 	    this.add(eastPanel, BorderLayout.EAST);
-	    this.add(northPanel, BorderLayout.NORTH);
-	    this.add(southPanel, BorderLayout.SOUTH);
 	    this.add(centerPanel, BorderLayout.CENTER);
 	    
 	    this.revalidate();
 	    this.repaint();
+	}
+	
+	private JButton createStyledButton(String text) {
+		JButton btn = new JButton(text);
+		btn.setBackground(BG_CARD);
+		btn.setForeground(TEXT_DARK);
+		btn.setFont(new Font("SansSerif", Font.BOLD, 12));
+		btn.setFocusPainted(false);
+		btn.setBorder(new CompoundBorder(
+				BorderFactory.createLineBorder(BORDER_COLOR, 1),
+				new EmptyBorder(8, 15, 8, 15)
+		));
+		return btn;
 	}
 	
 	private void applyFilters() {
@@ -336,15 +428,22 @@ public class DashboardPanel extends JPanel {
         if(tasks != null) {
             for (int i = 0; i < tasks.size(); i++) {
             	Attivita t = tasks.get(i);
-                JPanel singleTaskPanel = new JPanel(new BorderLayout());
-                singleTaskPanel.setBorder(BorderFactory.createCompoundBorder(
-                        BorderFactory.createEmptyBorder(5, 5, 5, 5),
-                        BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1)
+                JPanel singleTaskPanel = new JPanel(new BorderLayout(10, 10));
+                singleTaskPanel.setBackground(BG_CARD);
+                singleTaskPanel.setBorder(new CompoundBorder(
+                        BorderFactory.createLineBorder(BORDER_COLOR, 1),
+                        new EmptyBorder(12, 15, 12, 15)
                 ));
-                singleTaskPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40)); 
+                singleTaskPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 60)); 
                 
-                JLabel descLabel = new JLabel(" " + t.getDescrizione() + " [" + t.getStatoAvanzamento() + "]");
-                JLabel dateLabel = new JLabel("Scad: " + t.getScadenza() + " ");
+                String statusColor = t.getStatoAvanzamento().equals("Done") ? "green" : (t.getStatoAvanzamento().equals("Todo") ? "gray" : "orange");
+                
+                JLabel descLabel = new JLabel("<html><b>" + t.getDescrizione() + "</b> <span style='color:"+statusColor+"'>[" + t.getStatoAvanzamento().replace("_", " ") + "]</span></html>");
+                descLabel.setFont(new Font("SansSerif", Font.PLAIN, 13));
+                
+                JLabel dateLabel = new JLabel(t.getScadenza().toString());
+                dateLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
+                dateLabel.setForeground(Color.GRAY);
                 
                 singleTaskPanel.add(descLabel, BorderLayout.CENTER);
                 singleTaskPanel.add(dateLabel, BorderLayout.EAST);
@@ -354,9 +453,16 @@ public class DashboardPanel extends JPanel {
                 		selectedTask = t;
                 		updateEastPanel();
                 	}
+                	public void mouseEntered(MouseEvent e) {
+                		singleTaskPanel.setBackground(new Color(248, 250, 252));
+                	}
+                	public void mouseExited(MouseEvent e) {
+                		singleTaskPanel.setBackground(BG_CARD);
+                	}
 				});
                 
                 container.add(singleTaskPanel);
+                container.add(javax.swing.Box.createRigidArea(new Dimension(0, 10)));
             }
         }
 	}
@@ -365,12 +471,10 @@ public class DashboardPanel extends JPanel {
 		if (eastPanel == null) return;
 		
 		eastPanel.removeAll();
-		eastPanel.setLayout(new BorderLayout());
-		eastPanel.setBorder(BorderFactory.createEmptyBorder(15, 10, 15, 10));
+		eastPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
 		
 		if (selectedTask == null) {
-			JLabel noSelectionLabel = new JLabel("<html><center>Seleziona una task dalla lista<br>o dal Kanban per vedere i dettagli</center></html>", SwingConstants.CENTER);
-			noSelectionLabel.setForeground(Color.GRAY);
+			JLabel noSelectionLabel = new JLabel("<html><center><h2 style='color:#A0AAB5;'>Nessuna Selezione</h2><p style='color:#A0AAB5;'>Seleziona un'attività dalla lista<br>o dalla board per i dettagli.</p></center></html>", SwingConstants.CENTER);
 			eastPanel.add(noSelectionLabel, BorderLayout.CENTER);
 			eastPanel.revalidate();
 			eastPanel.repaint();
@@ -379,81 +483,120 @@ public class DashboardPanel extends JPanel {
 		
 		JPanel detailsContainer = new JPanel();
 		detailsContainer.setLayout(new BoxLayout(detailsContainer, BoxLayout.Y_AXIS));
-		detailsContainer.setBorder(BorderFactory.createTitledBorder("Dettagli Attività"));
+		detailsContainer.setBackground(BG_APP);
 		
-		detailsContainer.add(new JLabel("ID Task: " + selectedTask.getIdAttivita()));
-		detailsContainer.add(new JLabel("Descrizione: " + selectedTask.getDescrizione()));
-		detailsContainer.add(new JLabel("Data Creazione: " + selectedTask.getDataCreazione()));
-		detailsContainer.add(new JLabel("Scadenza: " + selectedTask.getScadenza()));
+		JLabel taskTitle = new JLabel("<html><p style='width: 240px; font-size: 14px; margin-bottom: 15px;'><b>" + selectedTask.getDescrizione() + "</b></p></html>");
+		detailsContainer.add(taskTitle);
+		
+		detailsContainer.add(createDetailRow("ID Task", String.valueOf(selectedTask.getIdAttivita())));
+		detailsContainer.add(createDetailRow("Creazione", selectedTask.getDataCreazione().toString()));
+		detailsContainer.add(createDetailRow("Scadenza", selectedTask.getScadenza().toString()));
 		
 		int indiceSelezionata = allTasks.indexOf(selectedTask);
 		Membro assigned = taskAssignments.get(indiceSelezionata);
 		
 		String mName = assigned != null ? assigned.getUtente().getNome() + " " + assigned.getUtente().getCognome() : "Non Assegnato";
-		detailsContainer.add(new JLabel("Assegnato a: " + mName));
+		detailsContainer.add(createDetailRow("Assegnato a", mName));
+		
+		detailsContainer.add(javax.swing.Box.createRigidArea(new Dimension(0, 10)));
 		
 		if (selectedTask instanceof AttivitaSviluppo) {
 			AttivitaSviluppo as = (AttivitaSviluppo) selectedTask;
-			detailsContainer.add(new JLabel("Tipologia: Sviluppo (" + as.getTipologiaSviluppo() + ")"));
-			detailsContainer.add(new JLabel("Linguaggio: " + as.getLinguaggioProgrammazione()));
-			detailsContainer.add(new JLabel("Branch Git: " + as.getNomeBranch()));
+			detailsContainer.add(createDetailRow("Tipologia", "Sviluppo (" + as.getTipologiaSviluppo() + ")"));
+			detailsContainer.add(createDetailRow("Linguaggio", as.getLinguaggioProgrammazione()));
+			detailsContainer.add(createDetailRow("Branch Git", as.getNomeBranch()));
 		} else if (selectedTask instanceof AttivitaDocumentazione) {
 			AttivitaDocumentazione ad = (AttivitaDocumentazione) selectedTask;
-			detailsContainer.add(new JLabel("Tipologia: Documentazione"));
-			detailsContainer.add(new JLabel("Titolo Documento: " + ad.getTitoloDocu()));
-			detailsContainer.add(new JLabel("Formato: " + ad.getFormato()));
-			detailsContainer.add(new JLabel("Sezione: " + ad.getSezione()));
-			detailsContainer.add(new JLabel("Link Risorsa: " + ad.getLinkRisorsa()));
+			detailsContainer.add(createDetailRow("Tipologia", "Documentazione"));
+			detailsContainer.add(createDetailRow("Titolo", ad.getTitoloDocu()));
+			detailsContainer.add(createDetailRow("Formato", ad.getFormato()));
+			detailsContainer.add(createDetailRow("Sezione", ad.getSezione()));
+			detailsContainer.add(createDetailRow("Link", ad.getLinkRisorsa()));
 		}
 		
-		JPanel statusUpdatePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		statusUpdatePanel.add(new JLabel("Stato: "));
+		detailsContainer.add(javax.swing.Box.createRigidArea(new Dimension(0, 15)));
+		
+		JPanel statusUpdatePanel = new JPanel(new BorderLayout(10, 0));
+		statusUpdatePanel.setBackground(BG_APP);
+		JLabel statusLabel = new JLabel("Stato Corrente:");
+		statusLabel.setFont(new Font("SansSerif", Font.BOLD, 12));
+		
 		JComboBox<String> editStatusCombo = new JComboBox<>(new String[]{"Todo", "In_Progress", "Done"});
 		editStatusCombo.setSelectedItem(selectedTask.getStatoAvanzamento());
+		editStatusCombo.setBackground(BG_CARD);
 		
-		editStatusCombo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String selectedStatus = (String) editStatusCombo.getSelectedItem();
-				if (!selectedStatus.equals(selectedTask.getStatoAvanzamento())) {
-					selectedTask.setStatoAvanzamento(selectedStatus);
-					updateOnSelectedProject(); 
+		editStatusCombo.addActionListener(e -> {
+			String selectedStatus = (String) editStatusCombo.getSelectedItem();
+			if (!selectedStatus.equals(selectedTask.getStatoAvanzamento())) {
+				Progetto p = SessionController.getInstance().getCorrenteProgetto();
+				taskController.updateTaskStatus(p, selectedTask, selectedStatus);
+				
+				allTasks = taskController.getTasksByProgetto(p);
+				for(Attivita t : allTasks) {
+					if (t.getIdAttivita() == selectedTask.getIdAttivita()) {
+						selectedTask = t;
+						break;
+					}
 				}
+				
+				updateOnSelectedProject(); 
 			}
 		});
 		
-		statusUpdatePanel.add(editStatusCombo);
+		statusUpdatePanel.add(statusLabel, BorderLayout.WEST);
+		statusUpdatePanel.add(editStatusCombo, BorderLayout.CENTER);
 		detailsContainer.add(statusUpdatePanel);
 		
-		JPanel commentsPanel = new JPanel(new BorderLayout());
-		commentsPanel.setBorder(BorderFactory.createTitledBorder("Commenti"));
+		JPanel commentsPanel = new JPanel(new BorderLayout(0, 10));
+		commentsPanel.setBackground(BG_APP);
+		commentsPanel.setBorder(new EmptyBorder(20, 0, 0, 0));
+		
+		JLabel commentsTitle = new JLabel("Commenti");
+		commentsTitle.setFont(new Font("SansSerif", Font.BOLD, 14));
+		commentsTitle.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, BORDER_COLOR));
+		commentsPanel.add(commentsTitle, BorderLayout.NORTH);
 		
 		JPanel commentsListPanel = new JPanel();
 		commentsListPanel.setLayout(new BoxLayout(commentsListPanel, BoxLayout.Y_AXIS));
-		commentsListPanel.setBackground(Color.WHITE);
+		commentsListPanel.setBackground(BG_APP);
 		
 		ArrayList<String> commentiTaskCorrente = taskComments.get(indiceSelezionata);
 		for (int i = 0; i < commentiTaskCorrente.size(); i++) {
 			String comment = commentiTaskCorrente.get(i);
-			JLabel cLabel = new JLabel("<html><b>User:</b> " + comment + "</html>");
-			cLabel.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
-			commentsListPanel.add(cLabel);
+			JPanel commentCard = new JPanel(new BorderLayout());
+			commentCard.setBackground(HEADER_COLOR);
+			commentCard.setBorder(new CompoundBorder(
+					BorderFactory.createLineBorder(BORDER_COLOR, 1),
+					new EmptyBorder(8, 10, 8, 10)
+			));
+			JLabel cLabel = new JLabel("<html><span style='font-size:9px; color:gray;'>User</span><br>" + comment + "</html>");
+			cLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
+			commentCard.add(cLabel, BorderLayout.CENTER);
+			commentsListPanel.add(commentCard);
+			commentsListPanel.add(javax.swing.Box.createRigidArea(new Dimension(0, 8)));
 		}
 		
 		JScrollPane commentsScroll = new JScrollPane(commentsListPanel);
+		commentsScroll.setBorder(null);
+		commentsScroll.getViewport().setBackground(BG_APP);
 		commentsPanel.add(commentsScroll, BorderLayout.CENTER);
 		
-		JPanel addCommentPanel = new JPanel(new BorderLayout());
+		JPanel addCommentPanel = new JPanel(new BorderLayout(10, 0));
+		addCommentPanel.setBackground(BG_APP);
 		JTextField commentInputField = new JTextField();
-		JButton sendCommentButton = new JButton("Invia");
+		commentInputField.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createLineBorder(BORDER_COLOR, 1),
+				new EmptyBorder(5, 5, 5, 5)
+		));
 		
-		sendCommentButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String commentText = commentInputField.getText().trim();
-				if (!commentText.isEmpty()) {
-					taskComments.get(indiceSelezionata).add(commentText);
-					commentInputField.setText("");
-					updateEastPanel(); 
-				}
+		JButton sendCommentButton = createStyledButton("Invia");
+		
+		sendCommentButton.addActionListener(e -> {
+			String commentText = commentInputField.getText().trim();
+			if (!commentText.isEmpty()) {
+				taskComments.get(indiceSelezionata).add(commentText);
+				commentInputField.setText("");
+				updateEastPanel(); 
 			}
 		});
 		
@@ -462,6 +605,7 @@ public class DashboardPanel extends JPanel {
 		commentsPanel.add(addCommentPanel, BorderLayout.SOUTH);
 		
 		JPanel upperLayoutFix = new JPanel(new BorderLayout());
+		upperLayoutFix.setBackground(BG_APP);
 		upperLayoutFix.add(detailsContainer, BorderLayout.NORTH);
 		
 		eastPanel.add(upperLayoutFix, BorderLayout.NORTH);
@@ -469,5 +613,24 @@ public class DashboardPanel extends JPanel {
 		
 		eastPanel.revalidate();
 		eastPanel.repaint();
+	}
+	
+	private JPanel createDetailRow(String label, String value) {
+		JPanel row = new JPanel(new BorderLayout());
+		row.setBackground(BG_APP);
+		row.setBorder(new EmptyBorder(3, 0, 3, 0));
+		
+		JLabel l = new JLabel(label + ":");
+		l.setFont(new Font("SansSerif", Font.BOLD, 12));
+		l.setForeground(TEXT_DARK);
+		
+		JLabel v = new JLabel(value);
+		v.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		v.setForeground(Color.DARK_GRAY);
+		v.setHorizontalAlignment(SwingConstants.RIGHT);
+		
+		row.add(l, BorderLayout.WEST);
+		row.add(v, BorderLayout.CENTER);
+		return row;
 	}
 }
