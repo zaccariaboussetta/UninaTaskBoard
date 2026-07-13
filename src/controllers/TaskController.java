@@ -10,9 +10,7 @@ public class TaskController {
 
 	private TaskDAO taskDAO;
 	
-	public TaskController(TaskDAO taskDAO) {
-		this.taskDAO = taskDAO;
-	}
+	public TaskController(TaskDAO taskDAO) { this.taskDAO = taskDAO; }
 	
 	public ArrayList<Attivita> getTasksByProgetto(Progetto progetto) {
 		return taskDAO.getTasksByProgetto(progetto);

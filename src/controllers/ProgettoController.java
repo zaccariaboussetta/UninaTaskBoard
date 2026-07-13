@@ -17,11 +17,9 @@ public class ProgettoController {
 	public ProgettoController(ProgettoDAO progettoDAO) { this.progettoDAO = progettoDAO; }
 	
 	public ArrayList<Progetto> getProgettiUtente(){
-
 		
 		ArrayList<Progetto> listProgetti = new ArrayList<>();
 		listProgetti = progettoDAO.getProjectsByUtente(SessionController.getInstance().getUtenteLoggato());
-		
 		
 		if(!listProgetti.isEmpty()) {
 			
