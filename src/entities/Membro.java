@@ -1,5 +1,6 @@
 package entities;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class Membro {
 	private String ruolo;
@@ -7,6 +8,7 @@ public class Membro {
 	private String statoPartecipazione;
 	private float oreLavoro;
 	private Progetto progetto;
+	private ArrayList<Attivita> assignedTasksList;
 	private Utente utente;
 	
 	//Costruttore per reperimento dati dal DB;
@@ -75,5 +77,9 @@ public class Membro {
 		this.utente = utente;
 	}
 	
+	public void addTask(Attivita task) {
+		assignedTasksList.add(task);
+	}
 	
 }
+
