@@ -24,7 +24,7 @@ public class ProgettoDAOPostgres implements ProgettoDAO{
 		
 		Connection connectionToDatabase = DatabaseConnection.getInstance();
 		
-		String query = "SELECT nome, descrizione, data_creazione, data_consegna"
+		String query = "SELECT progetto.id_progetto, nome, descrizione, data_creazione, data_consegna"
 				+ " FROM progetto JOIN membro ON progetto.id_progetto = membro.id_progetto"
 				+ " WHERE membro.matricola = '" + utente.getMatricola() +"';";
 		
@@ -36,6 +36,7 @@ public class ProgettoDAOPostgres implements ProgettoDAO{
 			while(rs.next()) {
 				
 				Progetto utenteProgetto = new Progetto(
+						rs.getInt("id_progetto"),
 						rs.getString("nome"),
 						rs.getString("descrizione"),
 						rs.getDate("data_creazione").toLocalDate(),
@@ -78,7 +79,8 @@ public class ProgettoDAOPostgres implements ProgettoDAO{
 	        ResultSet rs = pstmt.executeQuery();
 	        
 	        if(rs.next()) {
-	            
+	        
+	        	
 	            String nome = rs.getString("nome");
 	            String descrizione = rs.getString("descrizione");
 	            LocalDate dataCreazione = rs.getDate("data_creazione").toLocalDate();

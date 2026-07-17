@@ -21,13 +21,8 @@ public class ProgettoController {
 		ArrayList<Progetto> listProgetti = new ArrayList<>();
 		listProgetti = progettoDAO.getProjectsByUtente(SessionController.getInstance().getUtenteLoggato());
 		
-		if(!listProgetti.isEmpty()) {
-			
-			return listProgetti;
-			
-		}
+		return listProgetti;
 		
-		return null;
 	}
 	
 	public void setProgettoById(int idProgetto) {

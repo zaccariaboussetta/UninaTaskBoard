@@ -87,7 +87,6 @@ public class TaskDAOPostgres implements TaskDAO {
 		return listAttivita;
 	}
 
-	
 	public ArrayList<Attivita> getTasksAssignedTo(Membro membro) {
 	    
 	    ArrayList<Attivita> listAttivita = new ArrayList<>();
@@ -164,7 +163,6 @@ public class TaskDAOPostgres implements TaskDAO {
 	    return listAttivita;
 	}
 
-	
 	@Override
 	public void updateTaskStatus(Progetto progetto, Attivita task, String status) {
 		
@@ -196,7 +194,6 @@ public class TaskDAOPostgres implements TaskDAO {
 		}
 	}
 
-	
 	@Override
 	public void assignTaskTo(Membro membro, Progetto progetto, Attivita task) {
 		

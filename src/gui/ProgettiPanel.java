@@ -17,6 +17,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -26,6 +27,7 @@ import javax.swing.ScrollPaneConstants;
 import controllers.ProgettoController;
 import controllers.SessionController;
 import entities.Progetto;
+import exceptions.LoadDataException;
 
 public class ProgettiPanel extends JPanel implements ActionListener {
     
@@ -51,10 +53,18 @@ public class ProgettiPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == openButton) {
             try {
+            	if(idProgettoSelezionato == 0) throw new LoadDataException();
                 progettoController.setProgettoById(idProgettoSelezionato);
                 
-                ((DashboardPanel)mainWindow.getPanelByName("DASHBOARD")).updateOnSelectedProject();
+                mainWindow.setResizable(true);
+                
+                ((DashboardPanel)mainWindow.getPanelByName("DASHBOARD")).update();
                 mainWindow.showPanel("DASHBOARD");
+            }
+            catch(LoadDataException lde) {
+            	
+            	JOptionPane.showMessageDialog(null, lde.getMessage(),"", JOptionPane.ERROR_MESSAGE);
+            	
             }
             catch(Exception ex) {
                 ex.printStackTrace();

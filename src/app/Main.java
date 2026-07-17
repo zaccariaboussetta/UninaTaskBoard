@@ -27,8 +27,9 @@ public class Main {
 		AuthController authController = new AuthController(utenteDAO);
 		ProgettoController progettoController = new ProgettoController(progettoDAO);
 		RegistrazioneUtenteController registrazioneUtenteController = new RegistrazioneUtenteController(utenteDAO);
-		TaskController taskController = new TaskController(taskDAO_test);
-		MembroController membroController = new MembroController(membroDAO_test);
+		TaskController taskController = new TaskController(taskDAO);
+		MembroController membroController = new MembroController(membroDAO);
+		DashboardController dashboardController = new DashboardController(membroController, taskController, progettoController);
 		SessionController.getInstance(); 
 		
 		//Inizializzazione della finestra principale dell'applicativo
@@ -38,7 +39,7 @@ public class Main {
 		JPanel loginPanel = new LoginPanel(mainWindow, authController);
 		JPanel createAccountPanel = new CreateAccountPanel(mainWindow, registrazioneUtenteController);
 		JPanel progettiPanel = new ProgettiPanel(mainWindow, progettoController);
-		JPanel dashboardPanel = new DashboardPanel(mainWindow, membroController, taskController, progettoController);
+		JPanel dashboardPanel = new DashboardPanel(mainWindow, dashboardController);
 		
 		mainWindow.addPanel(loginPanel, "LOGIN");
 		mainWindow.addPanel(createAccountPanel, "CREATE");

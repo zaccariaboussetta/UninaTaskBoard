@@ -38,8 +38,9 @@ public class Progetto {
 		
 	}
 	
-	public Progetto(String nome, String descrizione, LocalDate dataCreazione, LocalDate dataConsegna) {
+	public Progetto(int idProgetto, String nome, String descrizione, LocalDate dataCreazione, LocalDate dataConsegna) {
 		
+		this.idProgetto = idProgetto;
 		this.nome = nome;
 		this.descrizione = descrizione;
 		this.dataCreazione = dataCreazione; 
