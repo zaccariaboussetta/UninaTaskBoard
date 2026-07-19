@@ -14,7 +14,7 @@ public class ProgettoEsameSviluppo extends Progetto {
 	private String techStack;
 	private String versione;
 	
-	//Reperimento dati DB;
+	
 	public ProgettoEsameSviluppo(int idProgetto, String nome, String descrizione, LocalDate dataCreazione,
 			LocalDate dataConsegna, boolean isProgettoGruppo, Utente userCreator, String codiceEsame, String nomeEsame,
 			int cfu, String docente, LocalDate dataAppello, String repositoryURL, String techStack, String versione) {
@@ -43,7 +43,7 @@ public class ProgettoEsameSviluppo extends Progetto {
 		this.versione = versione;
 	}
 
-	//Inserimento dati DB;
+	
 	public ProgettoEsameSviluppo(String nome, String descrizione, LocalDate dataConsegna, boolean isProgettoGruppo,
 			Utente userCreator, String codiceEsame, String nomeEsame, int cfu, String docente, LocalDate dataAppello,
 			String repositoryURL, String techStack, String versione) {

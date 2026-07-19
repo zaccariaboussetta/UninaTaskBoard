@@ -10,7 +10,7 @@ public class PreparazioneEsami extends Progetto{
 	private LocalDate dataAppello;
 	
 	
-	//Reperimento dati DB;
+	
 	public PreparazioneEsami(int idProgetto, String nome, String descrizione, LocalDate dataCreazione,
 			LocalDate dataConsegna, boolean isProgettoGruppo, Utente userCreator, String codiceEsame, String nomeEsame,
 			int cfu, String docente, LocalDate dataAppello) {
@@ -34,7 +34,7 @@ public class PreparazioneEsami extends Progetto{
 	}
 
 
-	//Inserimento dati DB;
+	
 	public PreparazioneEsami(String nome, String descrizione, LocalDate dataConsegna, boolean isProgettoGruppo,
 			Utente userCreator, String codiceEsame, String nomeEsame, int cfu, String docente, LocalDate dataAppello) {
 		super(nome, descrizione, dataConsegna, isProgettoGruppo, userCreator);

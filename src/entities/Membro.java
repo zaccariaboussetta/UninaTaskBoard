@@ -11,7 +11,7 @@ public class Membro {
 	private ArrayList<Attivita> assignedTasksList;
 	private Utente utente;
 	
-	//Costruttore per reperimento dati dal DB;
+	
 	public Membro(String ruolo, LocalDate dataAdesione, String statoPartecipazione, float oreLavoro, Progetto progetto, Utente utente) {
 		this.ruolo = ruolo;
 		this.dataAdesione = dataAdesione;
@@ -21,7 +21,7 @@ public class Membro {
 		this.utente = utente;
 	}
 	
-	//Costruttore per inserimento dati nel DB;
+	
 	public Membro(String ruolo, LocalDate dataAdesione, Progetto progetto, Utente utente) {
 		this.ruolo = ruolo;
 		this.statoPartecipazione = "Attivo";
@@ -79,6 +79,11 @@ public class Membro {
 	
 	public void addTask(Attivita task) {
 		assignedTasksList.add(task);
+	}
+	
+	@Override
+	public String toString() {
+	    return this.utente.getNome() + " " + this.utente.getCognome();
 	}
 	
 }

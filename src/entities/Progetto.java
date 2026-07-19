@@ -11,7 +11,7 @@ public class Progetto {
 	private Utente userCreator;
 	private String userCreatorMatricola;
 	
-	//Costruttore per riperimento dati dal DB;
+	
 	public Progetto(int idProgetto,String nome, String descrizione, LocalDate dataCreazione, LocalDate dataConsegna,
 			boolean isProgettoGruppo, Utente userCreator) {
 		
@@ -48,7 +48,7 @@ public class Progetto {
 		
 	}
 	
-	//Costruttore per inserimento dati nel DB;
+	
 	public Progetto(String nome, String descrizione, LocalDate dataConsegna,
 			boolean isProgettoGruppo, Utente userCreator) {
 		

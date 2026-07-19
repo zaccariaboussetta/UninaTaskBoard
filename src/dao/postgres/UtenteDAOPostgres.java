@@ -42,7 +42,7 @@ public class UtenteDAOPostgres implements UtenteDAO{
 
 		Connection connectionToDatabase = DatabaseConnection.getInstance();
 		
-		//Qui c'un bel esempio di vulnerabilità da SQL Injection. Lo teniamo perché interessante didatticamente.
+		
 		String query = "SELECT * FROM utente WHERE email_istituzionale = '" + email + "';";
 		
 		try {

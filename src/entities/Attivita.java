@@ -9,7 +9,7 @@ public abstract class Attivita {
 	private LocalDate scadenza;
 	private String statoAvanzamento;
 	
-	//Costruttore per reperimento dati dal DB;
+	
 	public Attivita(int idAttivita, String descrizione, LocalDate dataCreazione, LocalDate scadenza,
 			String statoAvanzamento) {
 		this.idAttivita = idAttivita;
@@ -19,7 +19,7 @@ public abstract class Attivita {
 		this.statoAvanzamento = statoAvanzamento;
 	}
 
-	//Costruttore per inserimento dati nel DB;
+	
 	public Attivita(String descrizione, LocalDate scadenza) {
 		this.descrizione = descrizione;
 		this.scadenza = scadenza;

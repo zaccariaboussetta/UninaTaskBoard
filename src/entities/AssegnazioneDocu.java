@@ -6,7 +6,7 @@ public class AssegnazioneDocu {
 	private Progetto progetto;
 	
 	
-	//Inserimento e reperimento dati dal DB;
+	
 	public AssegnazioneDocu(AttivitaDocumentazione attivitaDocu, Membro membro, Progetto progetto) {
 		super();
 		this.attivitaDocu = attivitaDocu;

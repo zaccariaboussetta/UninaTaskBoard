@@ -8,7 +8,7 @@ public class SviluppoApplicativi extends Progetto{
 	private String versione;
 	
 	
-	//Reperimento dati;
+	
 	public SviluppoApplicativi(int idProgetto, String nome, String descrizione, LocalDate dataCreazione,
 			LocalDate dataConsegna, boolean isProgettoGruppo, Utente userCreator, String repositoryURL,
 			String techStack, String versione) {
@@ -28,7 +28,7 @@ public class SviluppoApplicativi extends Progetto{
 	}
 
 	
-	//Inserimento dati;
+	
 	public SviluppoApplicativi(String nome, String descrizione, LocalDate dataConsegna, boolean isProgettoGruppo,
 			Utente userCreator, String repositoryURL, String techStack, String versione) {
 		super(nome, descrizione, dataConsegna, isProgettoGruppo, userCreator);

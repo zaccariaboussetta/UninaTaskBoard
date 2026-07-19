@@ -4,53 +4,53 @@ import javax.swing.*;
 
 import controllers.*;
 import dao.postgres.*;
-import dao.test.*;
 import dao.*;
 
 public class Main {
 
 	public static void main(String[] args) {
-		//Connessione al database
-		DatabaseConnection.getInstance(); 
-		
-		//Inizializzazione di tutti i DAO
+
+		DatabaseConnection.getInstance();
+
+
 		ProgettoDAO progettoDAO = new ProgettoDAOPostgres();
 		UtenteDAO utenteDAO = new UtenteDAOPostgres();
 		MembroDAO membroDAO = new MembroDAOPostgres();
 		TaskDAO taskDAO = new TaskDAOPostgres();
-		
-		//Testing
-		TaskDAO taskDAO_test = new TaskDAOTest();
-		MembroDAO membroDAO_test = new MembroDAOTest();
-		
-		//Inizializzazione dei controller e passaggio dei relativi DAO
+		InvitoDAO invitoDAO = new InvitoDAOPostgres();
+
+
+		//TaskDAO taskDAO_test = new TaskDAOTest();
+		//MembroDAO membroDAO_test = new MembroDAOTest();
+
+
 		AuthController authController = new AuthController(utenteDAO);
-		ProgettoController progettoController = new ProgettoController(progettoDAO);
+		ProgettoController progettoController = new ProgettoController(progettoDAO, invitoDAO);
 		RegistrazioneUtenteController registrazioneUtenteController = new RegistrazioneUtenteController(utenteDAO);
 		TaskController taskController = new TaskController(taskDAO);
 		MembroController membroController = new MembroController(membroDAO);
 		DashboardController dashboardController = new DashboardController(membroController, taskController, progettoController);
-		SessionController.getInstance(); 
-		
-		//Inizializzazione della finestra principale dell'applicativo
+		SessionController.getInstance();
+
+
 		MainWindow mainWindow = new MainWindow();
-		
-		//Inizializzazione dei pannelli 
+
+
 		JPanel loginPanel = new LoginPanel(mainWindow, authController);
 		JPanel createAccountPanel = new CreateAccountPanel(mainWindow, registrazioneUtenteController);
-		JPanel progettiPanel = new ProgettiPanel(mainWindow, progettoController);
+		JPanel progettiPanel = new ProgettiPanel(mainWindow, progettoController, membroController);
 		JPanel dashboardPanel = new DashboardPanel(mainWindow, dashboardController);
-		
+
 		mainWindow.addPanel(loginPanel, "LOGIN");
 		mainWindow.addPanel(createAccountPanel, "CREATE");
 		mainWindow.addPanel(progettiPanel, "PROGETTI");
 		mainWindow.addPanel(dashboardPanel, "DASHBOARD");
-		
-		if (SessionController.getInstance().isUtenteLoggato()) 
+
+		if (SessionController.getInstance().isUtenteLoggato())
 			mainWindow.showPanel("PROGETTI");
-		else 
+		else
 			mainWindow.showPanel("LOGIN");
-		
+
 		mainWindow.pack();
 		mainWindow.setVisible(true);
 	}

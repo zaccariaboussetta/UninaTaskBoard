@@ -5,18 +5,27 @@ public class Invito {
 	private Utente utenteInvitato;
 	private Progetto progetto;
 	
+	private String matricolaInvitante;
+	private int idProgetto ;
+	
 	public Invito(Utente utenteAdmin, Utente utenteInvitato, Progetto progetto) {
 		super();
 		this.utenteAdmin = utenteAdmin;
 		this.utenteInvitato = utenteInvitato;
 		this.progetto = progetto;
 	}
+	
+	
+	public Invito(String invitante, int id) {
+		this.matricolaInvitante = invitante;
+		this.idProgetto = id;
+	}
 
-	public Utente getUtenteADmin() {
+	public Utente getUtenteAdmin() {
 		return utenteAdmin;
 	}
 
-	public void setUtenteADmin(Utente utenteAdmin) {
+	public void setUtenteAmin(Utente utenteAdmin) {
 		this.utenteAdmin = utenteAdmin;
 	}
 
@@ -35,6 +44,16 @@ public class Invito {
 	public void setProgetto(Progetto progetto) {
 		this.progetto = progetto;
 	}
+	
+	
+	public int getIdProgetto() {
+		return idProgetto;
+	}
+
+	public String getMatricolaInvitante() {
+		return matricolaInvitante;
+	}
+
 	
 	
 }

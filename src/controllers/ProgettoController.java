@@ -3,8 +3,10 @@ package controllers;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import dao.InvitoDAO;
 import dao.ProgettoDAO;
 import dao.postgres.ProgettoDAOPostgres;
+import entities.Invito;
 import entities.PreparazioneEsami;
 import entities.Progetto;
 import entities.SviluppoApplicativi;
@@ -13,8 +15,9 @@ import entities.Utente;
 public class ProgettoController {
 	
 	private ProgettoDAO progettoDAO;
+	private InvitoDAO invitoDAO;
 	
-	public ProgettoController(ProgettoDAO progettoDAO) { this.progettoDAO = progettoDAO; }
+	public ProgettoController(ProgettoDAO progettoDAO, InvitoDAO invitoDAO) { this.progettoDAO = progettoDAO; this.invitoDAO = invitoDAO;}
 	
 	public ArrayList<Progetto> getProgettiUtente(){
 		
@@ -119,6 +122,9 @@ public class ProgettoController {
 		
 		return progettoDAO.inserisiciNuovoProgetto(progettoEsame, progettoSviluppo);
 	}
+	
+	
+		
 	
 
 }

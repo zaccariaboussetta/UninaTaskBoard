@@ -51,7 +51,7 @@ public class TaskDetailDialog extends JDialog {
         scadenzaLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         scadenzaLabel.setForeground(Color.GRAY);
 
-     // Nuova componente per la visualizzazione degli assegnatari
+     
         String assegnatariCorrenti = dc.getNomiAssegnatariTask(task);
         JLabel assegnatariLabel = new JLabel("Assegnatari: " + assegnatariCorrenti);
         assegnatariLabel.setAlignmentX(Component.LEFT_ALIGNMENT);

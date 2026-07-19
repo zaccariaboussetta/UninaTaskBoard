@@ -72,7 +72,7 @@ public class LoginPanel extends JPanel implements ActionListener{
         
         
         
-       //Costruzione della GUI 
+       
         
         areaLoginPanel.add(Box.createRigidArea(new Dimension(0, 50)));
         areaLoginPanel.add(logoUniLabel);
@@ -109,8 +109,8 @@ public class LoginPanel extends JPanel implements ActionListener{
 				String email = emailTextField.getText();
 				char[] passwordArray = passwordTextField.getPassword();
 				String password = String.valueOf(passwordArray);
-				//email = "s.connor@studenti.unina.it";
-				//password = "Skynet1997!!";
+				email = "s.connor@studenti.unina.it";
+				password = "Skynet1997!!";
 				authController.authenticationLogin(email, password);
 				
 				((ProgettiPanel)mainWindow.getPanelByName("PROGETTI")).update();

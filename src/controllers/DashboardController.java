@@ -11,6 +11,7 @@ import entities.AttivitaDocumentazione;
 import entities.AttivitaSviluppo;
 import entities.Membro;
 import entities.Progetto;
+import entities.StatisticaMembroDTO;
 import exceptions.LoadDataException;
 
 public class DashboardController {
@@ -135,16 +136,16 @@ public class DashboardController {
 		ArrayList<Attivita> filtrata = new ArrayList<>();
 
 		for (Attivita t : lista) {
-			// Richiama il nuovo metodo per ottenere l'elenco completo
+			
 			String assegnatariDellaTask = getNomiAssegnatariTask(t);
 
 			if (membroFiltro.equals("Nessuno")) {
-				// Se cerchiamo i task non assegnati, l'uguaglianza deve essere esatta
+				
 				if (assegnatariDellaTask.equals("Nessuno")) {
 					filtrata.add(t);
 				}
 			} else {
-				// Se cerchiamo un utente specifico, verifichiamo che sia presente nella lista concatenata
+				
 				if (assegnatariDellaTask.contains(membroFiltro)) {
 					filtrata.add(t);
 				}
@@ -164,7 +165,7 @@ public class DashboardController {
 	
 	public String getNomiAssegnatariTask(Attivita t) {
 		StringBuilder assegnatari = new StringBuilder();
-		boolean primoAggiunto = false; // Flag per gestire l'inserimento della virgola
+		boolean primoAggiunto = false; 
 
 		if (t instanceof entities.AttivitaDocumentazione) {
 			for (entities.AssegnazioneDocu ad : this.listaAssegnazioneTaskDocu) {
@@ -184,7 +185,7 @@ public class DashboardController {
 			}
 		}
 		
-		// Verifica finale: se il costruttore di stringhe è vuoto, non ci sono assegnatari
+		
 		if (assegnatari.length() == 0) {
 			return "Nessuno";
 		}
@@ -192,5 +193,68 @@ public class DashboardController {
 		return assegnatari.toString();
 	}
 	
+	
+		public int getTotaleAttivita() {
+			return this.listaTasks.size();
+		}
+
+		
+		public int getConteggioAttivitaPerStato(String stato) {
+			int count = 0;
+			for (entities.Attivita t : this.listaTasks) {
+				if (t.getStatoAvanzamento().equals(stato)) {
+					count++;
+				}
+			}
+			return count;
+		}
+
+		
+		public int getTotaleAttivitaSviluppo() {
+			int count = 0;
+			for (entities.Attivita t : this.listaTasks) {
+				if (t instanceof entities.AttivitaSviluppo) {
+					count++;
+				}
+			}
+			return count;
+		}
+
+		
+		
+		public ArrayList<StatisticaMembroDTO> getTaskCompletatePerMembro() {
+			ArrayList<StatisticaMembroDTO> statistiche = new ArrayList<>();
+
+			for (entities.Attivita t : this.listaTasks) {
+				if (t.getStatoAvanzamento().equals("Done")) {
+					
+					String assegnatari = getNomiAssegnatariTask(t); 
+					
+					if (!assegnatari.equals("Nessuno")) {
+						String[] nomi = assegnatari.split(", ");
+						
+						for (String nome : nomi) {
+							boolean utenteTrovato = false;
+							
+							
+							for (StatisticaMembroDTO sm : statistiche) {
+								if (sm.getNomeMembro().equals(nome)) {
+									sm.incrementa(); 
+									utenteTrovato = true;
+									break;
+								}
+							}
+							
+							
+							if (!utenteTrovato) {
+								statistiche.add(new StatisticaMembroDTO(nome, 1));
+							}
+						}
+					}
+				}
+			}
+			
+			return statistiche;
+		}	
 }
  

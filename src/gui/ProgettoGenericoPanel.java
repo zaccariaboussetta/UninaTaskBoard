@@ -40,7 +40,7 @@ public class ProgettoGenericoPanel extends JPanel implements ActionListener{
 		this.setBackground(Color.white);
 		this.setLayout(new BorderLayout());
 		
-		//Pannello centrale
+		
 		JPanel textFieldsPanel = new JPanel(new java.awt.GridBagLayout());
 		textFieldsPanel.setBackground(Color.WHITE);
 
@@ -100,7 +100,7 @@ public class ProgettoGenericoPanel extends JPanel implements ActionListener{
 		textFieldsPanel.add(isProgettoGruppoButton, gbc);
 		
 		
-		//Pannello sud dei bottoni
+		
 		JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		
 		indietroButton = new JButton("< Indietro");

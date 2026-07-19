@@ -13,21 +13,25 @@ import javax.swing.ImageIcon;
 import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
 
+import entities.Progetto;
+
 public class ProgettoRadioButton extends JRadioButton implements ActionListener{
 
 	private int idProg;
 	private String descrizione;
 	private LocalDate creazione;
+	private String listaMembri;
 	private ProgettiPanel progettiPanel;
 	
-	public ProgettoRadioButton(ProgettiPanel progettiPanel, String nomeProgetto, int idProg, LocalDate creazione, String descrizione) {
+	public ProgettoRadioButton(ProgettiPanel progettiPanel, Progetto prog, String lm) {
 		
-		super(nomeProgetto);
+		super(prog.getNome());
 		
 		this.progettiPanel = progettiPanel;
-		this.idProg = idProg;
-		this.descrizione = descrizione;
-		this.creazione = creazione;
+		this.idProg = prog.getIdProgetto();
+		this.descrizione = prog.getDescrizione();
+		this.creazione = prog.getDataCreazione();
+		this.listaMembri = lm;
 		
 		this.setMargin(new Insets(10, 20, 10, 20));
 		
@@ -63,7 +67,7 @@ public class ProgettoRadioButton extends JRadioButton implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e ) {
 		
-		progettiPanel.selectedProg(idProg, descrizione, creazione);
+		progettiPanel.selectedProg(idProg, descrizione, creazione, listaMembri);
 		
 	}
 	

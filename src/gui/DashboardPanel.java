@@ -39,6 +39,7 @@ public class DashboardPanel extends JPanel implements ActionListener{
 	private JPanel headerPanel;
 	private JPanel bodyPanel;
 	private JButton addTaskBtn;
+	private JButton reportBtn;
 	private JComboBox<String> tipoFilterCombo;
 	private JComboBox<String> scadenzaFilterCombo;
 	private JComboBox<String> membroFilterCombo;
@@ -67,7 +68,7 @@ public class DashboardPanel extends JPanel implements ActionListener{
 			this.repaint();
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		
@@ -81,7 +82,7 @@ public class DashboardPanel extends JPanel implements ActionListener{
 				
 		
 		loadCenterPanel();
-		this.add(bodyPanel, BorderLayout.CENTER); // Lo rimettiamo al centro
+		this.add(bodyPanel, BorderLayout.CENTER); 
 			
 		this.revalidate();
 		this.repaint();
@@ -90,7 +91,7 @@ public class DashboardPanel extends JPanel implements ActionListener{
 	private void loadNordPanel() {
 		
 		headerPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 15));
-		headerPanel.setBackground(new Color(244, 245, 247)); // Grigio chiaro
+		headerPanel.setBackground(new Color(244, 245, 247)); 
 		
 		headerPanel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)));
 		
@@ -120,9 +121,12 @@ public class DashboardPanel extends JPanel implements ActionListener{
 		headerPanel.add(new JLabel("Assegnatario:"));
 		headerPanel.add(membroFilterCombo);
 		
-		addTaskBtn = new JButton("+ new task");
+		addTaskBtn = new JButton("+ New Task");
 		addTaskBtn.addActionListener(this);
+		reportBtn = new JButton("Report");
+		reportBtn.addActionListener(this);
 		headerPanel.add(addTaskBtn);
+		headerPanel.add(reportBtn);
 	}
 
 	private void loadCenterPanel() {
@@ -145,6 +149,12 @@ public class DashboardPanel extends JPanel implements ActionListener{
 		if(e.getSource() == addTaskBtn) {
 			
 			new AddTaskFrame(mainWindow, dashboardController, this);
+			
+		}
+		
+		if(e.getSource() == reportBtn) {
+			
+			new ReportDialog(mainWindow, dashboardController);
 			
 		}
 		

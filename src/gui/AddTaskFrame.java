@@ -23,12 +23,12 @@ public class AddTaskFrame extends JDialog implements ActionListener {
 	private StyledTextField scadenzaField;
 	private JComboBox<String> assegnatarioCombo;
 	
-	// Campi Sviluppo
+	
 	private JComboBox<String> tipoSviluppoCombo;
 	private StyledTextField linguaggioField;
 	private StyledTextField branchField;
 	
-	// Campi Documentazione
+	
 	private StyledTextField titoloDocuField;
 	private StyledTextField formatoField;
 	private StyledTextField sezioneField;
@@ -42,7 +42,7 @@ public class AddTaskFrame extends JDialog implements ActionListener {
 	private JButton annullaButton;
 
 	public AddTaskFrame(MainWindow mainWindow, DashboardController dc, DashboardPanel dp) {
-		super(mainWindow, "Nuova Attività", true); // modale = true
+		super(mainWindow, "Nuova Attività", true); 
 		this.dashboardController = dc;
 		this.dashboardPanel = dp;
 		
@@ -50,7 +50,7 @@ public class AddTaskFrame extends JDialog implements ActionListener {
 		this.setResizable(false);
 		this.setLocationRelativeTo(mainWindow);
 		
-		// Pannello principale con BoxLayout verticale in stile LoginPanel
+		
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 		mainPanel.setBackground(Color.WHITE);
@@ -59,7 +59,7 @@ public class AddTaskFrame extends JDialog implements ActionListener {
 		titoloLabel.setFont(new Font("Arial", Font.BOLD, 22));
 		titoloLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		// --- CAMPI COMUNI ---
+		
 		descrizioneField = new StyledTextField(20);
 		descrizioneField.setMaximumSize(new Dimension(280, 30));
 		
@@ -74,18 +74,18 @@ public class AddTaskFrame extends JDialog implements ActionListener {
 		assegnatarioCombo.setMaximumSize(new Dimension(280, 30));
 		assegnatarioCombo.setBackground(Color.WHITE);
 		assegnatarioCombo.addItem("Nessuno (Non assegnata)");
-		// Popoliamo la combo box con i membri del progetto
+		
 		for (Membro m : dashboardController.getListaMembri()) {
 			assegnatarioCombo.addItem(m.getUtente().getNome() + " " + m.getUtente().getCognome());
 		}
 		
-		// --- PANNELLO DINAMICO (CardLayout) ---
+		
 		cardLayout = new CardLayout();
 		cardsPanel = new JPanel(cardLayout);
 		cardsPanel.setBackground(Color.WHITE);
 		cardsPanel.setMaximumSize(new Dimension(450, 220));
 		
-		// Card 1: Sviluppo
+		
 		JPanel sviluppoPanel = new JPanel();
 		sviluppoPanel.setLayout(new BoxLayout(sviluppoPanel, BoxLayout.Y_AXIS));
 		sviluppoPanel.setBackground(Color.WHITE);
@@ -110,7 +110,7 @@ public class AddTaskFrame extends JDialog implements ActionListener {
 		sviluppoPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 		sviluppoPanel.add(branchField);
 		
-		// Card 2: Documentazione
+		
 		JPanel docuPanel = new JPanel();
 		docuPanel.setLayout(new BoxLayout(docuPanel, BoxLayout.Y_AXIS));
 		docuPanel.setBackground(Color.WHITE);
@@ -143,10 +143,10 @@ public class AddTaskFrame extends JDialog implements ActionListener {
 		cardsPanel.add(sviluppoPanel, "Sviluppo");
 		cardsPanel.add(docuPanel, "Documentazione");
 		
-		// Listener per cambiare i campi in base alla combo box
+		
 		tipoCombo.addActionListener(e -> cardLayout.show(cardsPanel, (String) tipoCombo.getSelectedItem()));
 		
-		// --- BOTTONI ed ERRORI ---
+		
 		errorLabel = new ErrorLabel();
 		errorLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
@@ -162,7 +162,7 @@ public class AddTaskFrame extends JDialog implements ActionListener {
 		bottoniPanel.add(Box.createRigidArea(new Dimension(20, 0)));
 		bottoniPanel.add(salvaButton);
 		
-		// --- ASSEMBLAGGIO FINALE ---
+		
 		mainPanel.add(Box.createRigidArea(new Dimension(0, 25)));
 		mainPanel.add(titoloLabel);
 		mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
@@ -187,7 +187,7 @@ public class AddTaskFrame extends JDialog implements ActionListener {
 		mainPanel.add(assegnatarioCombo);
 		mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 		
-		mainPanel.add(cardsPanel); // Aggiunge il pannello dinamico
+		mainPanel.add(cardsPanel); 
 		
 		mainPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 		mainPanel.add(errorLabel);
@@ -195,10 +195,10 @@ public class AddTaskFrame extends JDialog implements ActionListener {
 		mainPanel.add(bottoniPanel);
 		
 		this.add(mainPanel);
-		this.setVisible(true); // Mostra il popup
+		this.setVisible(true); 
 	}
 	
-	// Metodo di utilità per non ripetere l'allineamento delle etichette
+	
 	private JLabel creaLabelCentrata(String testo) {
 		JLabel label = new JLabel(testo);
 		label.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -231,20 +231,20 @@ public class AddTaskFrame extends JDialog implements ActionListener {
 							sezioneField.getText(), linkField.getText(), progetto);
 				}
 				
-				// Estrae l'assegnatario, se selezionato
+				
 				Membro assegnatario = null;
 				int indiceMembro = assegnatarioCombo.getSelectedIndex();
 				if (indiceMembro > 0) { 
-					// Sottrae 1 perché l'indice 0 è "Nessuno"
+					
 					assegnatario = dashboardController.getListaMembri().get(indiceMembro - 1);
 				}
 				
-				// Salva nel database (tramite DashboardController -> TaskController)
+				
 				boolean success = dashboardController.getTaskController().inserisciNuovaAttivita(nuovaAttivita, progetto, assegnatario);
 				
 				if (success) {
-					dashboardPanel.update(); // Ricarica la Kanban board
-					this.dispose(); // Chiude il popup
+					dashboardPanel.update(); 
+					this.dispose(); 
 				} else {
 					errorLabel.setText("Errore interno nel database.");
 				}

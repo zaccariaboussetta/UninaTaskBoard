@@ -6,7 +6,7 @@ public class AssegnazioneSviluppo {
 	private Progetto progetto;
 	
 	
-	//Inserimento e reperimento dati dal DB;
+	
 	public AssegnazioneSviluppo(AttivitaSviluppo attivitaSviluppo, Membro membro, Progetto progetto) {
 		super();
 		this.attivitaSviluppo = attivitaSviluppo;

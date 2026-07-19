@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
@@ -24,6 +25,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
+import controllers.MembroController;
 import controllers.ProgettoController;
 import controllers.SessionController;
 import entities.Progetto;
@@ -33,19 +35,23 @@ public class ProgettiPanel extends JPanel implements ActionListener {
     
     private MainWindow mainWindow;
     private ProgettoController progettoController;
+    private MembroController membroController;
     private JButton openButton;
     private JButton createButton;
+    private JButton invitiButton;
     private JPanel progettiUtentePanel;
     private JTextArea descrizioneTextArea;
     private JLabel dataCreazioneLabel;
+    private JLabel membriLabel;
     
     private int idProgettoSelezionato;
     
-    public ProgettiPanel(MainWindow mainWindow, ProgettoController progettoController) {
+    public ProgettiPanel(MainWindow mainWindow, ProgettoController progettoController, MembroController mb) {
         
         this.mainWindow = mainWindow;
         this.progettoController = progettoController;
-        this.setLayout(new BorderLayout()); // Assicura che il mainPanel occupi tutto lo spazio
+        this.membroController = mb;
+        this.setLayout(new BorderLayout()); 
         
     }
 
@@ -74,12 +80,19 @@ public class ProgettiPanel extends JPanel implements ActionListener {
         if(e.getSource() == createButton) {
             new CreateProjectFrame(mainWindow,this, "Creazione progetti", true, progettoController);
         }
+        
+        if(e.getSource() == invitiButton) {
+        	
+        	new InvitiDialog(mainWindow, this, "Lista inviti", true, progettoController);
+        	
+        }
     }
     
-    public void selectedProg(int idProg, String desc, LocalDate date) {
+    public void selectedProg(int idProg, String desc, LocalDate date, String listaMembri) {
     	this.idProgettoSelezionato = idProg;
     	descrizioneTextArea.setText(desc);
-    	dataCreazioneLabel.setText(date.toString());
+    	dataCreazioneLabel.setText("Data creazione: " + date.toString());
+    	membriLabel.setText("Membri : " + listaMembri);
     }
     
     public void loadProgetti() {
@@ -91,7 +104,7 @@ public class ProgettiPanel extends JPanel implements ActionListener {
             
             for(Progetto prog : progettoController.getProgettiUtente()) {
                 
-                JRadioButton radioButton = new ProgettoRadioButton(this, prog.getNome(), prog.getIdProgetto(), prog.getDataCreazione(), prog.getDescrizione());
+                JRadioButton radioButton = new ProgettoRadioButton(this, prog, membroController.getMembriByProgetto(prog).toString());
                 
                 gruppoRadioButton.add(radioButton);
                 progettiUtentePanel.add(radioButton);
@@ -113,9 +126,12 @@ public class ProgettiPanel extends JPanel implements ActionListener {
         mainPanel.setBackground(Color.WHITE);
         mainPanel.setPreferredSize(new Dimension(850, 550));
         mainPanel.setLayout(new BorderLayout(20, 20));
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Margine interno per non schiacciare i bordi
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); 
         
         String nomeUtente = SessionController.getInstance().getUtenteLoggato().getNome(); 
+        
+        JPanel topBarPanel = new JPanel(new BorderLayout());
+        topBarPanel.setBackground(Color.WHITE);
         
         JPanel northPanel = new JPanel(new GridLayout(2, 1, 0, 10));
         northPanel.setBackground(Color.WHITE);
@@ -130,11 +146,22 @@ public class ProgettiPanel extends JPanel implements ActionListener {
         northPanel.add(welcomeLabel);
         northPanel.add(descrizioneLabel);
         
+        JPanel topRightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        topRightPanel.setBackground(Color.WHITE);
+        
+        invitiButton = new JButton("Inviti");
+        invitiButton.addActionListener(this);
+        topRightPanel.add(invitiButton);
+
+   
+        topBarPanel.add(northPanel, BorderLayout.CENTER);
+        topBarPanel.add(topRightPanel, BorderLayout.EAST);
+        
 
         JPanel centerPanel = new JPanel(new GridLayout(1, 2, 20, 0));
         centerPanel.setBackground(Color.WHITE);
         
-        // --- PARTE SINISTRA: Lista Progetti ---
+        
         progettiUtentePanel = new JPanel();
         progettiUtentePanel.setBackground(Color.WHITE);
         progettiUtentePanel.setLayout(new BoxLayout(progettiUtentePanel, BoxLayout.Y_AXIS)); 
@@ -145,11 +172,11 @@ public class ProgettiPanel extends JPanel implements ActionListener {
         ));
         scrollProjectsPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         
-        // --- PARTE DESTRA: Data e Descrizione ---
+        
         JPanel rightSidePanel = new JPanel(new BorderLayout(0, 10));
         rightSidePanel.setBackground(Color.WHITE);
         
-        // Destra - TOP (Data creazione)
+        
         JPanel detailsPanel = new JPanel(new BorderLayout());
         detailsPanel.setBackground(Color.WHITE);
         detailsPanel.setBorder(BorderFactory.createTitledBorder(
@@ -157,9 +184,12 @@ public class ProgettiPanel extends JPanel implements ActionListener {
         ));
         dataCreazioneLabel = new JLabel("Nessun progetto selezionato");
         dataCreazioneLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        detailsPanel.add(dataCreazioneLabel, BorderLayout.CENTER);
+        membriLabel = new JLabel("");
+        membriLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
-        // Destra - CENTER (Descrizione)
+        detailsPanel.add(dataCreazioneLabel, BorderLayout.CENTER);
+        detailsPanel.add(membriLabel, BorderLayout.SOUTH);
+        
         JPanel descriptionPanel = new JPanel(new BorderLayout());
         descriptionPanel.setBackground(Color.WHITE);
         descriptionPanel.setBorder(BorderFactory.createTitledBorder(
@@ -171,13 +201,13 @@ public class ProgettiPanel extends JPanel implements ActionListener {
         descrizioneTextArea.setLineWrap(true);
         descrizioneTextArea.setWrapStyleWord(true);
         descrizioneTextArea.setFont(new Font("SansSerif", Font.PLAIN, 14));
-        descrizioneTextArea.setMargin(new java.awt.Insets(10, 10, 10, 10));
+        descrizioneTextArea.setMargin(new Insets(10, 10, 10, 10));
         
         JScrollPane scrollDescPanel = new JScrollPane(descrizioneTextArea);
         scrollDescPanel.setBorder(BorderFactory.createEmptyBorder());
         
-        descriptionPanel.add(scrollDescPanel, BorderLayout.CENTER);
         
+        descriptionPanel.add(scrollDescPanel, BorderLayout.CENTER);
         
         rightSidePanel.add(detailsPanel, BorderLayout.NORTH);
         rightSidePanel.add(descriptionPanel, BorderLayout.CENTER);
@@ -188,7 +218,7 @@ public class ProgettiPanel extends JPanel implements ActionListener {
         
         this.loadProgetti();
         
-        // --- PARTE BASSA: Bottoni ---
+        
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonsPanel.setBackground(Color.WHITE);
         
@@ -200,7 +230,7 @@ public class ProgettiPanel extends JPanel implements ActionListener {
         buttonsPanel.add(openButton);
         buttonsPanel.add(createButton);
         
-        mainPanel.add(northPanel, BorderLayout.NORTH);
+        mainPanel.add(topBarPanel, BorderLayout.NORTH);
         mainPanel.add(centerPanel, BorderLayout.CENTER);
         mainPanel.add(buttonsPanel, BorderLayout.SOUTH);
         

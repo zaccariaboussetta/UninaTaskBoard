@@ -52,7 +52,7 @@ public class CardTask extends JPanel implements ActionListener{
 		
 		this.setMaximumSize(new Dimension(Integer.MAX_VALUE, 160));
 		
-		// card header
+		
 		JPanel header = new JPanel(new GridLayout(1, 2, 10, 0));
 		JPanel leftHeader = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JPanel rightHeader = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -81,7 +81,7 @@ public class CardTask extends JPanel implements ActionListener{
 		header.add(rightHeader);
 		
 		
-		//card body
+		
 		JPanel body = new JPanel();
 		body.setLayout(new BoxLayout(body, BoxLayout.Y_AXIS));
 		JTextArea descrizione = new JTextArea(task.getDescrizione());
@@ -100,7 +100,7 @@ public class CardTask extends JPanel implements ActionListener{
 		body.add(str);
 		body.add(Box.createRigidArea(new Dimension(0, 20)));
 		
-		//footer
+		
 		JPanel footer = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		footer.setBackground(this.getBackground());
 		dettagliBtn = new JButton();

@@ -10,7 +10,7 @@ public class AttivitaDocumentazione extends Attivita{
 	private Progetto progetto;
 	
 	
-	//Costruttore per reperimento dati dal DB;
+	
 	public AttivitaDocumentazione(int idAttivita, String descrizione, LocalDate dataCreazione, LocalDate scadenza,
 			String statoAvanzamento, String titoloDocu, String formato, String sezione, String linkRisorsa,
 			Progetto progetto) {
@@ -22,7 +22,7 @@ public class AttivitaDocumentazione extends Attivita{
 		this.progetto = progetto;
 	}
 
-	//Costruttore per inserimento dati nel DB;
+	
 	public AttivitaDocumentazione(String descrizione, LocalDate scadenza, String titoloDocu, String formato,
 			String sezione, String linkRisorsa, Progetto progetto) {
 		super(descrizione, scadenza);

@@ -1,111 +1,115 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
-import java.util.ArrayList;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.util.Map;
 
+import javax.swing.BorderFactory;
 import javax.swing.JDialog;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
-import entities.Attivita;
-import entities.AttivitaSviluppo;
-import entities.Membro;
+import controllers.DashboardController;
+import entities.StatisticaMembroDTO;
 
 public class ReportDialog extends JDialog {
 
-	public ReportDialog(ArrayList<Attivita> tasks, ArrayList<Membro> assignments) {
-		this.setTitle("Report Progetto");
-		this.setSize(700, 500);
-		this.setLayout(new BorderLayout());
-		this.setModal(true); 
+    public ReportDialog(JFrame parent, DashboardController dc) {
+        super(parent, "Statistiche di Progetto", true);
+        this.setSize(900, 550);
+        this.setLocationRelativeTo(parent);
+        this.setLayout(new BorderLayout());
 
-		int totaleAttivita = tasks.size();
-		int completate = 0;
-		int inCorso = 0;
-		int nonIniziate = 0;
-		int attivitaSviluppo = 0;
+        
+        JPanel headerPanel = new JPanel(new GridLayout(1, 2));
+        headerPanel.setBackground(new Color(52, 73, 94));
+        headerPanel.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
 
-		ArrayList<String> nomiMembri = new ArrayList<>();
-		ArrayList<Integer> taskCompletatePerMembro = new ArrayList<>();
+        JLabel lblTotale = new JLabel("Totale Attività: " + dc.getTotaleAttivita());
+        lblTotale.setForeground(Color.WHITE);
+        lblTotale.setFont(new Font("SansSerif", Font.BOLD, 16));
 
-		for (int i = 0; i < tasks.size(); i++) {
-			Attivita t = tasks.get(i);
+        JLabel lblSviluppo = new JLabel("Di cui Sviluppo: " + dc.getTotaleAttivitaSviluppo());
+        lblSviluppo.setForeground(Color.WHITE);
+        lblSviluppo.setFont(new Font("SansSerif", Font.BOLD, 16));
+        lblSviluppo.setHorizontalAlignment(SwingConstants.RIGHT);
 
-			if (t.getStatoAvanzamento().equals("Done")) {
-				completate++;
-				
-				Membro m = assignments.get(i);
-				if (m != null) {
-					String nome = m.getUtente().getNome() + " " + m.getUtente().getCognome();
-					
-					boolean trovato = false;
-					for (int j = 0; j < nomiMembri.size(); j++) {
-						if (nomiMembri.get(j).equals(nome)) {
-							int conteggioAttuale = taskCompletatePerMembro.get(j);
-							taskCompletatePerMembro.set(j, conteggioAttuale + 1);
-							trovato = true;
-							break;
-						}
-					}
-					
-					if (!trovato) {
-						nomiMembri.add(nome);
-						taskCompletatePerMembro.add(1);
-					}
-				}
-				
-			} else if (t.getStatoAvanzamento().equals("In_Progress")) {
-				inCorso++;
-			} else if (t.getStatoAvanzamento().equals("Todo")) {
-				nonIniziate++;
-			}
+        headerPanel.add(lblTotale);
+        headerPanel.add(lblSviluppo);
+        this.add(headerPanel, BorderLayout.NORTH);
 
-			if (t instanceof AttivitaSviluppo) {
-				attivitaSviluppo++;
-			}
-		}
+        
+        JPanel chartPanelContainer = new JPanel(new GridLayout(1, 2, 10, 0));
+        chartPanelContainer.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        chartPanelContainer.setBackground(Color.WHITE);
 
-		JTextArea reportText = new JTextArea();
-		reportText.setEditable(false);
-		reportText.append("=== REPORT STATISTICO ===\n\n");
-		reportText.append("Totale Attività: " + totaleAttivita + "\n");
-		reportText.append("- Completate (Done): " + completate + "\n");
-		reportText.append("- In Corso (In_Progress): " + inCorso + "\n");
-		reportText.append("- Non Iniziate (Todo): " + nonIniziate + "\n\n");
-		
-		reportText.append("Attività di Sviluppo totali: " + attivitaSviluppo + "\n\n");
-		
-		reportText.append("=== TASK COMPLETATE PER MEMBRO ===\n");
-		for (int i = 0; i < nomiMembri.size(); i++) {
-			reportText.append(nomiMembri.get(i) + ": " + taskCompletatePerMembro.get(i) + " task\n");
-		}
-		
-		JScrollPane textScroll = new JScrollPane(reportText);
-		textScroll.setPreferredSize(new Dimension(300, 0));
-		this.add(textScroll, BorderLayout.WEST);
+        
+        DefaultPieDataset pieDataset = new DefaultPieDataset();
+        pieDataset.setValue("To Do", dc.getConteggioAttivitaPerStato("Todo"));
+        pieDataset.setValue("In Progress", dc.getConteggioAttivitaPerStato("In_progress"));
+        pieDataset.setValue("Done", dc.getConteggioAttivitaPerStato("Done"));
 
-		DefaultPieDataset dataset = new DefaultPieDataset();
-		dataset.setValue("Non Iniziate", nonIniziate);
-		dataset.setValue("In Corso", inCorso);
-		dataset.setValue("Completate", completate);
+        JFreeChart pieChart = ChartFactory.createPieChart(
+                "Stato di Avanzamento", 
+                pieDataset,             
+                true,                   
+                true,                   
+                false                   
+        );
+        
+        
+        PiePlot plot = (PiePlot) pieChart.getPlot();
+        plot.setSectionPaint("To Do", new Color(220, 53, 69));      
+        plot.setSectionPaint("In Progress", new Color(255, 193, 7)); 
+        plot.setSectionPaint("Done", new Color(40, 167, 69));        
+        plot.setBackgroundPaint(Color.WHITE);
 
-		JFreeChart pieChart = ChartFactory.createPieChart(
-				"Stato Avanzamento Attività", 
-				dataset,                      
-				true,                         
-				true,                         
-				false                         
-		);
+        ChartPanel pieChartPanel = new ChartPanel(pieChart);
+        chartPanelContainer.add(pieChartPanel);
 
-		ChartPanel chartPanel = new ChartPanel(pieChart);
-		this.add(chartPanel, BorderLayout.CENTER);
-		
-		this.setLocationRelativeTo(null);
-	}
+
+     
+        DefaultCategoryDataset barDataset = new DefaultCategoryDataset();
+        
+        
+        java.util.ArrayList<StatisticaMembroDTO> statMembri = dc.getTaskCompletatePerMembro();
+        
+        
+        for (StatisticaMembroDTO sm : statMembri) {
+            barDataset.addValue(sm.getTaskCompletate(), "Completate", sm.getNomeMembro());
+        }
+
+        JFreeChart barChart = ChartFactory.createBarChart(
+                "Task Completate dai Membri", 
+                "Membro",                     
+                "Numero Task",                
+                barDataset,                   
+               PlotOrientation.VERTICAL,     
+                false,                        
+                true,                         
+                false                         
+        );
+        barChart.getPlot().setBackgroundPaint(new Color(245, 245, 245));
+
+        ChartPanel barChartPanel = new ChartPanel(barChart);
+        chartPanelContainer.add(barChartPanel);
+
+
+        this.add(chartPanelContainer, BorderLayout.CENTER);
+        this.setVisible(true);
+    }
 }

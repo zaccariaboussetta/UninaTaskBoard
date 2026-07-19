@@ -33,7 +33,7 @@ public class ProgettoSviluppoPanel extends JPanel implements ActionListener {
 	private JRadioButton isProgettoGruppoButton;
 	private ErrorLabel errorLabel;
 	
-	// Campi specifici per lo Sviluppo Applicativi
+	
 	private JTextField repositoryTextField;
 	private JTextField techStackTextField;
 	private JTextField versioneTextField;
@@ -67,12 +67,12 @@ public class ProgettoSviluppoPanel extends JPanel implements ActionListener {
 		isProgettoGruppoButton = new JRadioButton("Sì, è un progetto di gruppo");
 		isProgettoGruppoButton.setBackground(Color.WHITE);
 
-		// Inizializzazione nuovi campi
+		
 		repositoryTextField = new JTextField(25);
 		techStackTextField = new JTextField(25);
 		versioneTextField = new JTextField(25);
 
-		// Disposizione Griglia Comune
+		
 		gbc.gridx = 0; gbc.gridy = 0;
 		textFieldsPanel.add(new JLabel("Nome Progetto:"), gbc);
 		gbc.gridx = 1; 
@@ -93,7 +93,7 @@ public class ProgettoSviluppoPanel extends JPanel implements ActionListener {
 		gbc.gridx = 1;
 		textFieldsPanel.add(isProgettoGruppoButton, gbc);
 		
-		// Disposizione Campi Specifici Sviluppo
+		
 		gbc.gridx = 0; gbc.gridy = 4;
 		textFieldsPanel.add(new JLabel("Repository URL (Opzionale):"), gbc);
 		gbc.gridx = 1;
@@ -109,7 +109,7 @@ public class ProgettoSviluppoPanel extends JPanel implements ActionListener {
 		gbc.gridx = 1;
 		textFieldsPanel.add(versioneTextField, gbc);
 		
-		// Pannello Bottoni
+		
 		JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		indietroButton = new JButton("< Indietro");
 		indietroButton.addActionListener(this);
@@ -145,7 +145,7 @@ public class ProgettoSviluppoPanel extends JPanel implements ActionListener {
 		        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		        LocalDate dataConsegna = LocalDate.parse(dataConsegnaTextField.getText(), dtf);
 		        
-		        // Stringhe passate direttamente senza controlli di blocco .isBlank()
+		        
 		        String repo = repositoryTextField.getText();
 		        String tech = techStackTextField.getText();
 		        String versione = versioneTextField.getText();
