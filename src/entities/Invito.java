@@ -9,7 +9,6 @@ public class Invito {
 	private int idProgetto ;
 	
 	public Invito(Utente utenteAdmin, Utente utenteInvitato, Progetto progetto) {
-		super();
 		this.utenteAdmin = utenteAdmin;
 		this.utenteInvitato = utenteInvitato;
 		this.progetto = progetto;
